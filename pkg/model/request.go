@@ -8,3 +8,8 @@ type QueryRequest struct {
 
 type RegisterUserRequest struct {
 }
+
+type UserLoginRequest struct {
+	QueryRequest
+	Password string `json:"password"`
+}
