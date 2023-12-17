@@ -3,6 +3,7 @@ package app
 import (
 	"net/http"
 
+	"github.com/GDEIDevelopers/K8Sbackend/pkg/errhandle"
 	"github.com/gin-gonic/gin"
 	docs "github.com/go-project-name/docs"
 	swaggerfiles "github.com/swaggo/files"
@@ -27,10 +28,12 @@ func (s *Server) dispatchRoute() {
 	teacher := requiredAuth.Group("/teacher")
 	teacher.POST("/student/new", s.teacher.RegisterStudent)
 	teacher.GET("/:action", s.teacher.Get)
+	teacher.PATCH("/:action", s.teacher.Get)
 
 	// student part
 	student := requiredAuth.Group("/student")
-	student.GET("/:action", s.teacher.Get)
+	student.GET("/:action", s.student.Get)
+	student.PATCH("/:action", s.teacher.Get)
 	// admin part
 
 	admin := requiredAuth.Group("/admin")
@@ -42,11 +45,19 @@ func (s *Server) dispatchRoute() {
 	admin.GET("/students/:action", s.admin.GetStudents)
 	admin.GET("/student/:action", s.admin.GetStudent)
 
+	admin.DELETE("/teacher")
+	admin.DELETE("/student")
+
 	s.setupHTTPServer(e)
 }
 
 func (s *Server) setupHTTPServer(e *gin.Engine) {
 	s.srv = &http.Server{
+		Addr:    s.Config.HTTPServerListen,
 		Handler: e,
 	}
+
+	go s.srv.ListenAndServe()
+
+	errhandle.Log.Debug("HTTP Server Starts At %s", s.srv.Addr)
 }

@@ -11,15 +11,16 @@ func _() {
 	_ = x[NoError-0]
 	_ = x[InnerError-1]
 	_ = x[TokenError-2]
-	_ = x[UserExists-3]
-	_ = x[UserNonExists-4]
-	_ = x[PasswordInvalid-5]
-	_ = x[PermissionDenied-6]
+	_ = x[ParamsError-3]
+	_ = x[UserExists-4]
+	_ = x[UserNonExists-5]
+	_ = x[PasswordInvalid-6]
+	_ = x[PermissionDenied-7]
 }
 
-const _ErrCode_name = "NoErrorInnerErrorTokenErrorUserExistsUserNonExistsPasswordInvalidPermissionDenied"
+const _ErrCode_name = "NoErrorInnerErrorTokenErrorParamsErrorUserExistsUserNonExistsPasswordInvalidPermissionDenied"
 
-var _ErrCode_index = [...]uint8{0, 7, 17, 27, 37, 50, 65, 81}
+var _ErrCode_index = [...]uint8{0, 7, 17, 27, 38, 48, 61, 76, 92}
 
 func (i ErrCode) String() string {
 	if i < 0 || i >= ErrCode(len(_ErrCode_index)-1) {

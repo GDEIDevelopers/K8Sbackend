@@ -1,0 +1,136 @@
+definitions:
+  errhandle.ErrCode:
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    type: integer
+    x-enum-varnames:
+    - NoError
+    - InnerError
+    - TokenError
+    - ParamsError
+    - UserExists
+    - UserNonExists
+    - PasswordInvalid
+    - PermissionDenied
+  model.CommonResponse-any:
+    properties:
+      data: {}
+      reason:
+        type: string
+      status:
+        $ref: '#/definitions/errhandle.ErrCode'
+    type: object
+  model.CommonResponse-model_GetUserResponse:
+    properties:
+      data:
+        $ref: '#/definitions/model.GetUserResponse'
+      reason:
+        type: string
+      status:
+        $ref: '#/definitions/errhandle.ErrCode'
+    type: object
+  model.GetUserResponse:
+    properties:
+      class:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      realName:
+        type: string
+      schoolCode:
+        type: string
+      userSchoollD:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /teacher/{action}:
+    get:
+      consumes:
+      - application/json
+      description: 获取教师相关信息
+      parameters:
+      - description: 查询过滤器，如果没有默认查询所以信息
+        format: email
+        in: path
+        name: action
+        type: string
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 用户ID
+        in: query
+        name: userid
+        type: integer
+      - description: 用户名
+        in: query
+        name: name
+        type: string
+      - description: 用户邮箱
+        in: query
+        name: email
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-model_GetUserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 获取教师相关信息
+      tags:
+      - example
+  /teacher/student/new:
+    post:
+      consumes:
+      - application/json
+      description: 添加/注册一个学生
+      parameters:
+      - description: 登录返回的Token
+        in: query
+        name: token
+        required: true
+        type: string
+      - description: 登录返回的Token
+        in: query
+        name: name
+        required: true
+        type: string
+      - description: 登录返回的Token
+        in: query
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 添加/注册一个学生
+      tags:
+      - example
+swagger: "2.0"

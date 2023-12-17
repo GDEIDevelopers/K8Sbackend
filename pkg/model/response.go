@@ -1,13 +1,11 @@
 package model
 
 import (
-	"encoding/json"
-
 	"github.com/GDEIDevelopers/K8Sbackend/pkg/errhandle"
 )
 
-type CommonResponse struct {
-	Data   json.RawMessage   `json:"data"`
+type CommonResponse[T any] struct {
+	Data   T                 `json:"data"`
 	Status errhandle.ErrCode `json:"status"`
 	Reason string            `json:"reason"`
 }
@@ -23,4 +21,14 @@ type UserInfo struct {
 	UserID int64  `json:"userid"`
 	Name   string `json:"name"`
 	Role   string
+}
+
+type GetUserResponse struct {
+	ID           int64  `json:"id"`
+	Name         string `json:"name"`
+	Email        string `json:"email,omitempty"`
+	RealName     string `json:"realName,omitempty"`
+	UserSchoollD string `json:"userSchoollD,omitempty"`
+	SchoolCode   string `json:"schoolCode,omitempty"`
+	Class        string `json:"class,omitempty"`
 }
