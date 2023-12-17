@@ -7,6 +7,7 @@ const (
 	NoError ErrCode = iota
 	InnerError
 	TokenError
+	ParamsError
 	UserExists
 	UserNonExists
 	PasswordInvalid

@@ -1,8 +1,10 @@
 package model
 
-import "encoding/json"
+type QueryRequest struct {
+	UserID int    `json:"id"`
+	Name   string `json:"name"`
+	Email  string `json:"email"`
+}
 
-type CommonRequest struct {
-	Token string          `json:"token"`
-	Data  json.RawMessage `json:"data"`
+type RegisterUserRequest struct {
 }

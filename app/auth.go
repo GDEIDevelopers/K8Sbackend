@@ -2,31 +2,31 @@ package app
 
 import (
 	"context"
-	"encoding/json"
 	"strings"
 
+	"github.com/GDEIDevelopers/K8Sbackend/app/apputils"
 	"github.com/GDEIDevelopers/K8Sbackend/pkg/errhandle"
-	"github.com/GDEIDevelopers/K8Sbackend/pkg/model"
 	"github.com/gin-gonic/gin"
 )
 
 func (s *Server) UseTokenVerify() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		b, err := ctx.GetRawData()
-		if err != nil {
-			ThrowError(ctx, err)
-			return
+		auth := ctx.Request.Header.Get("Authorization")
+		prefix := "Bearer "
+		token := ""
+
+		if auth != "" && strings.HasPrefix(auth, prefix) {
+			token = auth[len(prefix):]
 		}
-		var req model.CommonRequest
-		json.Unmarshal(b, &req)
-		if req.Token == "" {
-			Throw(ctx, errhandle.TokenError)
+
+		if token == "" {
+			apputils.Throw(ctx, errhandle.TokenError)
 			return
 		}
 
-		userinfo, ok := s.token.Verify(context.Background(), req.Token)
+		userinfo, ok := s.token.Verify(context.Background(), token)
 		if !ok {
-			Throw(ctx, errhandle.PermissionDenied)
+			apputils.Throw(ctx, errhandle.PermissionDenied)
 			return
 		}
 
@@ -35,17 +35,16 @@ func (s *Server) UseTokenVerify() gin.HandlerFunc {
 			switch path[3] {
 			case "teacher":
 				if userinfo.Role == "student" {
-					Throw(ctx, errhandle.PermissionDenied)
+					apputils.Throw(ctx, errhandle.PermissionDenied)
 					return
 				}
 			case "admin":
 				if userinfo.Role != "admin" {
-					Throw(ctx, errhandle.PermissionDenied)
+					apputils.Throw(ctx, errhandle.PermissionDenied)
 					return
 				}
 			}
 		}
-		ctx.Set("data", req.Data)
 		ctx.Set("info", userinfo)
 		ctx.Next()
 	}
