@@ -3,9 +3,9 @@ package app
 import (
 	"net/http"
 
+	docs "github.com/GDEIDevelopers/K8Sbackend/docs"
 	"github.com/GDEIDevelopers/K8Sbackend/pkg/errhandle"
 	"github.com/gin-gonic/gin"
-	docs "github.com/go-project-name/docs"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -18,8 +18,9 @@ func (s *Server) dispatchRoute() {
 
 	a := e.Group("/api")
 
-	a.POST("/login")
-	a.POST("/register")
+	a.POST("/login", s.UserLogin)
+	a.POST("/refresh", s.UserLoginRefresh)
+	a.POST("/register", s.student.RegisterStudent)
 
 	requiredAuth := a.Group("/authrequired")
 	requiredAuth.Use(s.UseTokenVerify())
@@ -28,12 +29,12 @@ func (s *Server) dispatchRoute() {
 	teacher := requiredAuth.Group("/teacher")
 	teacher.POST("/student/new", s.teacher.RegisterStudent)
 	teacher.GET("/:action", s.teacher.Get)
-	teacher.PATCH("/:action", s.teacher.Get)
+	teacher.PATCH("/:action", s.teacher.Modify)
 
 	// student part
 	student := requiredAuth.Group("/student")
 	student.GET("/:action", s.student.Get)
-	student.PATCH("/:action", s.teacher.Get)
+	student.PATCH("/:action", s.student.Modify)
 	// admin part
 
 	admin := requiredAuth.Group("/admin")
@@ -59,5 +60,5 @@ func (s *Server) setupHTTPServer(e *gin.Engine) {
 
 	go s.srv.ListenAndServe()
 
-	errhandle.Log.Debug("HTTP Server Starts At %s", s.srv.Addr)
+	errhandle.Log.Info("HTTP Server Starts At %s", s.srv.Addr)
 }
