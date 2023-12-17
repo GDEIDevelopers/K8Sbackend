@@ -59,7 +59,7 @@ func (s *Server) UseTokenVerify() gin.HandlerFunc {
 	}
 }
 
-// @BasePath /api/authrequired
+// @BasePath /api
 
 // 登录 godoc
 // @Summary 登录
