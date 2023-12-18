@@ -22,11 +22,12 @@ func _() {
 	_ = x[EmailFormatError-11]
 	_ = x[RealNameFormatError-12]
 	_ = x[SchoolError-13]
+	_ = x[PasswordTooShort-14]
 }
 
-const _ErrCode_name = "NoErrorInnerErrorTokenErrorParamsErrorUserExistsUserNonExistsPasswordInvalidPermissionDeniedClassErrorSexErrorNameExistsEmailFormatErrorRealNameFormatErrorSchoolError"
+const _ErrCode_name = "NoErrorInnerErrorTokenErrorParamsErrorUserExistsUserNonExistsPasswordInvalidPermissionDeniedClassErrorSexErrorNameExistsEmailFormatErrorRealNameFormatErrorSchoolErrorPasswordTooShort"
 
-var _ErrCode_index = [...]uint8{0, 7, 17, 27, 38, 48, 61, 76, 92, 102, 110, 120, 136, 155, 166}
+var _ErrCode_index = [...]uint8{0, 7, 17, 27, 38, 48, 61, 76, 92, 102, 110, 120, 136, 155, 166, 182}
 
 func (i ErrCode) String() string {
 	if i < 0 || i >= ErrCode(len(_ErrCode_index)-1) {
