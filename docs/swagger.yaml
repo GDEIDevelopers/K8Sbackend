@@ -821,18 +821,6 @@ paths:
         name: token
         required: true
         type: string
-      - description: 用户ID
-        in: query
-        name: userid
-        type: integer
-      - description: 用户名
-        in: query
-        name: name
-        type: string
-      - description: 用户邮箱
-        in: query
-        name: email
-        type: string
       produces:
       - application/json
       responses:
@@ -1126,20 +1114,34 @@ paths:
       - application/json
       description: 添加/注册一个学生
       parameters:
-      - description: 登录返回的Token
-        in: query
-        name: token
-        required: true
-        type: string
-      - description: 登录返回的Token
+      - description: 新用户用户名
         in: query
         name: name
-        required: true
         type: string
-      - description: 登录返回的Token
+      - description: 新用户邮箱
+        format: email
         in: query
-        name: token
-        required: true
+        name: email
+        type: string
+      - description: 新用户真实姓名
+        in: query
+        name: realName
+        type: string
+      - description: 新用户学校ID
+        in: query
+        name: userSchoollD
+        type: string
+      - description: 新用户学校代码
+        in: query
+        name: schoolCode
+        type: string
+      - description: 新用户班级
+        in: query
+        name: class
+        type: string
+      - description: 新用户性别
+        in: query
+        name: sex
         type: string
       produces:
       - application/json
