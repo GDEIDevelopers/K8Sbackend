@@ -7,7 +7,7 @@ import (
 )
 
 type Student struct {
-	db *apputils.ServerUtils
+	 *apputils.ServerUtils
 }
 
 var _ io.Closer = &Student{}

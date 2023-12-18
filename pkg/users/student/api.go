@@ -1,9 +1,15 @@
 package student
 
 import (
+	"encoding/json"
+	"net/mail"
+
 	"github.com/GDEIDevelopers/K8Sbackend/app/apputils"
+	"github.com/GDEIDevelopers/K8Sbackend/pkg/errhandle"
 	"github.com/GDEIDevelopers/K8Sbackend/pkg/model"
+	"github.com/GDEIDevelopers/K8Sbackend/pkg/snowflake"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // @BasePath /api/authrequired
@@ -17,14 +23,31 @@ import (
 // @Produce json
 // @Param   action    path     string  false  "查询过滤器，如果没有默认查询所以信息"  Format(email)
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   userid    query    int     false  "用户ID"
-// @Param   name      query    string  false  "用户名"
-// @Param   email     query    string  false  "用户邮箱"
 // @Success 200 {object} model.CommonResponse[model.GetUserResponse]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/student/{action} [get]
 func (t *Student) Get(c *gin.Context) {
-	apputils.OK[model.GetUserResponse](c, model.GetUserResponse{})
+	userinfo, ok := c.Get("info")
+	if !ok {
+		apputils.Throw(c, errhandle.InnerError)
+		return
+	}
+	info := userinfo.(*model.UserInfo)
+
+	var teacher model.User
+	err := t.DB.Table("users").
+		Where("id = ?", info.UserID).
+		First(&teacher).Error
+
+	if err != nil {
+		apputils.ThrowError(c, err)
+		return
+	}
+	var getResponse model.GetUserResponse
+
+	apputils.IgnoreStructCopy(&getResponse, &teacher, c.Param("action"))
+
+	apputils.OK[model.GetUserResponse](c, getResponse)
 }
 
 // 添加/注册一位学生 godoc
@@ -34,14 +57,70 @@ func (t *Student) Get(c *gin.Context) {
 // @Tags example
 // @Accept json
 // @Produce json
-// @Param   token     query    string  true   "登录返回的Token"
-// @Param   name      query    string  true   "登录返回的Token"
-// @Param   token     query    string  true   "登录返回的Token"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /register [post]
+// @Param   name     query     string  false  "新用户用户名"
+// @Param   email     query    string  false  "新用户邮箱"  Format(email)
+// @Param   realName     query    string  false  "新用户真实姓名"
+// @Param   userSchoollD     query    string  false  "新用户学校ID"
+// @Param   schoolCode     query    string  false  "新用户学校代码"
+// @Param   class     query    string  false  "新用户班级"
+// @Param   sex     query    string  false  "新用户性别"
 func (t *Student) RegisterStudent(c *gin.Context) {
+	b, err := c.GetRawData()
+	if err != nil {
+		apputils.ThrowError(c, err)
+		return
+	}
+	var req model.RegisterUserRequest
+	json.Unmarshal(b, &req)
 
+	if req.Class == "" {
+		apputils.Throw(c, errhandle.ClassError)
+		return
+	}
+	if _, err := mail.ParseAddress(req.Email); err != nil {
+		apputils.Throw(c, errhandle.EmailFormatError)
+		return
+	}
+	if req.Sex != "男" && req.Sex != "女" {
+		apputils.Throw(c, errhandle.SexError)
+		return
+	}
+	if req.SchoolCode == "" || req.UserSchoollD == "" {
+		apputils.Throw(c, errhandle.SchoolError)
+		return
+	}
+	if !apputils.IsValidPassword(req.Password) {
+		apputils.Throw(c, errhandle.PasswordTooShort)
+		return
+	}
+
+	hashed, _ := bcrypt.GenerateFromPassword(
+		[]byte(req.Password),
+		bcrypt.DefaultCost,
+	)
+	var found model.User
+	col := t.DB.Table("users").FirstOrCreate(&found, model.User{
+		ID:           snowflake.ID(),
+		Role:         "student",
+		SchoolCode:   req.SchoolCode,
+		UserSchoollD: req.UserSchoollD,
+		Name:         req.Name,
+		RealName:     req.RealName,
+		Sex:          req.Sex,
+		Class:        req.Class,
+		Password:     string(hashed),
+		Email:        req.Email,
+	})
+	// this shouldn't happen
+	if col.RowsAffected == 0 {
+		apputils.Throw(c, errhandle.InnerError)
+		return
+	}
+
+	apputils.OK[any](c, nil)
 }
 
 // 修改学生信息 godoc
@@ -60,5 +139,38 @@ func (t *Student) RegisterStudent(c *gin.Context) {
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/student/{action} [patch]
 func (t *Student) Modify(c *gin.Context) {
+	userinfo, ok := c.Get("info")
+	if !ok {
+		apputils.Throw(c, errhandle.InnerError)
+		return
+	}
+	info := userinfo.(*model.UserInfo)
 
+	b, err := c.GetRawData()
+	if err != nil {
+		apputils.ThrowError(c, err)
+		return
+	}
+	var user model.User
+	var modifyReq model.ModifyUserRequest
+	json.Unmarshal(b, &modifyReq)
+
+	err = t.DB.Table("users").
+		Where("id = ?", info.UserID).
+		First(&user).Error
+	if err != nil {
+		apputils.ThrowError(c, err)
+		return
+	}
+
+	apputils.IgnoreStructCopy(&user, &modifyReq, "")
+
+	err = t.DB.Table("users").
+		Where("id = ?", info.UserID).
+		Save(&user).Error
+	if err != nil {
+		apputils.ThrowError(c, err)
+		return
+	}
+	apputils.OK[any](c, nil)
 }

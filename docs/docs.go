@@ -1093,24 +1093,6 @@ const docTemplate = `{
                         "name": "token",
                         "in": "header",
                         "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "用户ID",
-                        "name": "userid",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "用户名",
-                        "name": "name",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "用户邮箱",
-                        "name": "email",
-                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1556,24 +1538,46 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "登录返回的Token",
-                        "name": "token",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "登录返回的Token",
+                        "description": "新用户用户名",
                         "name": "name",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "登录返回的Token",
-                        "name": "token",
-                        "in": "query",
-                        "required": true
+                        "format": "email",
+                        "description": "新用户邮箱",
+                        "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户真实姓名",
+                        "name": "realName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户学校ID",
+                        "name": "userSchoollD",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户学校代码",
+                        "name": "schoolCode",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户班级",
+                        "name": "class",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户性别",
+                        "name": "sex",
+                        "in": "query"
                     }
                 ],
                 "responses": {
