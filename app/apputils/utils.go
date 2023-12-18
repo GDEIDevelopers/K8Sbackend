@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"reflect"
 	"strings"
+	"unicode"
 
 	"github.com/GDEIDevelopers/K8Sbackend/pkg/errhandle"
 	"github.com/GDEIDevelopers/K8Sbackend/pkg/model"
@@ -79,4 +80,23 @@ func IgnoreStructCopy(to, from any, ignore string) {
 			break
 		}
 	}
+}
+
+func IsValidPassword(password string) bool {
+	if len(password) < 8 {
+		return false
+	}
+	var upper, lower, number int
+
+	for _, char := range password {
+		switch {
+		case unicode.IsLower(char):
+			lower++
+		case unicode.IsUpper(char):
+			upper++
+		case unicode.IsNumber(char):
+			number++
+		}
+	}
+	return upper > 0 && lower > 0 && number > 0
 }

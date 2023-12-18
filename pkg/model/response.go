@@ -31,4 +31,5 @@ type GetUserResponse struct {
 	UserSchoollD string `json:"userSchoollD,omitempty"`
 	SchoolCode   string `json:"schoolCode,omitempty"`
 	Class        string `json:"class,omitempty"`
+	Sex          string `json:"sex,omitempty"`
 }

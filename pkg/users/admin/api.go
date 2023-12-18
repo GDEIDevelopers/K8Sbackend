@@ -2,10 +2,12 @@ package admin
 
 import (
 	"encoding/json"
+	"net/mail"
 
 	"github.com/GDEIDevelopers/K8Sbackend/app/apputils"
 	"github.com/GDEIDevelopers/K8Sbackend/pkg/errhandle"
 	"github.com/GDEIDevelopers/K8Sbackend/pkg/model"
+	"github.com/GDEIDevelopers/K8Sbackend/pkg/snowflake"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -178,6 +180,7 @@ func (t *Admin) GetStudent(c *gin.Context) {
 // @Param   userSchoollD     query    string  false  "修改学校ID"
 // @Param   schoolCode     query    string  false  "修改学校代码"
 // @Param   class     query    string  false  "修改班级"
+// @Param   sex     query    string  false  "修改性别"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/admin/student [patch]
@@ -223,6 +226,7 @@ func (t *Admin) ModifyStudent(c *gin.Context) {
 // @Param   userSchoollD     query    string  false  "修改学校ID"
 // @Param   schoolCode     query    string  false  "修改学校代码"
 // @Param   class     query    string  false  "修改班级"
+// @Param   sex     query    string  false  "修改性别"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/admin/teacher [patch]
@@ -268,6 +272,7 @@ func (t *Admin) ModifyTeacher(c *gin.Context) {
 // @Param   userSchoollD     query    string  false  "修改学校ID"
 // @Param   schoolCode     query    string  false  "修改学校代码"
 // @Param   class     query    string  false  "修改班级"
+// @Param   sex     query    string  false  "修改性别"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/admin/admin [patch]
@@ -554,10 +559,202 @@ func (t *Admin) DeleteAdmin(c *gin.Context) {
 	apputils.OK[any](c, nil)
 }
 
-func (t *Admin) RegistserStudent(c *gin.Context) {
+// 注册学生 godoc
+// @Summary 注册学生
+// @Schemes
+// @Description 注册学生
+// @Tags example
+// @Accept json
+// @Produce json
+// @Param   token     header    string  true   "登录返回的Token"
+// @Param   name     query     string  false  "新用户用户名"
+// @Param   email     query    string  false  "新用户邮箱"  Format(email)
+// @Param   realName     query    string  false  "新用户真实姓名"
+// @Param   userSchoollD     query    string  false  "新用户学校ID"
+// @Param   schoolCode     query    string  false  "新用户学校代码"
+// @Param   class     query    string  false  "新用户班级"
+// @Param   sex     query    string  false  "新用户性别"
+// @Success 200 {object} model.CommonResponse[any]
+// @Failure 400  {object} model.CommonResponse[any]
+// @Router /authrequired/admin/student/new [post]
+func (t *Admin) RegisterStudent(c *gin.Context) {
+	b, err := c.GetRawData()
+	if err != nil {
+		apputils.ThrowError(c, err)
+		return
+	}
+	var req model.RegisterUserRequest
+	json.Unmarshal(b, &req)
 
+	if req.Class == "" {
+		apputils.Throw(c, errhandle.ClassError)
+		return
+	}
+	if _, err := mail.ParseAddress(req.Email); err != nil {
+		apputils.Throw(c, errhandle.EmailFormatError)
+		return
+	}
+	if req.Sex != "男" && req.Sex != "女" {
+		apputils.Throw(c, errhandle.SexError)
+		return
+	}
+	if req.SchoolCode == "" || req.UserSchoollD == "" {
+		apputils.Throw(c, errhandle.SchoolError)
+		return
+	}
+	if !apputils.IsValidPassword(req.Password) {
+		apputils.Throw(c, errhandle.PasswordTooShort)
+		return
+	}
+
+	hashed, _ := bcrypt.GenerateFromPassword(
+		[]byte(req.Password),
+		bcrypt.DefaultCost,
+	)
+	var found model.User
+	col := t.DB.Table("users").FirstOrCreate(&found, model.User{
+		ID:           snowflake.ID(),
+		Role:         "student",
+		SchoolCode:   req.SchoolCode,
+		UserSchoollD: req.UserSchoollD,
+		Name:         req.Name,
+		RealName:     req.RealName,
+		Sex:          req.Sex,
+		Class:        req.Class,
+		Password:     string(hashed),
+		Email:        req.Email,
+	})
+	// this shouldn't happen
+	if col.RowsAffected == 0 {
+		apputils.Throw(c, errhandle.InnerError)
+		return
+	}
+
+	apputils.OK[any](c, nil)
 }
 
-func (t *Admin) RegistserTeacher(c *gin.Context) {
+// 注册教师 godoc
+// @Summary 注册教师
+// @Schemes
+// @Description 注册教师
+// @Tags example
+// @Accept json
+// @Produce json
+// @Param   token     header    string  true   "登录返回的Token"
+// @Param   name     query     string  false  "新用户用户名"
+// @Param   email     query    string  false  "新用户邮箱"  Format(email)
+// @Param   realName     query    string  false  "新用户真实姓名"
+// @Param   sex     query    string  false  "新用户性别"
+// @Success 200 {object} model.CommonResponse[any]
+// @Failure 400  {object} model.CommonResponse[any]
+// @Router /authrequired/admin/teacher/new [post]
+func (t *Admin) RegisterTeacher(c *gin.Context) {
+	b, err := c.GetRawData()
+	if err != nil {
+		apputils.ThrowError(c, err)
+		return
+	}
+	var req model.RegisterUserRequest
+	json.Unmarshal(b, &req)
 
+	if _, err := mail.ParseAddress(req.Email); err != nil {
+		apputils.Throw(c, errhandle.EmailFormatError)
+		return
+	}
+	if req.Sex != "男" && req.Sex != "女" {
+		apputils.Throw(c, errhandle.SexError)
+		return
+	}
+	if !apputils.IsValidPassword(req.Password) {
+		apputils.Throw(c, errhandle.PasswordTooShort)
+		return
+	}
+
+	hashed, _ := bcrypt.GenerateFromPassword(
+		[]byte(req.Password),
+		bcrypt.DefaultCost,
+	)
+	var found model.User
+	col := t.DB.Table("users").FirstOrCreate(&found, model.User{
+		ID:           snowflake.ID(),
+		Role:         "student",
+		SchoolCode:   req.SchoolCode,
+		UserSchoollD: req.UserSchoollD,
+		Name:         req.Name,
+		RealName:     req.RealName,
+		Sex:          req.Sex,
+		Class:        req.Class,
+		Password:     string(hashed),
+		Email:        req.Email,
+	})
+	// this shouldn't happen
+	if col.RowsAffected == 0 {
+		apputils.Throw(c, errhandle.InnerError)
+		return
+	}
+
+	apputils.OK[any](c, nil)
+}
+
+// 注册管理员 godoc
+// @Summary 注册管理员
+// @Schemes
+// @Description 注册管理员
+// @Tags example
+// @Accept json
+// @Produce json
+// @Param   token     header    string  true   "登录返回的Token"
+// @Param   name     query     string  false  "新用户用户名"
+// @Param   email     query    string  false  "新用户邮箱"  Format(email)
+// @Param   realName     query    string  false  "新用户真实姓名"
+// @Param   sex     query    string  false  "新用户性别"
+// @Success 200 {object} model.CommonResponse[any]
+// @Failure 400  {object} model.CommonResponse[any]
+// @Router /authrequired/admin/admin/new [post]
+func (t *Admin) RegisterAdmin(c *gin.Context) {
+	b, err := c.GetRawData()
+	if err != nil {
+		apputils.ThrowError(c, err)
+		return
+	}
+	var req model.RegisterUserRequest
+	json.Unmarshal(b, &req)
+
+	if _, err := mail.ParseAddress(req.Email); err != nil {
+		apputils.Throw(c, errhandle.EmailFormatError)
+		return
+	}
+	if req.Sex != "男" && req.Sex != "女" {
+		apputils.Throw(c, errhandle.SexError)
+		return
+	}
+	if !apputils.IsValidPassword(req.Password) {
+		apputils.Throw(c, errhandle.PasswordTooShort)
+		return
+	}
+
+	hashed, _ := bcrypt.GenerateFromPassword(
+		[]byte(req.Password),
+		bcrypt.DefaultCost,
+	)
+	var found model.User
+	col := t.DB.Table("users").FirstOrCreate(&found, model.User{
+		ID:           snowflake.ID(),
+		Role:         "student",
+		SchoolCode:   req.SchoolCode,
+		UserSchoollD: req.UserSchoollD,
+		Name:         req.Name,
+		RealName:     req.RealName,
+		Sex:          req.Sex,
+		Class:        req.Class,
+		Password:     string(hashed),
+		Email:        req.Email,
+	})
+	// this shouldn't happen
+	if col.RowsAffected == 0 {
+		apputils.Throw(c, errhandle.InnerError)
+		return
+	}
+
+	apputils.OK[any](c, nil)
 }
