@@ -169,7 +169,6 @@ func (t *Admin) GetStudent(c *gin.Context) {
 // @Tags example
 // @Accept json
 // @Produce json
-// @Param   action    path     string  false  "查询过滤器，如果没有默认查询所以信息"
 // @Param   token     header    string  true   "登录返回的Token"
 // @Param   queryemail     query     string  false  "需要查询的学生邮箱" Format(email)
 // @Param   id     query     string  false  "需要查询学生ID"
@@ -215,7 +214,6 @@ func (t *Admin) ModifyStudent(c *gin.Context) {
 // @Tags example
 // @Accept json
 // @Produce json
-// @Param   action    path     string  false  "查询过滤器，如果没有默认查询所以信息"
 // @Param   token     header    string  true   "登录返回的Token"
 // @Param   queryemail     query     string  false  "需要查询的学生邮箱" Format(email)
 // @Param   id     query     string  false  "需要查询学生ID"
@@ -261,7 +259,6 @@ func (t *Admin) ModifyTeacher(c *gin.Context) {
 // @Tags example
 // @Accept json
 // @Produce json
-// @Param   action    path     string  false  "查询过滤器，如果没有默认查询所以信息"
 // @Param   token     header    string  true   "登录返回的Token"
 // @Param   queryemail     query     string  false  "需要查询的学生邮箱" Format(email)
 // @Param   id     query     string  false  "需要查询学生ID"
@@ -307,7 +304,6 @@ func (t *Admin) ModifyAdmin(c *gin.Context) {
 // @Tags example
 // @Accept json
 // @Produce json
-// @Param   action    path     string  false  "查询过滤器，如果没有默认查询所以信息"
 // @Param   token     header    string  true   "登录返回的Token"
 // @Param   queryemail     query     string  false  "需要查询的学生邮箱" Format(email)
 // @Param   id     query     string  false  "需要查询学生ID"
@@ -357,7 +353,6 @@ func (t *Admin) ModifyTeacherPassword(c *gin.Context) {
 // @Tags example
 // @Accept json
 // @Produce json
-// @Param   action    path     string  false  "查询过滤器，如果没有默认查询所以信息"
 // @Param   token     header    string  true   "登录返回的Token"
 // @Param   queryemail     query     string  false  "需要查询的学生邮箱" Format(email)
 // @Param   id     query     string  false  "需要查询学生ID"
@@ -407,7 +402,6 @@ func (t *Admin) ModifyStudentPassword(c *gin.Context) {
 // @Tags example
 // @Accept json
 // @Produce json
-// @Param   action    path     string  false  "查询过滤器，如果没有默认查询所以信息"
 // @Param   token     header    string  true   "登录返回的Token"
 // @Param   queryemail     query     string  false  "需要查询的学生邮箱" Format(email)
 // @Param   id     query     string  false  "需要查询学生ID"
@@ -456,11 +450,10 @@ func (t *Admin) ModifyAdminPassword(c *gin.Context) {
 // @Tags example
 // @Accept json
 // @Produce json
-// @Param   action    path     string  false  "查询过滤器，如果没有默认查询所以信息"
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   queryemail     query     string  false  "需要查询的学生邮箱" Format(email)
-// @Param   id     query     string  false  "需要查询学生ID"
-// @Param   name     query     string  false  "需要查询学生用户名"
+// @Param   queryemail     query     string  false  "需要删除的邮箱" Format(email)
+// @Param   id     query     string  false  "需要删除ID"
+// @Param   name     query     string  false  "需要删除用户名"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/admin/teacher [delete]
@@ -494,11 +487,10 @@ func (t *Admin) DeleteTeacher(c *gin.Context) {
 // @Tags example
 // @Accept json
 // @Produce json
-// @Param   action    path     string  false  "查询过滤器，如果没有默认查询所以信息"
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   queryemail     query     string  false  "需要查询的学生邮箱" Format(email)
-// @Param   id     query     string  false  "需要查询学生ID"
-// @Param   name     query     string  false  "需要查询学生用户名"
+// @Param   queryemail     query     string  false  "需要查询的邮箱" Format(email)
+// @Param   id     query     string  false  "需要查询ID"
+// @Param   name     query     string  false  "需要查询用户名"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/admin/student [delete]
@@ -532,11 +524,10 @@ func (t *Admin) DeleteStudent(c *gin.Context) {
 // @Tags example
 // @Accept json
 // @Produce json
-// @Param   action    path     string  false  "查询过滤器，如果没有默认查询所以信息"
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   queryemail     query     string  false  "需要查询的学生邮箱" Format(email)
-// @Param   id     query     string  false  "需要查询学生ID"
-// @Param   name     query     string  false  "需要查询学生用户名"
+// @Param   queryemail     query     string  false  "需要查询的邮箱" Format(email)
+// @Param   id     query     string  false  "需要查询ID"
+// @Param   name     query     string  false  "需要查询用户名"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/admin/admin [delete]
