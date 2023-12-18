@@ -93,25 +93,21 @@ paths:
       - application/json
       description: 删除指定管理员
       parameters:
-      - description: 查询过滤器，如果没有默认查询所以信息
-        in: path
-        name: action
-        type: string
       - description: 登录返回的Token
         in: header
         name: token
         required: true
         type: string
-      - description: 需要查询的学生邮箱
+      - description: 需要查询的邮箱
         format: email
         in: query
         name: queryemail
         type: string
-      - description: 需要查询学生ID
+      - description: 需要查询ID
         in: query
         name: id
         type: string
-      - description: 需要查询学生用户名
+      - description: 需要查询用户名
         in: query
         name: name
         type: string
@@ -134,10 +130,6 @@ paths:
       - application/json
       description: 修改指定管理员信息
       parameters:
-      - description: 查询过滤器，如果没有默认查询所以信息
-        in: path
-        name: action
-        type: string
       - description: 登录返回的Token
         in: header
         name: token
@@ -197,10 +189,6 @@ paths:
       - application/json
       description: 修改指定管理员密码
       parameters:
-      - description: 查询过滤器，如果没有默认查询所以信息
-        in: path
-        name: action
-        type: string
       - description: 登录返回的Token
         in: header
         name: token
@@ -239,25 +227,21 @@ paths:
       - application/json
       description: 删除指定学生
       parameters:
-      - description: 查询过滤器，如果没有默认查询所以信息
-        in: path
-        name: action
-        type: string
       - description: 登录返回的Token
         in: header
         name: token
         required: true
         type: string
-      - description: 需要查询的学生邮箱
+      - description: 需要查询的邮箱
         format: email
         in: query
         name: queryemail
         type: string
-      - description: 需要查询学生ID
+      - description: 需要查询ID
         in: query
         name: id
         type: string
-      - description: 需要查询学生用户名
+      - description: 需要查询用户名
         in: query
         name: name
         type: string
@@ -280,10 +264,6 @@ paths:
       - application/json
       description: 修改指定学生信息
       parameters:
-      - description: 查询过滤器，如果没有默认查询所以信息
-        in: path
-        name: action
-        type: string
       - description: 登录返回的Token
         in: header
         name: token
@@ -385,10 +365,6 @@ paths:
       - application/json
       description: 修改指定学生密码
       parameters:
-      - description: 查询过滤器，如果没有默认查询所以信息
-        in: path
-        name: action
-        type: string
       - description: 登录返回的Token
         in: header
         name: token
@@ -460,25 +436,21 @@ paths:
       - application/json
       description: 删除指定教师
       parameters:
-      - description: 查询过滤器，如果没有默认查询所以信息
-        in: path
-        name: action
-        type: string
       - description: 登录返回的Token
         in: header
         name: token
         required: true
         type: string
-      - description: 需要查询的学生邮箱
+      - description: 需要删除的邮箱
         format: email
         in: query
         name: queryemail
         type: string
-      - description: 需要查询学生ID
+      - description: 需要删除ID
         in: query
         name: id
         type: string
-      - description: 需要查询学生用户名
+      - description: 需要删除用户名
         in: query
         name: name
         type: string
@@ -501,10 +473,6 @@ paths:
       - application/json
       description: 修改指定教师学生信息
       parameters:
-      - description: 查询过滤器，如果没有默认查询所以信息
-        in: path
-        name: action
-        type: string
       - description: 登录返回的Token
         in: header
         name: token
@@ -606,10 +574,6 @@ paths:
       - application/json
       description: 修改指定教师密码
       parameters:
-      - description: 查询过滤器，如果没有默认查询所以信息
-        in: path
-        name: action
-        type: string
       - description: 登录返回的Token
         in: header
         name: token

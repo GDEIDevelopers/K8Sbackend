@@ -31,12 +31,6 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
-                    {
-                        "type": "string",
                         "description": "登录返回的Token",
                         "name": "token",
                         "in": "header",
@@ -45,19 +39,19 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "format": "email",
-                        "description": "需要查询的学生邮箱",
+                        "description": "需要查询的邮箱",
                         "name": "queryemail",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "需要查询学生ID",
+                        "description": "需要查询ID",
                         "name": "id",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "需要查询学生用户名",
+                        "description": "需要查询用户名",
                         "name": "name",
                         "in": "query"
                     }
@@ -90,12 +84,6 @@ const docTemplate = `{
                 ],
                 "summary": "修改指定管理员信息",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
                     {
                         "type": "string",
                         "description": "登录返回的Token",
@@ -186,12 +174,6 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
-                    {
-                        "type": "string",
                         "description": "登录返回的Token",
                         "name": "token",
                         "in": "header",
@@ -249,12 +231,6 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
-                    {
-                        "type": "string",
                         "description": "登录返回的Token",
                         "name": "token",
                         "in": "header",
@@ -263,19 +239,19 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "format": "email",
-                        "description": "需要查询的学生邮箱",
+                        "description": "需要查询的邮箱",
                         "name": "queryemail",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "需要查询学生ID",
+                        "description": "需要查询ID",
                         "name": "id",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "需要查询学生用户名",
+                        "description": "需要查询用户名",
                         "name": "name",
                         "in": "query"
                     }
@@ -308,12 +284,6 @@ const docTemplate = `{
                 ],
                 "summary": "修改指定学生信息",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
                     {
                         "type": "string",
                         "description": "登录返回的Token",
@@ -402,12 +372,6 @@ const docTemplate = `{
                 ],
                 "summary": "修改指定学生密码",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
                     {
                         "type": "string",
                         "description": "登录返回的Token",
@@ -580,12 +544,6 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
-                    {
-                        "type": "string",
                         "description": "登录返回的Token",
                         "name": "token",
                         "in": "header",
@@ -594,19 +552,19 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "format": "email",
-                        "description": "需要查询的学生邮箱",
+                        "description": "需要删除的邮箱",
                         "name": "queryemail",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "需要查询学生ID",
+                        "description": "需要删除ID",
                         "name": "id",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "需要查询学生用户名",
+                        "description": "需要删除用户名",
                         "name": "name",
                         "in": "query"
                     }
@@ -639,12 +597,6 @@ const docTemplate = `{
                 ],
                 "summary": "修改指定教师学生信息",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
                     {
                         "type": "string",
                         "description": "登录返回的Token",
@@ -733,12 +685,6 @@ const docTemplate = `{
                 ],
                 "summary": "修改指定教师密码",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
                     {
                         "type": "string",
                         "description": "登录返回的Token",
