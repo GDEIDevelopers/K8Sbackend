@@ -5,7 +5,7 @@ import (
 )
 
 type CommonResponse[T any] struct {
-	Data   T                 `json:"data"`
+	Data   T                 `json:"data,omitempty"`
 	Status errhandle.ErrCode `json:"status"`
 	Reason string            `json:"reason"`
 }
@@ -14,13 +14,13 @@ type TokenResponse struct {
 	AccessToken  string `json:"token"`
 	RefreshToken string `json:"refreshtoken"`
 	Scope        string `json:"scope"`
-	ExpiredAt    int64
+	ExpiredAt    int64  `json:"expiredAt"`
 }
 
 type UserInfo struct {
 	UserID int64  `json:"userid"`
 	Name   string `json:"name"`
-	Role   string
+	Role   string `json:"role"`
 }
 
 type GetUserResponse struct {

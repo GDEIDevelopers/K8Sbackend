@@ -27,6 +27,17 @@ definitions:
       status:
         $ref: '#/definitions/errhandle.ErrCode'
     type: object
+  model.CommonResponse-array_model_GetUserResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.GetUserResponse'
+        type: array
+      reason:
+        type: string
+      status:
+        $ref: '#/definitions/errhandle.ErrCode'
+    type: object
   model.CommonResponse-model_GetUserResponse:
     properties:
       data:
@@ -76,87 +87,137 @@ definitions:
 info:
   contact: {}
 paths:
-  /login:
-    post:
+  /authrequired/admin/admin:
+    delete:
       consumes:
       - application/json
-      description: 登录
+      description: 删除指定管理员
       parameters:
-      - description: 密码
-        in: query
-        name: password
+      - description: 查询过滤器，如果没有默认查询所以信息
+        in: path
+        name: action
+        type: string
+      - description: 登录返回的Token
+        in: header
+        name: token
         required: true
         type: string
-      - description: 用户ID
+      - description: 需要查询的学生邮箱
+        format: email
         in: query
-        name: userid
-        type: integer
-      - description: 用户名
+        name: queryemail
+        type: string
+      - description: 需要查询学生ID
+        in: query
+        name: id
+        type: string
+      - description: 需要查询学生用户名
         in: query
         name: name
         type: string
-      - description: 用户邮箱
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 删除指定管理员
+      tags:
+      - example
+    patch:
+      consumes:
+      - application/json
+      description: 修改指定管理员信息
+      parameters:
+      - description: 查询过滤器，如果没有默认查询所以信息
+        in: path
+        name: action
+        type: string
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 需要查询的学生邮箱
+        format: email
+        in: query
+        name: queryemail
+        type: string
+      - description: 需要查询学生ID
+        in: query
+        name: id
+        type: string
+      - description: 需要查询学生用户名
+        in: query
+        name: name
+        type: string
+      - description: 修改邮箱
+        format: email
         in: query
         name: email
         type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/model.CommonResponse-model_TokenResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/model.CommonResponse-any'
-      summary: 登录
-      tags:
-      - example
-  /refresh:
-    post:
-      consumes:
-      - application/json
-      description: 刷新登录令牌
-      parameters:
-      - description: 用户Refresh Token
-        in: header
-        name: refreshToken
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/model.CommonResponse-model_TokenResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/model.CommonResponse-any'
-      summary: 刷新登录令牌
-      tags:
-      - example
-  /register:
-    post:
-      consumes:
-      - application/json
-      description: 添加/注册一个学生
-      parameters:
-      - description: 登录返回的Token
+      - description: 修改真实姓名
         in: query
+        name: realName
+        type: string
+      - description: 修改学校ID
+        in: query
+        name: userSchoollD
+        type: string
+      - description: 修改学校代码
+        in: query
+        name: schoolCode
+        type: string
+      - description: 修改班级
+        in: query
+        name: class
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 修改指定管理员信息
+      tags:
+      - example
+  /authrequired/admin/admin/password:
+    patch:
+      consumes:
+      - application/json
+      description: 修改指定管理员密码
+      parameters:
+      - description: 查询过滤器，如果没有默认查询所以信息
+        in: path
+        name: action
+        type: string
+      - description: 登录返回的Token
+        in: header
         name: token
         required: true
         type: string
-      - description: 登录返回的Token
+      - description: 需要查询的学生邮箱
+        format: email
+        in: query
+        name: queryemail
+        type: string
+      - description: 需要查询学生ID
+        in: query
+        name: id
+        type: string
+      - description: 需要查询学生用户名
         in: query
         name: name
-        required: true
-        type: string
-      - description: 登录返回的Token
-        in: query
-        name: token
-        required: true
         type: string
       produces:
       - application/json
@@ -169,10 +230,452 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/model.CommonResponse-any'
-      summary: 添加/注册一个学生
+      summary: 修改指定管理员密码
       tags:
       - example
-  /student/{action}:
+  /authrequired/admin/student:
+    delete:
+      consumes:
+      - application/json
+      description: 删除指定学生
+      parameters:
+      - description: 查询过滤器，如果没有默认查询所以信息
+        in: path
+        name: action
+        type: string
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 需要查询的学生邮箱
+        format: email
+        in: query
+        name: queryemail
+        type: string
+      - description: 需要查询学生ID
+        in: query
+        name: id
+        type: string
+      - description: 需要查询学生用户名
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 删除指定学生
+      tags:
+      - example
+    patch:
+      consumes:
+      - application/json
+      description: 修改指定学生信息
+      parameters:
+      - description: 查询过滤器，如果没有默认查询所以信息
+        in: path
+        name: action
+        type: string
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 需要查询的学生邮箱
+        format: email
+        in: query
+        name: queryemail
+        type: string
+      - description: 需要查询学生ID
+        in: query
+        name: id
+        type: string
+      - description: 需要查询学生用户名
+        in: query
+        name: name
+        type: string
+      - description: 修改邮箱
+        format: email
+        in: query
+        name: email
+        type: string
+      - description: 修改真实姓名
+        in: query
+        name: realName
+        type: string
+      - description: 修改学校ID
+        in: query
+        name: userSchoollD
+        type: string
+      - description: 修改学校代码
+        in: query
+        name: schoolCode
+        type: string
+      - description: 修改班级
+        in: query
+        name: class
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 修改指定学生信息
+      tags:
+      - example
+  /authrequired/admin/student/{action}:
+    get:
+      consumes:
+      - application/json
+      description: 获取指定学生信息
+      parameters:
+      - description: 查询过滤器，如果没有默认查询所以信息
+        in: path
+        name: action
+        type: string
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 需要查询的学生邮箱
+        format: email
+        in: query
+        name: queryemail
+        type: string
+      - description: 需要查询学生ID
+        in: query
+        name: id
+        type: string
+      - description: 需要查询学生用户名
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-model_GetUserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 获取指定学生信息
+      tags:
+      - example
+  /authrequired/admin/student/password:
+    patch:
+      consumes:
+      - application/json
+      description: 修改指定学生密码
+      parameters:
+      - description: 查询过滤器，如果没有默认查询所以信息
+        in: path
+        name: action
+        type: string
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 需要查询的学生邮箱
+        format: email
+        in: query
+        name: queryemail
+        type: string
+      - description: 需要查询学生ID
+        in: query
+        name: id
+        type: string
+      - description: 需要查询学生用户名
+        in: query
+        name: name
+        type: string
+      - description: 新密码
+        in: query
+        name: password
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 修改指定学生密码
+      tags:
+      - example
+  /authrequired/admin/students/{action}:
+    get:
+      consumes:
+      - application/json
+      description: 获取所有学生信息
+      parameters:
+      - description: 查询过滤器，如果没有默认查询所以信息
+        in: path
+        name: action
+        type: string
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-model_GetUserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 获取所有学生信息
+      tags:
+      - example
+  /authrequired/admin/teacher:
+    delete:
+      consumes:
+      - application/json
+      description: 删除指定教师
+      parameters:
+      - description: 查询过滤器，如果没有默认查询所以信息
+        in: path
+        name: action
+        type: string
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 需要查询的学生邮箱
+        format: email
+        in: query
+        name: queryemail
+        type: string
+      - description: 需要查询学生ID
+        in: query
+        name: id
+        type: string
+      - description: 需要查询学生用户名
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 删除指定教师
+      tags:
+      - example
+    patch:
+      consumes:
+      - application/json
+      description: 修改指定教师学生信息
+      parameters:
+      - description: 查询过滤器，如果没有默认查询所以信息
+        in: path
+        name: action
+        type: string
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 需要查询的学生邮箱
+        format: email
+        in: query
+        name: queryemail
+        type: string
+      - description: 需要查询学生ID
+        in: query
+        name: id
+        type: string
+      - description: 需要查询学生用户名
+        in: query
+        name: name
+        type: string
+      - description: 修改邮箱
+        format: email
+        in: query
+        name: email
+        type: string
+      - description: 修改真实姓名
+        in: query
+        name: realName
+        type: string
+      - description: 修改学校ID
+        in: query
+        name: userSchoollD
+        type: string
+      - description: 修改学校代码
+        in: query
+        name: schoolCode
+        type: string
+      - description: 修改班级
+        in: query
+        name: class
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 修改指定教师学生信息
+      tags:
+      - example
+  /authrequired/admin/teacher/{action}:
+    get:
+      consumes:
+      - application/json
+      description: 获取指定教师信息
+      parameters:
+      - description: 查询过滤器，如果没有默认查询所以信息
+        in: path
+        name: action
+        type: string
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 需要查询的教师邮箱
+        format: email
+        in: query
+        name: queryemail
+        type: string
+      - description: 需要查询教师ID
+        in: query
+        name: id
+        type: string
+      - description: 需要查询教师用户名
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-model_GetUserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 获取指定教师信息
+      tags:
+      - example
+  /authrequired/admin/teacher/password:
+    patch:
+      consumes:
+      - application/json
+      description: 修改指定教师密码
+      parameters:
+      - description: 查询过滤器，如果没有默认查询所以信息
+        in: path
+        name: action
+        type: string
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 需要查询的学生邮箱
+        format: email
+        in: query
+        name: queryemail
+        type: string
+      - description: 需要查询学生ID
+        in: query
+        name: id
+        type: string
+      - description: 需要查询学生用户名
+        in: query
+        name: name
+        type: string
+      - description: 新密码
+        in: query
+        name: password
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 修改指定教师密码
+      tags:
+      - example
+  /authrequired/admin/teachers/{action}:
+    get:
+      consumes:
+      - application/json
+      description: 获取所有教师信息
+      parameters:
+      - description: 查询过滤器，如果没有默认查询所以信息
+        in: path
+        name: action
+        type: string
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-array_model_GetUserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 获取所有教师信息
+      tags:
+      - example
+  /authrequired/student/{action}:
     get:
       consumes:
       - application/json
@@ -255,14 +758,63 @@ paths:
       summary: 修改学生相关信息
       tags:
       - example
-  /teacher/{action}:
+  /authrequired/teacher:
+    patch:
+      consumes:
+      - application/json
+      description: 修改教师相关信息
+      parameters:
+      - description: 查询过滤器，如果没有默认查询所以信息
+        in: path
+        name: action
+        type: string
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 修改邮箱
+        format: email
+        in: query
+        name: email
+        type: string
+      - description: 修改真实姓名
+        in: query
+        name: realName
+        type: string
+      - description: 修改学校ID
+        in: query
+        name: userSchoollD
+        type: string
+      - description: 修改学校代码
+        in: query
+        name: schoolCode
+        type: string
+      - description: 修改班级
+        in: query
+        name: class
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 修改教师相关信息
+      tags:
+      - example
+  /authrequired/teacher/{action}:
     get:
       consumes:
       - application/json
       description: 获取教师相关信息
       parameters:
       - description: 查询过滤器，如果没有默认查询所以信息
-        format: email
         in: path
         name: action
         type: string
@@ -285,10 +837,11 @@ paths:
       summary: 获取教师相关信息
       tags:
       - example
+  /authrequired/teacher/password:
     patch:
       consumes:
       - application/json
-      description: 修改教师相关信息
+      description: 修改教师密码
       parameters:
       - description: 查询过滤器，如果没有默认查询所以信息
         format: email
@@ -300,21 +853,121 @@ paths:
         name: token
         required: true
         type: string
+      - description: 需要修改的密码
+        in: query
+        name: password
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.CommonResponse-model_GetUserResponse'
+            $ref: '#/definitions/model.CommonResponse-any'
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/model.CommonResponse-any'
-      summary: 修改教师相关信息
+      summary: 修改教师密码
       tags:
       - example
-  /teacher/student/new:
+  /authrequired/teacher/student/new:
+    post:
+      consumes:
+      - application/json
+      description: 添加/注册一个学生
+      parameters:
+      - description: 登录返回的Token
+        in: query
+        name: token
+        required: true
+        type: string
+      - description: 登录返回的Token
+        in: query
+        name: name
+        required: true
+        type: string
+      - description: 登录返回的Token
+        in: query
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 添加/注册一个学生
+      tags:
+      - example
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: 登录
+      parameters:
+      - description: 密码
+        in: query
+        name: password
+        required: true
+        type: string
+      - description: 用户ID
+        in: query
+        name: userid
+        type: integer
+      - description: 用户名
+        in: query
+        name: name
+        type: string
+      - description: 用户邮箱
+        in: query
+        name: email
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-model_TokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 登录
+      tags:
+      - example
+  /refresh:
+    post:
+      consumes:
+      - application/json
+      description: 刷新登录令牌
+      parameters:
+      - description: 用户Refresh Token
+        in: header
+        name: refreshToken
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-model_TokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 刷新登录令牌
+      tags:
+      - example
+  /register:
     post:
       consumes:
       - application/json

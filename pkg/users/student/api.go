@@ -22,7 +22,7 @@ import (
 // @Param   email     query    string  false  "用户邮箱"
 // @Success 200 {object} model.CommonResponse[model.GetUserResponse]
 // @Failure 400  {object} model.CommonResponse[any]
-// @Router /student/{action} [get]
+// @Router /authrequired/student/{action} [get]
 func (t *Student) Get(c *gin.Context) {
 	apputils.OK[model.GetUserResponse](c, model.GetUserResponse{})
 }
@@ -58,7 +58,7 @@ func (t *Student) RegisterStudent(c *gin.Context) {
 // @Param   email     query    string  false  "用户邮箱"
 // @Success 200 {object} model.CommonResponse[model.GetUserResponse]
 // @Failure 400  {object} model.CommonResponse[any]
-// @Router /student/{action} [patch]
+// @Router /authrequired/student/{action} [patch]
 func (t *Student) Modify(c *gin.Context) {
 
 }
