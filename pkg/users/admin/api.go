@@ -677,7 +677,7 @@ func (t *Admin) RegisterTeacher(c *gin.Context) {
 	var found model.User
 	col := t.DB.Table("users").FirstOrCreate(&found, model.User{
 		ID:           snowflake.ID(),
-		Role:         "student",
+		Role:         "teacher",
 		SchoolCode:   req.SchoolCode,
 		UserSchoollD: req.UserSchoollD,
 		Name:         req.Name,
@@ -740,7 +740,7 @@ func (t *Admin) RegisterAdmin(c *gin.Context) {
 	var found model.User
 	col := t.DB.Table("users").FirstOrCreate(&found, model.User{
 		ID:           snowflake.ID(),
-		Role:         "student",
+		Role:         "admin",
 		SchoolCode:   req.SchoolCode,
 		UserSchoollD: req.UserSchoollD,
 		Name:         req.Name,
