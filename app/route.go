@@ -13,6 +13,8 @@ import (
 func (s *Server) dispatchRoute() {
 	docs.SwaggerInfo.BasePath = "/api"
 	e := gin.Default()
+	e.Use(s.UseCORS())
+
 	cmd := gin.Default()
 	cmd.POST("/admin/new", s.admin.RegisterAdmin)
 	cmd.POST("/teacher/new", s.admin.RegisterTeacher)
