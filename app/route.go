@@ -29,7 +29,8 @@ func (s *Server) dispatchRoute() {
 	teacher := requiredAuth.Group("/teacher")
 	teacher.POST("/student/new", s.teacher.RegisterStudent)
 	teacher.GET("/:action", s.teacher.Get)
-	teacher.PATCH("/:action", s.teacher.Modify)
+	teacher.PATCH("/password", s.teacher.Modify)
+	teacher.PATCH("/", s.teacher.Modify)
 
 	// student part
 	student := requiredAuth.Group("/student")
@@ -46,9 +47,16 @@ func (s *Server) dispatchRoute() {
 	admin.GET("/students/:action", s.admin.GetStudents)
 	admin.GET("/student/:action", s.admin.GetStudent)
 
-	admin.DELETE("/teacher")
-	admin.DELETE("/student")
+	admin.PATCH("/teacher/password", s.admin.ModifyTeacherPassword)
+	admin.PATCH("/student/password", s.admin.ModifyStudentPassword)
+	admin.PATCH("/admin/password", s.admin.ModifyAdminPassword)
+	admin.PATCH("/teacher", s.admin.ModifyTeacher)
+	admin.PATCH("/student", s.admin.ModifyStudent)
+	admin.PATCH("/admin", s.admin.ModifyAdmin)
 
+	admin.DELETE("/teacher", s.admin.DeleteTeacher)
+	admin.DELETE("/student", s.admin.DeleteStudent)
+	admin.DELETE("/admin", s.admin.DeleteAdmin)
 	s.setupHTTPServer(e)
 }
 

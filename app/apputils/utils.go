@@ -33,16 +33,16 @@ func OK[T any](c *gin.Context, data T) {
 	})
 }
 
-func BuildQuerySQL(tx *gorm.DB, query *model.QueryRequest) *gorm.DB {
+func BuildQuerySQL(tx *gorm.DB, query *model.QueryRequest, role ...string) *gorm.DB {
 	var where []string
 	var params []any
 	if query.UserID != 0 {
 		where = append(where, "id = ?")
 		params = append(params, query.UserID)
 	}
-	if query.Email != "" {
+	if query.QueryEmail != "" {
 		where = append(where, "email = ?")
-		params = append(params, query.Email)
+		params = append(params, query.QueryEmail)
 	}
 	if query.Name != "" {
 		where = append(where, "name = ?")
@@ -53,27 +53,19 @@ func BuildQuerySQL(tx *gorm.DB, query *model.QueryRequest) *gorm.DB {
 		return nil
 	}
 
-	return tx.Where(strings.Join(where, " OR "), params...)
-}
+	whereStatement := strings.Join(where, " OR ")
 
-func reset(p any) any {
-	var isPtr bool
-	v := reflect.ValueOf(p)
-	for v.Kind() == reflect.Ptr {
-		isPtr = true
-		v = v.Elem()
+	if len(role) > 0 {
+		whereStatement += " AND role = ?"
+		params = append(params, role[0])
 	}
-	if isPtr {
-		return reflect.New(v.Type()).Interface()
-
-	}
-
-	return reflect.Zero(v.Type()).Interface()
-
+	return tx.Where(whereStatement, params...)
 }
 
 func IgnoreStructCopy(to, from any, ignore string) {
-	copier.Copy(to, from)
+	copier.CopyWithOption(to, from, copier.Option{
+		IgnoreEmpty: true,
+	})
 
 	if ignore == "" {
 		return
@@ -84,6 +76,7 @@ func IgnoreStructCopy(to, from any, ignore string) {
 		current := elem.Field(i)
 		if elem.Type().Field(i).Name == ignoreLower {
 			current.Set(reflect.Zero(current.Type()))
+			break
 		}
 	}
 }

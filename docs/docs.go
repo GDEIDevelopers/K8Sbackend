@@ -15,6 +15,1232 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/authrequired/admin/admin": {
+            "delete": {
+                "description": "删除指定管理员",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "删除指定管理员",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "查询过滤器，如果没有默认查询所以信息",
+                        "name": "action",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "需要查询的学生邮箱",
+                        "name": "queryemail",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生用户名",
+                        "name": "name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "修改指定管理员信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "修改指定管理员信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "查询过滤器，如果没有默认查询所以信息",
+                        "name": "action",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "需要查询的学生邮箱",
+                        "name": "queryemail",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生用户名",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "修改邮箱",
+                        "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改真实姓名",
+                        "name": "realName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改学校ID",
+                        "name": "userSchoollD",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改学校代码",
+                        "name": "schoolCode",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改班级",
+                        "name": "class",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/admin/admin/password": {
+            "patch": {
+                "description": "修改指定管理员密码",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "修改指定管理员密码",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "查询过滤器，如果没有默认查询所以信息",
+                        "name": "action",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "需要查询的学生邮箱",
+                        "name": "queryemail",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生用户名",
+                        "name": "name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/admin/student": {
+            "delete": {
+                "description": "删除指定学生",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "删除指定学生",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "查询过滤器，如果没有默认查询所以信息",
+                        "name": "action",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "需要查询的学生邮箱",
+                        "name": "queryemail",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生用户名",
+                        "name": "name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "修改指定学生信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "修改指定学生信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "查询过滤器，如果没有默认查询所以信息",
+                        "name": "action",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "需要查询的学生邮箱",
+                        "name": "queryemail",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生用户名",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "修改邮箱",
+                        "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改真实姓名",
+                        "name": "realName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改学校ID",
+                        "name": "userSchoollD",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改学校代码",
+                        "name": "schoolCode",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改班级",
+                        "name": "class",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/admin/student/password": {
+            "patch": {
+                "description": "修改指定学生密码",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "修改指定学生密码",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "查询过滤器，如果没有默认查询所以信息",
+                        "name": "action",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "需要查询的学生邮箱",
+                        "name": "queryemail",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生用户名",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新密码",
+                        "name": "password",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/admin/student/{action}": {
+            "get": {
+                "description": "获取指定学生信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "获取指定学生信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "查询过滤器，如果没有默认查询所以信息",
+                        "name": "action",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "需要查询的学生邮箱",
+                        "name": "queryemail",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生用户名",
+                        "name": "name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-model_GetUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/admin/students/{action}": {
+            "get": {
+                "description": "获取所有学生信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "获取所有学生信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "查询过滤器，如果没有默认查询所以信息",
+                        "name": "action",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-model_GetUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/admin/teacher": {
+            "delete": {
+                "description": "删除指定教师",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "删除指定教师",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "查询过滤器，如果没有默认查询所以信息",
+                        "name": "action",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "需要查询的学生邮箱",
+                        "name": "queryemail",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生用户名",
+                        "name": "name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "修改指定教师学生信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "修改指定教师学生信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "查询过滤器，如果没有默认查询所以信息",
+                        "name": "action",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "需要查询的学生邮箱",
+                        "name": "queryemail",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生用户名",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "修改邮箱",
+                        "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改真实姓名",
+                        "name": "realName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改学校ID",
+                        "name": "userSchoollD",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改学校代码",
+                        "name": "schoolCode",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改班级",
+                        "name": "class",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/admin/teacher/password": {
+            "patch": {
+                "description": "修改指定教师密码",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "修改指定教师密码",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "查询过滤器，如果没有默认查询所以信息",
+                        "name": "action",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "需要查询的学生邮箱",
+                        "name": "queryemail",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生用户名",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新密码",
+                        "name": "password",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/admin/teacher/{action}": {
+            "get": {
+                "description": "获取指定教师信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "获取指定教师信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "查询过滤器，如果没有默认查询所以信息",
+                        "name": "action",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "需要查询的教师邮箱",
+                        "name": "queryemail",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询教师ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询教师用户名",
+                        "name": "name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-model_GetUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/admin/teachers/{action}": {
+            "get": {
+                "description": "获取所有教师信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "获取所有教师信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "查询过滤器，如果没有默认查询所以信息",
+                        "name": "action",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-array_model_GetUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/student/{action}": {
+            "get": {
+                "description": "获取学生相关信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "获取学生相关信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "查询过滤器，如果没有默认查询所以信息",
+                        "name": "action",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "用户ID",
+                        "name": "userid",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "用户名",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "用户邮箱",
+                        "name": "email",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-model_GetUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "修改学生相关信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "修改学生相关信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "查询过滤器，如果没有默认查询所以信息",
+                        "name": "action",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "用户ID",
+                        "name": "userid",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "用户名",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "用户邮箱",
+                        "name": "email",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-model_GetUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/teacher": {
+            "patch": {
+                "description": "修改教师相关信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "修改教师相关信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "查询过滤器，如果没有默认查询所以信息",
+                        "name": "action",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "修改邮箱",
+                        "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改真实姓名",
+                        "name": "realName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改学校ID",
+                        "name": "userSchoollD",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改学校代码",
+                        "name": "schoolCode",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改班级",
+                        "name": "class",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/teacher/password": {
+            "patch": {
+                "description": "修改教师密码",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "修改教师密码",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "查询过滤器，如果没有默认查询所以信息",
+                        "name": "action",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要修改的密码",
+                        "name": "password",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/teacher/student/new": {
+            "post": {
+                "description": "添加/注册一个学生",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "添加/注册一个学生",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "name",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/teacher/{action}": {
+            "get": {
+                "description": "获取教师相关信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "获取教师相关信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "查询过滤器，如果没有默认查询所以信息",
+                        "name": "action",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-model_GetUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "description": "登录",
@@ -159,270 +1385,6 @@ const docTemplate = `{
                     }
                 }
             }
-        },
-        "/student/{action}": {
-            "get": {
-                "description": "获取学生相关信息",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "example"
-                ],
-                "summary": "获取学生相关信息",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "format": "email",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
-                    {
-                        "type": "string",
-                        "description": "登录返回的Token",
-                        "name": "token",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "用户ID",
-                        "name": "userid",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "用户名",
-                        "name": "name",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "用户邮箱",
-                        "name": "email",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/model.CommonResponse-model_GetUserResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/model.CommonResponse-any"
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "description": "修改学生相关信息",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "example"
-                ],
-                "summary": "修改学生相关信息",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "format": "email",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
-                    {
-                        "type": "string",
-                        "description": "登录返回的Token",
-                        "name": "token",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "用户ID",
-                        "name": "userid",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "用户名",
-                        "name": "name",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "用户邮箱",
-                        "name": "email",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/model.CommonResponse-model_GetUserResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/model.CommonResponse-any"
-                        }
-                    }
-                }
-            }
-        },
-        "/teacher/student/new": {
-            "post": {
-                "description": "添加/注册一个学生",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "example"
-                ],
-                "summary": "添加/注册一个学生",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "登录返回的Token",
-                        "name": "token",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "登录返回的Token",
-                        "name": "name",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "登录返回的Token",
-                        "name": "token",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/model.CommonResponse-any"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/model.CommonResponse-any"
-                        }
-                    }
-                }
-            }
-        },
-        "/teacher/{action}": {
-            "get": {
-                "description": "获取教师相关信息",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "example"
-                ],
-                "summary": "获取教师相关信息",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "format": "email",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
-                    {
-                        "type": "string",
-                        "description": "登录返回的Token",
-                        "name": "token",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/model.CommonResponse-model_GetUserResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/model.CommonResponse-any"
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "description": "修改教师相关信息",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "example"
-                ],
-                "summary": "修改教师相关信息",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "format": "email",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
-                    {
-                        "type": "string",
-                        "description": "登录返回的Token",
-                        "name": "token",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/model.CommonResponse-model_GetUserResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/model.CommonResponse-any"
-                        }
-                    }
-                }
-            }
         }
     },
     "definitions": {
@@ -453,6 +1415,23 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "data": {},
+                "reason": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/errhandle.ErrCode"
+                }
+            }
+        },
+        "model.CommonResponse-array_model_GetUserResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.GetUserResponse"
+                    }
+                },
                 "reason": {
                     "type": "string"
                 },

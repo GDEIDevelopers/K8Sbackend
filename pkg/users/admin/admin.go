@@ -7,7 +7,7 @@ import (
 )
 
 type Admin struct {
-	db *apputils.ServerUtils
+	*apputils.ServerUtils
 }
 
 var _ io.Closer = &Admin{}
