@@ -850,17 +850,30 @@ paths:
         name: token
         required: true
         type: string
-      - description: 用户ID
-        in: query
-        name: userid
-        type: integer
-      - description: 用户名
-        in: query
-        name: name
-        type: string
-      - description: 用户邮箱
+      - description: 修改邮箱
+        format: email
         in: query
         name: email
+        type: string
+      - description: 修改真实姓名
+        in: query
+        name: realName
+        type: string
+      - description: 修改学校ID
+        in: query
+        name: userSchoollD
+        type: string
+      - description: 修改学校代码
+        in: query
+        name: schoolCode
+        type: string
+      - description: 修改班级
+        in: query
+        name: class
+        type: string
+      - description: 修改性别
+        in: query
+        name: sex
         type: string
       produces:
       - application/json

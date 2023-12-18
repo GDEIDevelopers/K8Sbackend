@@ -1127,21 +1127,40 @@
                         "required": true
                     },
                     {
-                        "type": "integer",
-                        "description": "用户ID",
-                        "name": "userid",
-                        "in": "query"
-                    },
-                    {
                         "type": "string",
-                        "description": "用户名",
-                        "name": "name",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "用户邮箱",
+                        "format": "email",
+                        "description": "修改邮箱",
                         "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改真实姓名",
+                        "name": "realName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改学校ID",
+                        "name": "userSchoollD",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改学校代码",
+                        "name": "schoolCode",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改班级",
+                        "name": "class",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改性别",
+                        "name": "sex",
                         "in": "query"
                     }
                 ],
