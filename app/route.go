@@ -13,6 +13,12 @@ import (
 func (s *Server) dispatchRoute() {
 	docs.SwaggerInfo.BasePath = "/api"
 	e := gin.Default()
+	e.Use(s.UseCORS())
+
+	cmd := gin.Default()
+	cmd.POST("/admin/new", s.admin.RegisterAdmin)
+	cmd.POST("/teacher/new", s.admin.RegisterTeacher)
+	cmd.POST("/student/new", s.admin.RegisterStudent)
 
 	e.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
@@ -39,8 +45,9 @@ func (s *Server) dispatchRoute() {
 	// admin part
 
 	admin := requiredAuth.Group("/admin")
-	admin.POST("/teacher/new", s.admin.RegistserTeacher)
-	admin.POST("/student/new", s.admin.RegistserStudent)
+	admin.POST("/teacher/new", s.admin.RegisterTeacher)
+	admin.POST("/student/new", s.admin.RegisterStudent)
+	admin.POST("/admin/new", s.admin.RegisterAdmin)
 
 	admin.GET("/teachers/:action", s.admin.GetTeachers)
 	admin.GET("/teacher/:action", s.admin.GetTeacher)
@@ -57,16 +64,22 @@ func (s *Server) dispatchRoute() {
 	admin.DELETE("/teacher", s.admin.DeleteTeacher)
 	admin.DELETE("/student", s.admin.DeleteStudent)
 	admin.DELETE("/admin", s.admin.DeleteAdmin)
-	s.setupHTTPServer(e)
+	s.setupHTTPServer(e, cmd)
 }
 
-func (s *Server) setupHTTPServer(e *gin.Engine) {
+func (s *Server) setupHTTPServer(e, cmd *gin.Engine) {
 	s.srv = &http.Server{
 		Addr:    s.Config.HTTPServerListen,
 		Handler: e,
 	}
 
+	cmdServer := &http.Server{
+		Addr:    "127.0.0.1:9999",
+		Handler: cmd,
+	}
+
 	go s.srv.ListenAndServe()
+	go cmdServer.ListenAndServe()
 
 	errhandle.Log.Info("HTTP Server Starts At %s", s.srv.Addr)
 }

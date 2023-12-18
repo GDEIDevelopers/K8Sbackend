@@ -9,6 +9,13 @@ definitions:
     - 5
     - 6
     - 7
+    - 8
+    - 9
+    - 10
+    - 11
+    - 12
+    - 13
+    - 14
     type: integer
     x-enum-varnames:
     - NoError
@@ -19,6 +26,13 @@ definitions:
     - UserNonExists
     - PasswordInvalid
     - PermissionDenied
+    - ClassError
+    - SexError
+    - NameExists
+    - EmailFormatError
+    - RealNameFormatError
+    - SchoolError
+    - PasswordTooShort
   model.CommonResponse-any:
     properties:
       data: {}
@@ -70,6 +84,8 @@ definitions:
         type: string
       schoolCode:
         type: string
+      sex:
+        type: string
       userSchoollD:
         type: string
     type: object
@@ -93,25 +109,21 @@ paths:
       - application/json
       description: 删除指定管理员
       parameters:
-      - description: 查询过滤器，如果没有默认查询所以信息
-        in: path
-        name: action
-        type: string
       - description: 登录返回的Token
         in: header
         name: token
         required: true
         type: string
-      - description: 需要查询的学生邮箱
+      - description: 需要查询的邮箱
         format: email
         in: query
         name: queryemail
         type: string
-      - description: 需要查询学生ID
+      - description: 需要查询ID
         in: query
         name: id
         type: string
-      - description: 需要查询学生用户名
+      - description: 需要查询用户名
         in: query
         name: name
         type: string
@@ -134,10 +146,6 @@ paths:
       - application/json
       description: 修改指定管理员信息
       parameters:
-      - description: 查询过滤器，如果没有默认查询所以信息
-        in: path
-        name: action
-        type: string
       - description: 登录返回的Token
         in: header
         name: token
@@ -177,6 +185,10 @@ paths:
         in: query
         name: class
         type: string
+      - description: 修改性别
+        in: query
+        name: sex
+        type: string
       produces:
       - application/json
       responses:
@@ -191,16 +203,54 @@ paths:
       summary: 修改指定管理员信息
       tags:
       - example
+  /authrequired/admin/admin/new:
+    post:
+      consumes:
+      - application/json
+      description: 注册管理员
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 新用户用户名
+        in: query
+        name: name
+        type: string
+      - description: 新用户邮箱
+        format: email
+        in: query
+        name: email
+        type: string
+      - description: 新用户真实姓名
+        in: query
+        name: realName
+        type: string
+      - description: 新用户性别
+        in: query
+        name: sex
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 注册管理员
+      tags:
+      - example
   /authrequired/admin/admin/password:
     patch:
       consumes:
       - application/json
       description: 修改指定管理员密码
       parameters:
-      - description: 查询过滤器，如果没有默认查询所以信息
-        in: path
-        name: action
-        type: string
       - description: 登录返回的Token
         in: header
         name: token
@@ -239,25 +289,21 @@ paths:
       - application/json
       description: 删除指定学生
       parameters:
-      - description: 查询过滤器，如果没有默认查询所以信息
-        in: path
-        name: action
-        type: string
       - description: 登录返回的Token
         in: header
         name: token
         required: true
         type: string
-      - description: 需要查询的学生邮箱
+      - description: 需要查询的邮箱
         format: email
         in: query
         name: queryemail
         type: string
-      - description: 需要查询学生ID
+      - description: 需要查询ID
         in: query
         name: id
         type: string
-      - description: 需要查询学生用户名
+      - description: 需要查询用户名
         in: query
         name: name
         type: string
@@ -280,10 +326,6 @@ paths:
       - application/json
       description: 修改指定学生信息
       parameters:
-      - description: 查询过滤器，如果没有默认查询所以信息
-        in: path
-        name: action
-        type: string
       - description: 登录返回的Token
         in: header
         name: token
@@ -322,6 +364,10 @@ paths:
       - description: 修改班级
         in: query
         name: class
+        type: string
+      - description: 修改性别
+        in: query
+        name: sex
         type: string
       produces:
       - application/json
@@ -379,16 +425,66 @@ paths:
       summary: 获取指定学生信息
       tags:
       - example
+  /authrequired/admin/student/new:
+    post:
+      consumes:
+      - application/json
+      description: 注册学生
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 新用户用户名
+        in: query
+        name: name
+        type: string
+      - description: 新用户邮箱
+        format: email
+        in: query
+        name: email
+        type: string
+      - description: 新用户真实姓名
+        in: query
+        name: realName
+        type: string
+      - description: 新用户学校ID
+        in: query
+        name: userSchoollD
+        type: string
+      - description: 新用户学校代码
+        in: query
+        name: schoolCode
+        type: string
+      - description: 新用户班级
+        in: query
+        name: class
+        type: string
+      - description: 新用户性别
+        in: query
+        name: sex
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 注册学生
+      tags:
+      - example
   /authrequired/admin/student/password:
     patch:
       consumes:
       - application/json
       description: 修改指定学生密码
       parameters:
-      - description: 查询过滤器，如果没有默认查询所以信息
-        in: path
-        name: action
-        type: string
       - description: 登录返回的Token
         in: header
         name: token
@@ -460,25 +556,21 @@ paths:
       - application/json
       description: 删除指定教师
       parameters:
-      - description: 查询过滤器，如果没有默认查询所以信息
-        in: path
-        name: action
-        type: string
       - description: 登录返回的Token
         in: header
         name: token
         required: true
         type: string
-      - description: 需要查询的学生邮箱
+      - description: 需要删除的邮箱
         format: email
         in: query
         name: queryemail
         type: string
-      - description: 需要查询学生ID
+      - description: 需要删除ID
         in: query
         name: id
         type: string
-      - description: 需要查询学生用户名
+      - description: 需要删除用户名
         in: query
         name: name
         type: string
@@ -501,10 +593,6 @@ paths:
       - application/json
       description: 修改指定教师学生信息
       parameters:
-      - description: 查询过滤器，如果没有默认查询所以信息
-        in: path
-        name: action
-        type: string
       - description: 登录返回的Token
         in: header
         name: token
@@ -543,6 +631,10 @@ paths:
       - description: 修改班级
         in: query
         name: class
+        type: string
+      - description: 修改性别
+        in: query
+        name: sex
         type: string
       produces:
       - application/json
@@ -600,16 +692,54 @@ paths:
       summary: 获取指定教师信息
       tags:
       - example
+  /authrequired/admin/teacher/new:
+    post:
+      consumes:
+      - application/json
+      description: 注册教师
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 新用户用户名
+        in: query
+        name: name
+        type: string
+      - description: 新用户邮箱
+        format: email
+        in: query
+        name: email
+        type: string
+      - description: 新用户真实姓名
+        in: query
+        name: realName
+        type: string
+      - description: 新用户性别
+        in: query
+        name: sex
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 注册教师
+      tags:
+      - example
   /authrequired/admin/teacher/password:
     patch:
       consumes:
       - application/json
       description: 修改指定教师密码
       parameters:
-      - description: 查询过滤器，如果没有默认查询所以信息
-        in: path
-        name: action
-        type: string
       - description: 登录返回的Token
         in: header
         name: token
@@ -794,6 +924,10 @@ paths:
         in: query
         name: class
         type: string
+      - description: 修改性别
+        in: query
+        name: sex
+        type: string
       produces:
       - application/json
       responses:
@@ -882,15 +1016,34 @@ paths:
         name: token
         required: true
         type: string
-      - description: 登录返回的Token
+      - description: 新用户用户名
         in: query
         name: name
-        required: true
         type: string
-      - description: 登录返回的Token
+      - description: 新用户邮箱
+        format: email
         in: query
-        name: token
-        required: true
+        name: email
+        type: string
+      - description: 新用户真实姓名
+        in: query
+        name: realName
+        type: string
+      - description: 新用户学校ID
+        in: query
+        name: userSchoollD
+        type: string
+      - description: 新用户学校代码
+        in: query
+        name: schoolCode
+        type: string
+      - description: 新用户班级
+        in: query
+        name: class
+        type: string
+      - description: 新用户性别
+        in: query
+        name: sex
         type: string
       produces:
       - application/json

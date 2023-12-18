@@ -31,12 +31,6 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
-                    {
-                        "type": "string",
                         "description": "登录返回的Token",
                         "name": "token",
                         "in": "header",
@@ -45,19 +39,19 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "format": "email",
-                        "description": "需要查询的学生邮箱",
+                        "description": "需要查询的邮箱",
                         "name": "queryemail",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "需要查询学生ID",
+                        "description": "需要查询ID",
                         "name": "id",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "需要查询学生用户名",
+                        "description": "需要查询用户名",
                         "name": "name",
                         "in": "query"
                     }
@@ -90,12 +84,6 @@ const docTemplate = `{
                 ],
                 "summary": "修改指定管理员信息",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
                     {
                         "type": "string",
                         "description": "登录返回的Token",
@@ -152,6 +140,75 @@ const docTemplate = `{
                         "description": "修改班级",
                         "name": "class",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改性别",
+                        "name": "sex",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/admin/admin/new": {
+            "post": {
+                "description": "注册管理员",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "注册管理员",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户用户名",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "新用户邮箱",
+                        "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户真实姓名",
+                        "name": "realName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户性别",
+                        "name": "sex",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -184,12 +241,6 @@ const docTemplate = `{
                 ],
                 "summary": "修改指定管理员密码",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
                     {
                         "type": "string",
                         "description": "登录返回的Token",
@@ -249,12 +300,6 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
-                    {
-                        "type": "string",
                         "description": "登录返回的Token",
                         "name": "token",
                         "in": "header",
@@ -263,19 +308,19 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "format": "email",
-                        "description": "需要查询的学生邮箱",
+                        "description": "需要查询的邮箱",
                         "name": "queryemail",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "需要查询学生ID",
+                        "description": "需要查询ID",
                         "name": "id",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "需要查询学生用户名",
+                        "description": "需要查询用户名",
                         "name": "name",
                         "in": "query"
                     }
@@ -308,12 +353,6 @@ const docTemplate = `{
                 ],
                 "summary": "修改指定学生信息",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
                     {
                         "type": "string",
                         "description": "登录返回的Token",
@@ -370,6 +409,93 @@ const docTemplate = `{
                         "description": "修改班级",
                         "name": "class",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改性别",
+                        "name": "sex",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/admin/student/new": {
+            "post": {
+                "description": "注册学生",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "注册学生",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户用户名",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "新用户邮箱",
+                        "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户真实姓名",
+                        "name": "realName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户学校ID",
+                        "name": "userSchoollD",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户学校代码",
+                        "name": "schoolCode",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户班级",
+                        "name": "class",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户性别",
+                        "name": "sex",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -402,12 +528,6 @@ const docTemplate = `{
                 ],
                 "summary": "修改指定学生密码",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
                     {
                         "type": "string",
                         "description": "登录返回的Token",
@@ -580,12 +700,6 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
-                    {
-                        "type": "string",
                         "description": "登录返回的Token",
                         "name": "token",
                         "in": "header",
@@ -594,19 +708,19 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "format": "email",
-                        "description": "需要查询的学生邮箱",
+                        "description": "需要删除的邮箱",
                         "name": "queryemail",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "需要查询学生ID",
+                        "description": "需要删除ID",
                         "name": "id",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "需要查询学生用户名",
+                        "description": "需要删除用户名",
                         "name": "name",
                         "in": "query"
                     }
@@ -639,12 +753,6 @@ const docTemplate = `{
                 ],
                 "summary": "修改指定教师学生信息",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
                     {
                         "type": "string",
                         "description": "登录返回的Token",
@@ -701,6 +809,75 @@ const docTemplate = `{
                         "description": "修改班级",
                         "name": "class",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改性别",
+                        "name": "sex",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/admin/teacher/new": {
+            "post": {
+                "description": "注册教师",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "注册教师",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户用户名",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "新用户邮箱",
+                        "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户真实姓名",
+                        "name": "realName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户性别",
+                        "name": "sex",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -733,12 +910,6 @@ const docTemplate = `{
                 ],
                 "summary": "修改指定教师密码",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
                     {
                         "type": "string",
                         "description": "登录返回的Token",
@@ -1076,6 +1247,12 @@ const docTemplate = `{
                         "description": "修改班级",
                         "name": "class",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "修改性别",
+                        "name": "sex",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1168,17 +1345,46 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "登录返回的Token",
+                        "description": "新用户用户名",
                         "name": "name",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "登录返回的Token",
-                        "name": "token",
-                        "in": "query",
-                        "required": true
+                        "format": "email",
+                        "description": "新用户邮箱",
+                        "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户真实姓名",
+                        "name": "realName",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户学校ID",
+                        "name": "userSchoollD",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户学校代码",
+                        "name": "schoolCode",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户班级",
+                        "name": "class",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "新用户性别",
+                        "name": "sex",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1398,7 +1604,14 @@ const docTemplate = `{
                 4,
                 5,
                 6,
-                7
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14
             ],
             "x-enum-varnames": [
                 "NoError",
@@ -1408,7 +1621,14 @@ const docTemplate = `{
                 "UserExists",
                 "UserNonExists",
                 "PasswordInvalid",
-                "PermissionDenied"
+                "PermissionDenied",
+                "ClassError",
+                "SexError",
+                "NameExists",
+                "EmailFormatError",
+                "RealNameFormatError",
+                "SchoolError",
+                "PasswordTooShort"
             ]
         },
         "model.CommonResponse-any": {
@@ -1487,6 +1707,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "schoolCode": {
+                    "type": "string"
+                },
+                "sex": {
                     "type": "string"
                 },
                 "userSchoollD": {

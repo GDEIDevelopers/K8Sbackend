@@ -12,4 +12,11 @@ const (
 	UserNonExists
 	PasswordInvalid
 	PermissionDenied
+	ClassError
+	SexError
+	NameExists
+	EmailFormatError
+	RealNameFormatError
+	SchoolError
+	PasswordTooShort
 )
