@@ -132,9 +132,12 @@ func (t *Student) RegisterStudent(c *gin.Context) {
 // @Produce json
 // @Param   action    path     string  false  "查询过滤器，如果没有默认查询所以信息"  Format(email)
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   userid    query    int     false  "用户ID"
-// @Param   name      query    string  false  "用户名"
-// @Param   email     query    string  false  "用户邮箱"
+// @Param   email     query    string  false  "修改邮箱"  Format(email)
+// @Param   realName     query    string  false  "修改真实姓名"
+// @Param   userSchoollD     query    string  false  "修改学校ID"
+// @Param   schoolCode     query    string  false  "修改学校代码"
+// @Param   class     query    string  false  "修改班级"
+// @Param   sex     query    string  false  "修改性别"
 // @Success 200 {object} model.CommonResponse[model.GetUserResponse]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/student/{action} [patch]
