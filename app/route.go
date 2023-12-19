@@ -23,7 +23,7 @@ func (s *Server) dispatchRoute() {
 	e.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	a := e.Group("/api")
-
+	a.GET("/isvalid", s.IsValidSession)
 	a.POST("/login", s.UserLogin)
 	a.POST("/refresh", s.UserLoginRefresh)
 	a.POST("/register", s.student.RegisterStudent)
