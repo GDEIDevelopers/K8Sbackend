@@ -173,7 +173,7 @@ paths:
         in: query
         name: realName
         type: string
-      - description: 修改学校ID
+      - description: 修改学号
         in: query
         name: userSchoollD
         type: string
@@ -217,19 +217,23 @@ paths:
       - description: 新用户用户名
         in: query
         name: name
+        required: true
         type: string
       - description: 新用户邮箱
         format: email
         in: query
         name: email
+        required: true
         type: string
       - description: 新用户真实姓名
         in: query
         name: realName
+        required: true
         type: string
       - description: 新用户性别
         in: query
         name: sex
+        required: true
         type: string
       produces:
       - application/json
@@ -353,7 +357,7 @@ paths:
         in: query
         name: realName
         type: string
-      - description: 修改学校ID
+      - description: 修改学号
         in: query
         name: userSchoollD
         type: string
@@ -439,31 +443,38 @@ paths:
       - description: 新用户用户名
         in: query
         name: name
+        required: true
         type: string
       - description: 新用户邮箱
         format: email
         in: query
         name: email
+        required: true
         type: string
       - description: 新用户真实姓名
         in: query
         name: realName
+        required: true
         type: string
-      - description: 新用户学校ID
+      - description: 新用户学号
         in: query
         name: userSchoollD
+        required: true
         type: string
       - description: 新用户学校代码
         in: query
         name: schoolCode
+        required: true
         type: string
       - description: 新用户班级
         in: query
         name: class
+        required: true
         type: string
       - description: 新用户性别
         in: query
         name: sex
+        required: true
         type: string
       produces:
       - application/json
@@ -620,7 +631,7 @@ paths:
         in: query
         name: realName
         type: string
-      - description: 修改学校ID
+      - description: 修改学号
         in: query
         name: userSchoollD
         type: string
@@ -706,19 +717,23 @@ paths:
       - description: 新用户用户名
         in: query
         name: name
+        required: true
         type: string
       - description: 新用户邮箱
         format: email
         in: query
         name: email
+        required: true
         type: string
       - description: 新用户真实姓名
         in: query
         name: realName
+        required: true
         type: string
       - description: 新用户性别
         in: query
         name: sex
+        required: true
         type: string
       produces:
       - application/json
@@ -913,7 +928,7 @@ paths:
         in: query
         name: realName
         type: string
-      - description: 修改学校ID
+      - description: 修改学号
         in: query
         name: userSchoollD
         type: string
@@ -1020,31 +1035,38 @@ paths:
       - description: 新用户用户名
         in: query
         name: name
+        required: true
         type: string
       - description: 新用户邮箱
         format: email
         in: query
         name: email
+        required: true
         type: string
       - description: 新用户真实姓名
         in: query
         name: realName
+        required: true
         type: string
-      - description: 新用户学校ID
+      - description: 新用户学号
         in: query
         name: userSchoollD
+        required: true
         type: string
       - description: 新用户学校代码
         in: query
         name: schoolCode
+        required: true
         type: string
       - description: 新用户班级
         in: query
         name: class
+        required: true
         type: string
       - description: 新用户性别
         in: query
         name: sex
+        required: true
         type: string
       produces:
       - application/json
@@ -1058,6 +1080,31 @@ paths:
           schema:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 添加/注册一个学生
+      tags:
+      - example
+  /isvalid:
+    get:
+      consumes:
+      - application/json
+      description: 是否登录
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 是否登录
       tags:
       - example
   /login:
@@ -1130,31 +1177,38 @@ paths:
       - description: 新用户用户名
         in: query
         name: name
+        required: true
         type: string
       - description: 新用户邮箱
         format: email
         in: query
         name: email
+        required: true
         type: string
       - description: 新用户真实姓名
         in: query
         name: realName
+        required: true
         type: string
-      - description: 新用户学校ID
+      - description: 新用户学号
         in: query
         name: userSchoollD
+        required: true
         type: string
       - description: 新用户学校代码
         in: query
         name: schoolCode
+        required: true
         type: string
       - description: 新用户班级
         in: query
         name: class
+        required: true
         type: string
       - description: 新用户性别
         in: query
         name: sex
+        required: true
         type: string
       produces:
       - application/json

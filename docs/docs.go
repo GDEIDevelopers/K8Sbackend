@@ -125,7 +125,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "修改学校ID",
+                        "description": "修改学号",
                         "name": "userSchoollD",
                         "in": "query"
                     },
@@ -189,26 +189,30 @@ const docTemplate = `{
                         "type": "string",
                         "description": "新用户用户名",
                         "name": "name",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "format": "email",
                         "description": "新用户邮箱",
                         "name": "email",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "新用户真实姓名",
                         "name": "realName",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "新用户性别",
                         "name": "sex",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -394,7 +398,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "修改学校ID",
+                        "description": "修改学号",
                         "name": "userSchoollD",
                         "in": "query"
                     },
@@ -458,44 +462,51 @@ const docTemplate = `{
                         "type": "string",
                         "description": "新用户用户名",
                         "name": "name",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "format": "email",
                         "description": "新用户邮箱",
                         "name": "email",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "新用户真实姓名",
                         "name": "realName",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
-                        "description": "新用户学校ID",
+                        "description": "新用户学号",
                         "name": "userSchoollD",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "新用户学校代码",
                         "name": "schoolCode",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "新用户班级",
                         "name": "class",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "新用户性别",
                         "name": "sex",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -794,7 +805,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "修改学校ID",
+                        "description": "修改学号",
                         "name": "userSchoollD",
                         "in": "query"
                     },
@@ -858,26 +869,30 @@ const docTemplate = `{
                         "type": "string",
                         "description": "新用户用户名",
                         "name": "name",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "format": "email",
                         "description": "新用户邮箱",
                         "name": "email",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "新用户真实姓名",
                         "name": "realName",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "新用户性别",
                         "name": "sex",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1233,7 +1248,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "修改学校ID",
+                        "description": "修改学号",
                         "name": "userSchoollD",
                         "in": "query"
                     },
@@ -1348,44 +1363,51 @@ const docTemplate = `{
                         "type": "string",
                         "description": "新用户用户名",
                         "name": "name",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "format": "email",
                         "description": "新用户邮箱",
                         "name": "email",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "新用户真实姓名",
                         "name": "realName",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
-                        "description": "新用户学校ID",
+                        "description": "新用户学号",
                         "name": "userSchoollD",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "新用户学校代码",
                         "name": "schoolCode",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "新用户班级",
                         "name": "class",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "新用户性别",
                         "name": "sex",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1437,6 +1459,44 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/model.CommonResponse-model_GetUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/isvalid": {
+            "get": {
+                "description": "是否登录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "example"
+                ],
+                "summary": "是否登录",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
                         }
                     },
                     "400": {
@@ -1559,44 +1619,51 @@ const docTemplate = `{
                         "type": "string",
                         "description": "新用户用户名",
                         "name": "name",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "format": "email",
                         "description": "新用户邮箱",
                         "name": "email",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "新用户真实姓名",
                         "name": "realName",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
-                        "description": "新用户学校ID",
+                        "description": "新用户学号",
                         "name": "userSchoollD",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "新用户学校代码",
                         "name": "schoolCode",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "新用户班级",
                         "name": "class",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "新用户性别",
                         "name": "sex",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
