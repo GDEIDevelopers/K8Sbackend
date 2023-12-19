@@ -177,7 +177,7 @@ func (t *Admin) GetStudent(c *gin.Context) {
 // @Param   name     query     string  false  "需要查询学生用户名"
 // @Param   email     query    string  false  "修改邮箱"  Format(email)
 // @Param   realName     query    string  false  "修改真实姓名"
-// @Param   userSchoollD     query    string  false  "修改学校ID"
+// @Param   userSchoollD     query    string  false  "修改学号"
 // @Param   schoolCode     query    string  false  "修改学校代码"
 // @Param   class     query    string  false  "修改班级"
 // @Param   sex     query    string  false  "修改性别"
@@ -223,7 +223,7 @@ func (t *Admin) ModifyStudent(c *gin.Context) {
 // @Param   name     query     string  false  "需要查询学生用户名"
 // @Param   email     query    string  false  "修改邮箱"  Format(email)
 // @Param   realName     query    string  false  "修改真实姓名"
-// @Param   userSchoollD     query    string  false  "修改学校ID"
+// @Param   userSchoollD     query    string  false  "修改学号"
 // @Param   schoolCode     query    string  false  "修改学校代码"
 // @Param   class     query    string  false  "修改班级"
 // @Param   sex     query    string  false  "修改性别"
@@ -269,7 +269,7 @@ func (t *Admin) ModifyTeacher(c *gin.Context) {
 // @Param   name     query     string  false  "需要查询学生用户名"
 // @Param   email     query    string  false  "修改邮箱"  Format(email)
 // @Param   realName     query    string  false  "修改真实姓名"
-// @Param   userSchoollD     query    string  false  "修改学校ID"
+// @Param   userSchoollD     query    string  false  "修改学号"
 // @Param   schoolCode     query    string  false  "修改学校代码"
 // @Param   class     query    string  false  "修改班级"
 // @Param   sex     query    string  false  "修改性别"
@@ -567,13 +567,13 @@ func (t *Admin) DeleteAdmin(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   name     query     string  false  "新用户用户名"
-// @Param   email     query    string  false  "新用户邮箱"  Format(email)
-// @Param   realName     query    string  false  "新用户真实姓名"
-// @Param   userSchoollD     query    string  false  "新用户学校ID"
-// @Param   schoolCode     query    string  false  "新用户学校代码"
-// @Param   class     query    string  false  "新用户班级"
-// @Param   sex     query    string  false  "新用户性别"
+// @Param   name     query     string  true  "新用户用户名"
+// @Param   email     query    string  true  "新用户邮箱"  Format(email)
+// @Param   realName     query    string  true  "新用户真实姓名"
+// @Param   userSchoollD     query    string  true  "新用户学号"
+// @Param   schoolCode     query    string  true  "新用户学校代码"
+// @Param   class     query    string  true  "新用户班级"
+// @Param   sex     query    string  true  "新用户性别"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/admin/student/new [post]
@@ -641,10 +641,10 @@ func (t *Admin) RegisterStudent(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   name     query     string  false  "新用户用户名"
-// @Param   email     query    string  false  "新用户邮箱"  Format(email)
-// @Param   realName     query    string  false  "新用户真实姓名"
-// @Param   sex     query    string  false  "新用户性别"
+// @Param   name     query     string  true  "新用户用户名"
+// @Param   email     query    string  true  "新用户邮箱"  Format(email)
+// @Param   realName     query    string  true  "新用户真实姓名"
+// @Param   sex     query    string  true  "新用户性别"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/admin/teacher/new [post]
@@ -704,10 +704,10 @@ func (t *Admin) RegisterTeacher(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   name     query     string  false  "新用户用户名"
-// @Param   email     query    string  false  "新用户邮箱"  Format(email)
-// @Param   realName     query    string  false  "新用户真实姓名"
-// @Param   sex     query    string  false  "新用户性别"
+// @Param   name     query     string  true  "新用户用户名"
+// @Param   email     query    string  true  "新用户邮箱"  Format(email)
+// @Param   realName     query    string  true  "新用户真实姓名"
+// @Param   sex     query    string  true  "新用户性别"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/admin/admin/new [post]

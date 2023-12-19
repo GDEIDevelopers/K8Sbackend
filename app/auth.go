@@ -75,6 +75,39 @@ func (s *Server) UseTokenVerify() gin.HandlerFunc {
 
 // @BasePath /api
 
+// 是否登录 godoc
+// @Summary 是否登录
+// @Schemes
+// @Description 是否登录
+// @Tags example
+// @Accept json
+// @Produce json
+// @Param   token  header    string  true   "登录返回的Token"
+// @Success 200 {object} model.CommonResponse[any]
+// @Failure 400  {object} model.CommonResponse[any]
+// @Router /isvalid [get]
+func (s *Server) IsValidSession(c *gin.Context) {
+	auth := c.Request.Header.Get("Authorization")
+	prefix := "Bearer "
+	token := ""
+
+	if auth != "" && strings.HasPrefix(auth, prefix) {
+		token = auth[len(prefix):]
+	}
+
+	if token == "" {
+		apputils.Throw(c, errhandle.TokenError)
+		return
+	}
+
+	_, ok := s.token.Verify(context.Background(), token)
+	if !ok {
+		apputils.Throw(c, errhandle.PermissionDenied)
+		return
+	}
+	return
+}
+
 // 登录 godoc
 // @Summary 登录
 // @Schemes

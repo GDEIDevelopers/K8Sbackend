@@ -60,13 +60,13 @@ func (t *Student) Get(c *gin.Context) {
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /register [post]
-// @Param   name     query     string  false  "新用户用户名"
-// @Param   email     query    string  false  "新用户邮箱"  Format(email)
-// @Param   realName     query    string  false  "新用户真实姓名"
-// @Param   userSchoollD     query    string  false  "新用户学校ID"
-// @Param   schoolCode     query    string  false  "新用户学校代码"
-// @Param   class     query    string  false  "新用户班级"
-// @Param   sex     query    string  false  "新用户性别"
+// @Param   name     query     string  true  "新用户用户名"
+// @Param   email     query    string  true  "新用户邮箱"  Format(email)
+// @Param   realName     query    string  true  "新用户真实姓名"
+// @Param   userSchoollD     query    string  true  "新用户学号"
+// @Param   schoolCode     query    string  true  "新用户学校代码"
+// @Param   class     query    string  true  "新用户班级"
+// @Param   sex     query    string  true  "新用户性别"
 func (t *Student) RegisterStudent(c *gin.Context) {
 	b, err := c.GetRawData()
 	if err != nil {
