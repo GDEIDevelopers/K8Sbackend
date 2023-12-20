@@ -105,7 +105,7 @@ func (s *Server) IsValidSession(c *gin.Context) {
 		apputils.Throw(c, errhandle.PermissionDenied)
 		return
 	}
-	return
+	apputils.OK[any](c, nil)
 }
 
 // 登录 godoc
