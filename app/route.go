@@ -74,12 +74,13 @@ func (s *Server) setupHTTPServer(e, cmd *gin.Engine) {
 	}
 
 	cmdServer := &http.Server{
-		Addr:    "127.0.0.1:9999",
+		Addr:    s.Config.CMDHTTPServerListen,
 		Handler: cmd,
 	}
 
 	go s.srv.ListenAndServe()
 	go cmdServer.ListenAndServe()
 
-	errhandle.Log.Info("HTTP Server Starts At %s", s.srv.Addr)
+	errhandle.Infof("HTTP Server Starts At %s", s.srv.Addr)
+	errhandle.Infof("CMD HTTP Server Starts At %s", cmdServer.Addr)
 }
