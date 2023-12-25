@@ -9,7 +9,8 @@ import (
 )
 
 type Config struct {
-	HTTPServerListen string
+	HTTPServerListen    string
+	CMDHTTPServerListen string
 
 	DatabaseAddr string
 	DatabasePort string
@@ -30,8 +31,10 @@ func Read(filename string) *Config {
 
 	json.Unmarshal(b, &c)
 
+	if c.CMDHTTPServerListen == "" {
+		c.CMDHTTPServerListen = "127.0.0.1:6666"
+	}
 	c.assert()
-
 	return &c
 }
 

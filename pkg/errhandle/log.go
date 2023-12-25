@@ -19,6 +19,10 @@ type Logger struct {
 	*slog.Logger
 }
 
+func Infof(format string, msg ...any) {
+	Log.Info(fmt.Sprintf(format, msg...))
+}
+
 type LoggerOptions func(*Logger)
 
 func NewLogger(opts ...LoggerOptions) *Logger {
