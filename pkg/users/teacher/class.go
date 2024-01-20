@@ -217,3 +217,34 @@ func (t *Teacher) RemoveStudents(c *gin.Context) {
 
 	apputils.OK[any](c, nil)
 }
+
+// 列出所有已加入的班级 godoc
+// @Summary 列出所有已加入的班级
+// @Schemes
+// @Description 列出所有已加入的班级
+// @Tags classTeacher
+// @Accept json
+// @Produce json
+// @Param   token     header    string  true   "登录返回的Token"
+// @Success 200 {object} model.CommonResponse[[]*model.Class]
+// @Failure 400  {object} model.CommonResponse[any]
+// @Router /authrequired/teacher/class [get]
+func (t *Teacher) ListJoinedClass(c *gin.Context) {
+	userinfo, ok := c.Get("info")
+	if !ok {
+		apputils.Throw(c, errhandle.InnerError)
+		return
+	}
+	info := userinfo.(*model.UserInfo)
+	var ret []*model.Class
+	err := t.DB.Table("class").
+		Where("teacherid = ?", info.UserID).
+		Find(&ret).Error
+
+	if err != nil {
+		apputils.Throw(c, errhandle.TeacherNotJoinClass)
+		return
+	}
+
+	apputils.OK(c, ret)
+}
