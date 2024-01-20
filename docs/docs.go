@@ -25,7 +25,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "admin"
                 ],
                 "summary": "删除指定管理员",
                 "parameters": [
@@ -38,21 +38,8 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "format": "email",
-                        "description": "需要查询的邮箱",
-                        "name": "queryemail",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "description": "需要查询ID",
                         "name": "id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "需要查询用户名",
-                        "name": "name",
                         "in": "query"
                     }
                 ],
@@ -80,7 +67,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "admin"
                 ],
                 "summary": "修改指定管理员信息",
                 "parameters": [
@@ -93,20 +80,13 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "format": "email",
-                        "description": "需要查询的学生邮箱",
-                        "name": "queryemail",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "description": "需要查询学生ID",
                         "name": "id",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "需要查询学生用户名",
+                        "description": "需要修改的学生用户名",
                         "name": "name",
                         "in": "query"
                     },
@@ -174,7 +154,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "admin"
                 ],
                 "summary": "注册管理员",
                 "parameters": [
@@ -241,7 +221,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "admin"
                 ],
                 "summary": "修改指定管理员密码",
                 "parameters": [
@@ -254,21 +234,14 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "format": "email",
-                        "description": "需要查询的学生邮箱",
-                        "name": "queryemail",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "需要查询学生ID",
+                        "description": "需要查询管理员ID",
                         "name": "id",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "需要查询学生用户名",
-                        "name": "name",
+                        "description": "新密码",
+                        "name": "password",
                         "in": "query"
                     }
                 ],
@@ -277,6 +250,191 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/admin/class": {
+            "delete": {
+                "description": "管理员删除班级",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "classAdmin"
+                ],
+                "summary": "管理员删除班级",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "班级名称",
+                        "name": "classname",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/admin/class/new": {
+            "post": {
+                "description": "管理员添加班级",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "classAdmin"
+                ],
+                "summary": "管理员添加班级",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "新班级名称",
+                        "name": "classname",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-model_AddClassResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/admin/class/students": {
+            "post": {
+                "description": "管理员列出指定班级所有学生",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "classAdmin"
+                ],
+                "summary": "管理员列出指定班级所有学生",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "班级名称",
+                        "name": "classname",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-array_model_GetUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/admin/class/teachers": {
+            "post": {
+                "description": "管理员列出指定班级老师",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "classAdmin"
+                ],
+                "summary": "管理员列出指定班级老师",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "教师用户ID(可选)",
+                        "name": "teacherid",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "班级ID(可选)",
+                        "name": "classid",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-array_model_Class"
                         }
                     },
                     "400": {
@@ -298,7 +456,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "admin"
                 ],
                 "summary": "删除指定学生",
                 "parameters": [
@@ -311,21 +469,8 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "format": "email",
-                        "description": "需要查询的邮箱",
-                        "name": "queryemail",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "description": "需要查询ID",
                         "name": "id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "需要查询用户名",
-                        "name": "name",
                         "in": "query"
                     }
                 ],
@@ -353,7 +498,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "admin"
                 ],
                 "summary": "修改指定学生信息",
                 "parameters": [
@@ -366,20 +511,13 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "format": "email",
-                        "description": "需要查询的学生邮箱",
-                        "name": "queryemail",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "description": "需要查询学生ID",
                         "name": "id",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "需要查询学生用户名",
+                        "description": "需要修改学生用户名",
                         "name": "name",
                         "in": "query"
                     },
@@ -437,6 +575,160 @@ const docTemplate = `{
                 }
             }
         },
+        "/authrequired/admin/student/class": {
+            "delete": {
+                "description": "管理员移除学生班级",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "classAdmin"
+                ],
+                "summary": "管理员移除学生班级",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "学生用户ID",
+                        "name": "studentid",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "新班级名称",
+                        "name": "classname",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "管理员修改学生班级",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "classAdmin"
+                ],
+                "summary": "管理员修改学生班级",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "学生用户ID",
+                        "name": "classname",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "新班级名称",
+                        "name": "classname",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/admin/student/class/new": {
+            "post": {
+                "description": "管理员添加学生到指定班级",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "classAdmin"
+                ],
+                "summary": "管理员添加学生到指定班级",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "学生用户ID",
+                        "name": "studentid",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "新班级名称",
+                        "name": "classname",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
         "/authrequired/admin/student/new": {
             "post": {
                 "description": "注册学生",
@@ -447,7 +739,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "admin"
                 ],
                 "summary": "注册学生",
                 "parameters": [
@@ -535,7 +827,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "admin"
                 ],
                 "summary": "修改指定学生密码",
                 "parameters": [
@@ -548,21 +840,8 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "format": "email",
-                        "description": "需要查询的学生邮箱",
-                        "name": "queryemail",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "description": "需要查询学生ID",
                         "name": "id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "需要查询学生用户名",
-                        "name": "name",
                         "in": "query"
                     },
                     {
@@ -598,7 +877,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "admin"
                 ],
                 "summary": "获取指定学生信息",
                 "parameters": [
@@ -661,7 +940,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "admin"
                 ],
                 "summary": "获取所有学生信息",
                 "parameters": [
@@ -705,7 +984,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "admin"
                 ],
                 "summary": "删除指定教师",
                 "parameters": [
@@ -718,21 +997,8 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "format": "email",
-                        "description": "需要删除的邮箱",
-                        "name": "queryemail",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "description": "需要删除ID",
                         "name": "id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "需要删除用户名",
-                        "name": "name",
                         "in": "query"
                     }
                 ],
@@ -752,7 +1018,7 @@ const docTemplate = `{
                 }
             },
             "patch": {
-                "description": "修改指定教师学生信息",
+                "description": "修改指定教师信息",
                 "consumes": [
                     "application/json"
                 ],
@@ -760,9 +1026,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "admin"
                 ],
-                "summary": "修改指定教师学生信息",
+                "summary": "修改指定教师信息",
                 "parameters": [
                     {
                         "type": "string",
@@ -773,20 +1039,13 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "format": "email",
-                        "description": "需要查询的学生邮箱",
-                        "name": "queryemail",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "需要查询学生ID",
+                        "description": "需要查询ID",
                         "name": "id",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "需要查询学生用户名",
+                        "description": "需要修改用户名",
                         "name": "name",
                         "in": "query"
                     },
@@ -844,6 +1103,109 @@ const docTemplate = `{
                 }
             }
         },
+        "/authrequired/admin/teacher/class": {
+            "delete": {
+                "description": "管理员将老师移除班级",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "classAdmin"
+                ],
+                "summary": "管理员将老师移除班级",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "教师ID",
+                        "name": "teacherid",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "班级名称(可选)",
+                        "name": "classname",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/admin/teacher/class/new": {
+            "post": {
+                "description": "管理员添加老师到班级",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "classAdmin"
+                ],
+                "summary": "管理员添加老师到班级",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "教师ID",
+                        "name": "teacherid",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "班级名称",
+                        "name": "classname",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
         "/authrequired/admin/teacher/new": {
             "post": {
                 "description": "注册教师",
@@ -854,7 +1216,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "admin"
                 ],
                 "summary": "注册教师",
                 "parameters": [
@@ -921,7 +1283,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "admin"
                 ],
                 "summary": "修改指定教师密码",
                 "parameters": [
@@ -934,21 +1296,8 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "format": "email",
-                        "description": "需要查询的学生邮箱",
-                        "name": "queryemail",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "description": "需要查询学生ID",
                         "name": "id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "需要查询学生用户名",
-                        "name": "name",
                         "in": "query"
                     },
                     {
@@ -974,6 +1323,51 @@ const docTemplate = `{
                 }
             }
         },
+        "/authrequired/admin/teacher/students": {
+            "post": {
+                "description": "管理员列出指定教师所有学生",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "classAdmin"
+                ],
+                "summary": "管理员列出指定教师所有学生",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "教师用户ID",
+                        "name": "teacherid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-model_GetClassBelongsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
         "/authrequired/admin/teacher/{action}": {
             "get": {
                 "description": "获取指定教师信息",
@@ -984,7 +1378,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "admin"
                 ],
                 "summary": "获取指定教师信息",
                 "parameters": [
@@ -1047,7 +1441,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "admin"
                 ],
                 "summary": "获取所有教师信息",
                 "parameters": [
@@ -1081,9 +1475,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/authrequired/student/{action}": {
+        "/authrequired/classes": {
             "get": {
-                "description": "获取学生相关信息",
+                "description": "获取所有班级",
                 "consumes": [
                     "application/json"
                 ],
@@ -1091,17 +1485,10 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "auth"
                 ],
-                "summary": "获取学生相关信息",
+                "summary": "获取所有班级",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "format": "email",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
                     {
                         "type": "string",
                         "description": "登录返回的Token",
@@ -1114,7 +1501,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.CommonResponse-model_GetUserResponse"
+                            "$ref": "#/definitions/model.CommonResponse-array_model_GetClassResponse"
                         }
                     },
                     "400": {
@@ -1124,7 +1511,91 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
+            }
+        },
+        "/authrequired/student/class/join": {
+            "post": {
+                "description": "学生加入班级",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "classStudent"
+                ],
+                "summary": "学生加入班级",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "班级名称",
+                        "name": "classname",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/student/class/leave": {
+            "delete": {
+                "description": "学生离开班级",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "classStudent"
+                ],
+                "summary": "学生离开班级",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/student/{action}": {
             "patch": {
                 "description": "修改学生相关信息",
                 "consumes": [
@@ -1134,7 +1605,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "student"
                 ],
                 "summary": "修改学生相关信息",
                 "parameters": [
@@ -1216,7 +1687,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "teacher"
                 ],
                 "summary": "修改教师相关信息",
                 "parameters": [
@@ -1287,6 +1758,323 @@ const docTemplate = `{
                 }
             }
         },
+        "/authrequired/teacher/class": {
+            "get": {
+                "description": "列出所有已加入的班级",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "classTeacher"
+                ],
+                "summary": "列出所有已加入的班级",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-array_model_Class"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "学生修改班级",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "classStudent"
+                ],
+                "summary": "学生修改班级",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "班级名称",
+                        "name": "classname",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/teacher/class/join": {
+            "post": {
+                "description": "教师加入班级",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "classTeacher"
+                ],
+                "summary": "教师加入班级",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "班级名称",
+                        "name": "classname",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/teacher/class/leave": {
+            "delete": {
+                "description": "教师离开班级",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "classTeacher"
+                ],
+                "summary": "教师离开班级",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "班级名称",
+                        "name": "classname",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/teacher/class/students/join": {
+            "post": {
+                "description": "添加学生到指定班级",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "classTeacher"
+                ],
+                "summary": "添加学生到指定班级",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "学生用户ID",
+                        "name": "studentid",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "班级名称",
+                        "name": "classname",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/teacher/class/students/leave": {
+            "delete": {
+                "description": "从指定班级移除学生",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "classTeacher"
+                ],
+                "summary": "从指定班级移除学生",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "学生用户ID",
+                        "name": "studentid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/teacher/class/students/{classname}": {
+            "get": {
+                "description": "列出班级所有学生",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "classTeacher"
+                ],
+                "summary": "列出班级所有学生",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "班级名称(可选), 只显示网络工程B的学生: /authrequired/teacher/class/students/21网络工程B",
+                        "name": "classname",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-model_GetClassBelongsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
         "/authrequired/teacher/password": {
             "patch": {
                 "description": "修改教师密码",
@@ -1297,7 +2085,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "teacher"
                 ],
                 "summary": "修改教师密码",
                 "parameters": [
@@ -1348,7 +2136,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "teacher"
                 ],
                 "summary": "添加/注册一个学生",
                 "parameters": [
@@ -1426,9 +2214,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/authrequired/teacher/{action}": {
+        "/isvalid": {
             "get": {
-                "description": "获取教师相关信息",
+                "description": "是否登录",
                 "consumes": [
                     "application/json"
                 ],
@@ -1436,16 +2224,10 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "auth"
                 ],
-                "summary": "获取教师相关信息",
+                "summary": "是否登录",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "查询过滤器，如果没有默认查询所以信息",
-                        "name": "action",
-                        "in": "path"
-                    },
                     {
                         "type": "string",
                         "description": "登录返回的Token",
@@ -1470,44 +2252,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/isvalid": {
-            "get": {
-                "description": "是否登录",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "example"
-                ],
-                "summary": "是否登录",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "登录返回的Token",
-                        "name": "token",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/model.CommonResponse-any"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/model.CommonResponse-any"
-                        }
-                    }
-                }
-            }
-        },
         "/login": {
             "post": {
                 "description": "登录",
@@ -1518,7 +2262,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "auth"
                 ],
                 "summary": "登录",
                 "parameters": [
@@ -1574,7 +2318,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "auth"
                 ],
                 "summary": "刷新登录令牌",
                 "parameters": [
@@ -1611,7 +2355,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "student"
                 ],
                 "summary": "添加/注册一个学生",
                 "parameters": [
@@ -1701,7 +2445,10 @@ const docTemplate = `{
                 11,
                 12,
                 13,
-                14
+                14,
+                15,
+                16,
+                17
             ],
             "x-enum-varnames": [
                 "NoError",
@@ -1718,13 +2465,83 @@ const docTemplate = `{
                 "EmailFormatError",
                 "RealNameFormatError",
                 "SchoolError",
-                "PasswordTooShort"
+                "PasswordTooShort",
+                "ClassNotFound",
+                "TeacherNotFound",
+                "TeacherNotJoinClass"
             ]
+        },
+        "model.AddClassResponse": {
+            "type": "object",
+            "properties": {
+                "classid": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.Class": {
+            "type": "object",
+            "properties": {
+                "classid": {
+                    "type": "integer"
+                },
+                "teacherid": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.ClassWithStudent": {
+            "type": "object",
+            "properties": {
+                "classname": {
+                    "type": "string"
+                },
+                "students": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.GetUserResponse"
+                    }
+                }
+            }
         },
         "model.CommonResponse-any": {
             "type": "object",
             "properties": {
                 "data": {},
+                "reason": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/errhandle.ErrCode"
+                }
+            }
+        },
+        "model.CommonResponse-array_model_Class": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Class"
+                    }
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/errhandle.ErrCode"
+                }
+            }
+        },
+        "model.CommonResponse-array_model_GetClassResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.GetClassResponse"
+                    }
+                },
                 "reason": {
                     "type": "string"
                 },
@@ -1741,6 +2558,34 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/model.GetUserResponse"
                     }
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/errhandle.ErrCode"
+                }
+            }
+        },
+        "model.CommonResponse-model_AddClassResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/model.AddClassResponse"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/errhandle.ErrCode"
+                }
+            }
+        },
+        "model.CommonResponse-model_GetClassBelongsResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/model.GetClassBelongsResponse"
                 },
                 "reason": {
                     "type": "string"
@@ -1775,6 +2620,34 @@ const docTemplate = `{
                 },
                 "status": {
                     "$ref": "#/definitions/errhandle.ErrCode"
+                }
+            }
+        },
+        "model.GetClassBelongsResponse": {
+            "type": "object",
+            "properties": {
+                "classes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.ClassWithStudent"
+                    }
+                },
+                "teacherid": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.GetClassResponse": {
+            "type": "object",
+            "properties": {
+                "classid": {
+                    "type": "integer"
+                },
+                "classname": {
+                    "type": "string"
+                },
+                "teacherid": {
+                    "type": "integer"
                 }
             }
         },

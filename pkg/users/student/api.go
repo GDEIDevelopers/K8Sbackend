@@ -14,47 +14,11 @@ import (
 
 // @BasePath /api/authrequired
 
-// 获取学生信息 godoc
-// @Summary 获取学生相关信息
-// @Schemes
-// @Description 获取学生相关信息
-// @Tags example
-// @Accept json
-// @Produce json
-// @Param   action    path     string  false  "查询过滤器，如果没有默认查询所以信息"  Format(email)
-// @Param   token     header    string  true   "登录返回的Token"
-// @Success 200 {object} model.CommonResponse[model.GetUserResponse]
-// @Failure 400  {object} model.CommonResponse[any]
-// @Router /authrequired/student/{action} [get]
-func (t *Student) Get(c *gin.Context) {
-	userinfo, ok := c.Get("info")
-	if !ok {
-		apputils.Throw(c, errhandle.InnerError)
-		return
-	}
-	info := userinfo.(*model.UserInfo)
-
-	var teacher model.User
-	err := t.DB.Table("users").
-		Where("id = ?", info.UserID).
-		First(&teacher).Error
-
-	if err != nil {
-		apputils.ThrowError(c, err)
-		return
-	}
-	var getResponse model.GetUserResponse
-
-	apputils.IgnoreStructCopy(&getResponse, &teacher, c.Param("action"))
-
-	apputils.OK[model.GetUserResponse](c, getResponse)
-}
-
 // 添加/注册一位学生 godoc
 // @Summary 添加/注册一个学生
 // @Schemes
 // @Description 添加/注册一个学生
-// @Tags example
+// @Tags student
 // @Accept json
 // @Produce json
 // @Success 200 {object} model.CommonResponse[any]
@@ -97,6 +61,12 @@ func (t *Student) RegisterStudent(c *gin.Context) {
 		return
 	}
 
+	classid, ok := t.Class.GetClassIDByName(req.Class)
+	if !ok {
+		apputils.Throw(c, errhandle.ClassNotFound)
+		return
+	}
+
 	hashed, _ := bcrypt.GenerateFromPassword(
 		[]byte(req.Password),
 		bcrypt.DefaultCost,
@@ -110,7 +80,7 @@ func (t *Student) RegisterStudent(c *gin.Context) {
 		Name:         req.Name,
 		RealName:     req.RealName,
 		Sex:          req.Sex,
-		Class:        req.Class,
+		Class:        classid,
 		Password:     string(hashed),
 		Email:        req.Email,
 	})
@@ -127,7 +97,7 @@ func (t *Student) RegisterStudent(c *gin.Context) {
 // @Summary 修改学生相关信息
 // @Schemes
 // @Description 修改学生相关信息
-// @Tags example
+// @Tags student
 // @Accept json
 // @Produce json
 // @Param   action    path     string  false  "查询过滤器，如果没有默认查询所以信息"  Format(email)

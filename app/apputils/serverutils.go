@@ -6,6 +6,8 @@ import (
 
 	"github.com/GDEIDevelopers/K8Sbackend/config"
 	"github.com/GDEIDevelopers/K8Sbackend/pkg/errhandle"
+	"github.com/GDEIDevelopers/K8Sbackend/pkg/token"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/redis/go-redis/v9"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -15,6 +17,8 @@ type ServerUtils struct {
 	DB      *gorm.DB
 	RedisDB *redis.Client
 	Config  *config.Config
+	Token   token.TokenGenerate
+	Class   *Class
 }
 
 func newSQL(DBAddr, DBase, DBUser, DBPass string, isParseTime ...bool) *gorm.DB {
@@ -36,12 +40,16 @@ func newSQL(DBAddr, DBase, DBUser, DBPass string, isParseTime ...bool) *gorm.DB 
 }
 
 func NewServerUtils(cfg *config.Config) *ServerUtils {
-	return &ServerUtils{
-		DB: newSQL(cfg.DatabaseAddr, cfg.DatabaseDB, cfg.DatabaseUser, cfg.DatabasePass),
-		RedisDB: redis.NewClient(&redis.Options{
-			Addr: cfg.RedisTokenAddr,
-			DB:   cfg.RedisTokenDB,
-		}),
-		Config: cfg,
+	rdb := redis.NewClient(&redis.Options{
+		Addr: cfg.RedisTokenAddr,
+		DB:   cfg.RedisTokenDB,
+	})
+	utils := &ServerUtils{
+		DB:      newSQL(cfg.DatabaseAddr, cfg.DatabaseDB, cfg.DatabaseUser, cfg.DatabasePass),
+		RedisDB: rdb,
+		Config:  cfg,
+		Token:   token.NewJWTAccessGenerate(rdb, jwt.SigningMethodHS256),
 	}
+	utils.Class = NewClass(utils)
+	return utils
 }

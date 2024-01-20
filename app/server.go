@@ -6,34 +6,35 @@ import (
 	"time"
 
 	"github.com/GDEIDevelopers/K8Sbackend/app/apputils"
+	"github.com/GDEIDevelopers/K8Sbackend/app/routes"
 	"github.com/GDEIDevelopers/K8Sbackend/config"
 	"github.com/GDEIDevelopers/K8Sbackend/pkg/errhandle"
-	"github.com/GDEIDevelopers/K8Sbackend/pkg/token"
 	"github.com/GDEIDevelopers/K8Sbackend/pkg/users/admin"
+	"github.com/GDEIDevelopers/K8Sbackend/pkg/users/auth"
 	"github.com/GDEIDevelopers/K8Sbackend/pkg/users/student"
 	"github.com/GDEIDevelopers/K8Sbackend/pkg/users/teacher"
-	"github.com/golang-jwt/jwt/v5"
 )
 
 type Server struct {
 	*apputils.ServerUtils
+	srv    *http.Server
+	routes []routes.Routes
+}
 
-	srv   *http.Server
-	token token.TokenGenerate
-	// user management parts
-	admin   *admin.Admin
-	student *student.Student
-	teacher *teacher.Teacher
+func initModules(s *apputils.ServerUtils) []routes.Routes {
+	return []routes.Routes{
+		auth.New(s),
+		admin.New(s),
+		teacher.New(s),
+		student.New(s),
+	}
 }
 
 func NewServer(cfg *config.Config) *Server {
 	utils := apputils.NewServerUtils(cfg)
 	s := &Server{
 		ServerUtils: utils,
-		admin:       admin.New(utils),
-		teacher:     teacher.New(utils),
-		student:     student.New(utils),
-		token:       token.NewJWTAccessGenerate(utils.RedisDB, jwt.SigningMethodHS256),
+		routes:      initModules(utils),
 	}
 	s.dispatchRoute()
 	return s
@@ -49,8 +50,5 @@ func (s *Server) shutdownHTTPServer() {
 }
 
 func (s *Server) Close() {
-	s.admin.Close()
-	s.teacher.Close()
-	s.student.Close()
 	s.shutdownHTTPServer()
 }

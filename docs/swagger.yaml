@@ -16,6 +16,9 @@ definitions:
     - 12
     - 13
     - 14
+    - 15
+    - 16
+    - 17
     type: integer
     x-enum-varnames:
     - NoError
@@ -33,9 +36,55 @@ definitions:
     - RealNameFormatError
     - SchoolError
     - PasswordTooShort
+    - ClassNotFound
+    - TeacherNotFound
+    - TeacherNotJoinClass
+  model.AddClassResponse:
+    properties:
+      classid:
+        type: integer
+    type: object
+  model.Class:
+    properties:
+      classid:
+        type: integer
+      teacherid:
+        type: integer
+    type: object
+  model.ClassWithStudent:
+    properties:
+      classname:
+        type: string
+      students:
+        items:
+          $ref: '#/definitions/model.GetUserResponse'
+        type: array
+    type: object
   model.CommonResponse-any:
     properties:
       data: {}
+      reason:
+        type: string
+      status:
+        $ref: '#/definitions/errhandle.ErrCode'
+    type: object
+  model.CommonResponse-array_model_Class:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.Class'
+        type: array
+      reason:
+        type: string
+      status:
+        $ref: '#/definitions/errhandle.ErrCode'
+    type: object
+  model.CommonResponse-array_model_GetClassResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.GetClassResponse'
+        type: array
       reason:
         type: string
       status:
@@ -47,6 +96,24 @@ definitions:
         items:
           $ref: '#/definitions/model.GetUserResponse'
         type: array
+      reason:
+        type: string
+      status:
+        $ref: '#/definitions/errhandle.ErrCode'
+    type: object
+  model.CommonResponse-model_AddClassResponse:
+    properties:
+      data:
+        $ref: '#/definitions/model.AddClassResponse'
+      reason:
+        type: string
+      status:
+        $ref: '#/definitions/errhandle.ErrCode'
+    type: object
+  model.CommonResponse-model_GetClassBelongsResponse:
+    properties:
+      data:
+        $ref: '#/definitions/model.GetClassBelongsResponse'
       reason:
         type: string
       status:
@@ -69,6 +136,24 @@ definitions:
         type: string
       status:
         $ref: '#/definitions/errhandle.ErrCode'
+    type: object
+  model.GetClassBelongsResponse:
+    properties:
+      classes:
+        items:
+          $ref: '#/definitions/model.ClassWithStudent'
+        type: array
+      teacherid:
+        type: integer
+    type: object
+  model.GetClassResponse:
+    properties:
+      classid:
+        type: integer
+      classname:
+        type: string
+      teacherid:
+        type: integer
     type: object
   model.GetUserResponse:
     properties:
@@ -114,18 +199,9 @@ paths:
         name: token
         required: true
         type: string
-      - description: 需要查询的邮箱
-        format: email
-        in: query
-        name: queryemail
-        type: string
       - description: 需要查询ID
         in: query
         name: id
-        type: string
-      - description: 需要查询用户名
-        in: query
-        name: name
         type: string
       produces:
       - application/json
@@ -140,7 +216,7 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 删除指定管理员
       tags:
-      - example
+      - admin
     patch:
       consumes:
       - application/json
@@ -151,16 +227,11 @@ paths:
         name: token
         required: true
         type: string
-      - description: 需要查询的学生邮箱
-        format: email
-        in: query
-        name: queryemail
-        type: string
       - description: 需要查询学生ID
         in: query
         name: id
         type: string
-      - description: 需要查询学生用户名
+      - description: 需要修改的学生用户名
         in: query
         name: name
         type: string
@@ -202,7 +273,7 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 修改指定管理员信息
       tags:
-      - example
+      - admin
   /authrequired/admin/admin/new:
     post:
       consumes:
@@ -248,7 +319,7 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 注册管理员
       tags:
-      - example
+      - admin
   /authrequired/admin/admin/password:
     patch:
       consumes:
@@ -260,18 +331,13 @@ paths:
         name: token
         required: true
         type: string
-      - description: 需要查询的学生邮箱
-        format: email
-        in: query
-        name: queryemail
-        type: string
-      - description: 需要查询学生ID
+      - description: 需要查询管理员ID
         in: query
         name: id
         type: string
-      - description: 需要查询学生用户名
+      - description: 新密码
         in: query
-        name: name
+        name: password
         type: string
       produces:
       - application/json
@@ -286,7 +352,130 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 修改指定管理员密码
       tags:
-      - example
+      - admin
+  /authrequired/admin/class:
+    delete:
+      consumes:
+      - application/json
+      description: 管理员删除班级
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 班级名称
+        in: query
+        name: classname
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 管理员删除班级
+      tags:
+      - classAdmin
+  /authrequired/admin/class/new:
+    post:
+      consumes:
+      - application/json
+      description: 管理员添加班级
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 新班级名称
+        in: query
+        name: classname
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-model_AddClassResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 管理员添加班级
+      tags:
+      - classAdmin
+  /authrequired/admin/class/students:
+    post:
+      consumes:
+      - application/json
+      description: 管理员列出指定班级所有学生
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 班级名称
+        in: query
+        name: classname
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-array_model_GetUserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 管理员列出指定班级所有学生
+      tags:
+      - classAdmin
+  /authrequired/admin/class/teachers:
+    post:
+      consumes:
+      - application/json
+      description: 管理员列出指定班级老师
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 教师用户ID(可选)
+        in: query
+        name: teacherid
+        type: string
+      - description: 班级ID(可选)
+        in: query
+        name: classid
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-array_model_Class'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 管理员列出指定班级老师
+      tags:
+      - classAdmin
   /authrequired/admin/student:
     delete:
       consumes:
@@ -298,18 +487,9 @@ paths:
         name: token
         required: true
         type: string
-      - description: 需要查询的邮箱
-        format: email
-        in: query
-        name: queryemail
-        type: string
       - description: 需要查询ID
         in: query
         name: id
-        type: string
-      - description: 需要查询用户名
-        in: query
-        name: name
         type: string
       produces:
       - application/json
@@ -324,7 +504,7 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 删除指定学生
       tags:
-      - example
+      - admin
     patch:
       consumes:
       - application/json
@@ -335,16 +515,11 @@ paths:
         name: token
         required: true
         type: string
-      - description: 需要查询的学生邮箱
-        format: email
-        in: query
-        name: queryemail
-        type: string
       - description: 需要查询学生ID
         in: query
         name: id
         type: string
-      - description: 需要查询学生用户名
+      - description: 需要修改学生用户名
         in: query
         name: name
         type: string
@@ -386,7 +561,7 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 修改指定学生信息
       tags:
-      - example
+      - admin
   /authrequired/admin/student/{action}:
     get:
       consumes:
@@ -428,7 +603,111 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 获取指定学生信息
       tags:
-      - example
+      - admin
+  /authrequired/admin/student/class:
+    delete:
+      consumes:
+      - application/json
+      description: 管理员移除学生班级
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 学生用户ID
+        in: query
+        name: studentid
+        required: true
+        type: string
+      - description: 新班级名称
+        in: query
+        name: classname
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 管理员移除学生班级
+      tags:
+      - classAdmin
+    patch:
+      consumes:
+      - application/json
+      description: 管理员修改学生班级
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 学生用户ID
+        in: query
+        name: classname
+        required: true
+        type: string
+      - description: 新班级名称
+        in: query
+        name: classname
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 管理员修改学生班级
+      tags:
+      - classAdmin
+  /authrequired/admin/student/class/new:
+    post:
+      consumes:
+      - application/json
+      description: 管理员添加学生到指定班级
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 学生用户ID
+        in: query
+        name: studentid
+        required: true
+        type: string
+      - description: 新班级名称
+        in: query
+        name: classname
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 管理员添加学生到指定班级
+      tags:
+      - classAdmin
   /authrequired/admin/student/new:
     post:
       consumes:
@@ -489,7 +768,7 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 注册学生
       tags:
-      - example
+      - admin
   /authrequired/admin/student/password:
     patch:
       consumes:
@@ -501,18 +780,9 @@ paths:
         name: token
         required: true
         type: string
-      - description: 需要查询的学生邮箱
-        format: email
-        in: query
-        name: queryemail
-        type: string
       - description: 需要查询学生ID
         in: query
         name: id
-        type: string
-      - description: 需要查询学生用户名
-        in: query
-        name: name
         type: string
       - description: 新密码
         in: query
@@ -531,7 +801,7 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 修改指定学生密码
       tags:
-      - example
+      - admin
   /authrequired/admin/students/{action}:
     get:
       consumes:
@@ -560,7 +830,7 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 获取所有学生信息
       tags:
-      - example
+      - admin
   /authrequired/admin/teacher:
     delete:
       consumes:
@@ -572,18 +842,9 @@ paths:
         name: token
         required: true
         type: string
-      - description: 需要删除的邮箱
-        format: email
-        in: query
-        name: queryemail
-        type: string
       - description: 需要删除ID
         in: query
         name: id
-        type: string
-      - description: 需要删除用户名
-        in: query
-        name: name
         type: string
       produces:
       - application/json
@@ -598,27 +859,22 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 删除指定教师
       tags:
-      - example
+      - admin
     patch:
       consumes:
       - application/json
-      description: 修改指定教师学生信息
+      description: 修改指定教师信息
       parameters:
       - description: 登录返回的Token
         in: header
         name: token
         required: true
         type: string
-      - description: 需要查询的学生邮箱
-        format: email
-        in: query
-        name: queryemail
-        type: string
-      - description: 需要查询学生ID
+      - description: 需要查询ID
         in: query
         name: id
         type: string
-      - description: 需要查询学生用户名
+      - description: 需要修改用户名
         in: query
         name: name
         type: string
@@ -658,9 +914,9 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/model.CommonResponse-any'
-      summary: 修改指定教师学生信息
+      summary: 修改指定教师信息
       tags:
-      - example
+      - admin
   /authrequired/admin/teacher/{action}:
     get:
       consumes:
@@ -702,7 +958,76 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 获取指定教师信息
       tags:
-      - example
+      - admin
+  /authrequired/admin/teacher/class:
+    delete:
+      consumes:
+      - application/json
+      description: 管理员将老师移除班级
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 教师ID
+        in: query
+        name: teacherid
+        required: true
+        type: string
+      - description: 班级名称(可选)
+        in: query
+        name: classname
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 管理员将老师移除班级
+      tags:
+      - classAdmin
+  /authrequired/admin/teacher/class/new:
+    post:
+      consumes:
+      - application/json
+      description: 管理员添加老师到班级
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 教师ID
+        in: query
+        name: teacherid
+        required: true
+        type: string
+      - description: 班级名称
+        in: query
+        name: classname
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 管理员添加老师到班级
+      tags:
+      - classAdmin
   /authrequired/admin/teacher/new:
     post:
       consumes:
@@ -748,7 +1073,7 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 注册教师
       tags:
-      - example
+      - admin
   /authrequired/admin/teacher/password:
     patch:
       consumes:
@@ -760,18 +1085,9 @@ paths:
         name: token
         required: true
         type: string
-      - description: 需要查询的学生邮箱
-        format: email
-        in: query
-        name: queryemail
-        type: string
       - description: 需要查询学生ID
         in: query
         name: id
-        type: string
-      - description: 需要查询学生用户名
-        in: query
-        name: name
         type: string
       - description: 新密码
         in: query
@@ -790,7 +1106,37 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 修改指定教师密码
       tags:
-      - example
+      - admin
+  /authrequired/admin/teacher/students:
+    post:
+      consumes:
+      - application/json
+      description: 管理员列出指定教师所有学生
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 教师用户ID
+        in: query
+        name: teacherid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-model_GetClassBelongsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 管理员列出指定教师所有学生
+      tags:
+      - classAdmin
   /authrequired/admin/teachers/{action}:
     get:
       consumes:
@@ -819,18 +1165,13 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 获取所有教师信息
       tags:
-      - example
-  /authrequired/student/{action}:
+      - admin
+  /authrequired/classes:
     get:
       consumes:
       - application/json
-      description: 获取学生相关信息
+      description: 获取所有班级
       parameters:
-      - description: 查询过滤器，如果没有默认查询所以信息
-        format: email
-        in: path
-        name: action
-        type: string
       - description: 登录返回的Token
         in: header
         name: token
@@ -842,14 +1183,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.CommonResponse-model_GetUserResponse'
+            $ref: '#/definitions/model.CommonResponse-array_model_GetClassResponse'
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/model.CommonResponse-any'
-      summary: 获取学生相关信息
+      summary: 获取所有班级
       tags:
-      - example
+      - auth
+  /authrequired/student/{action}:
     patch:
       consumes:
       - application/json
@@ -903,7 +1245,61 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 修改学生相关信息
       tags:
-      - example
+      - student
+  /authrequired/student/class/join:
+    post:
+      consumes:
+      - application/json
+      description: 学生加入班级
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 班级名称
+        in: query
+        name: classname
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 学生加入班级
+      tags:
+      - classStudent
+  /authrequired/student/class/leave:
+    delete:
+      consumes:
+      - application/json
+      description: 学生离开班级
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 学生离开班级
+      tags:
+      - classStudent
   /authrequired/teacher:
     patch:
       consumes:
@@ -957,16 +1353,127 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 修改教师相关信息
       tags:
-      - example
-  /authrequired/teacher/{action}:
+      - teacher
+  /authrequired/teacher/class:
     get:
       consumes:
       - application/json
-      description: 获取教师相关信息
+      description: 列出所有已加入的班级
       parameters:
-      - description: 查询过滤器，如果没有默认查询所以信息
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-array_model_Class'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 列出所有已加入的班级
+      tags:
+      - classTeacher
+    patch:
+      consumes:
+      - application/json
+      description: 学生修改班级
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 班级名称
+        in: query
+        name: classname
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 学生修改班级
+      tags:
+      - classStudent
+  /authrequired/teacher/class/join:
+    post:
+      consumes:
+      - application/json
+      description: 教师加入班级
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 班级名称
+        in: query
+        name: classname
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 教师加入班级
+      tags:
+      - classTeacher
+  /authrequired/teacher/class/leave:
+    delete:
+      consumes:
+      - application/json
+      description: 教师离开班级
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 班级名称
+        in: query
+        name: classname
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 教师离开班级
+      tags:
+      - classTeacher
+  /authrequired/teacher/class/students/{classname}:
+    get:
+      consumes:
+      - application/json
+      description: 列出班级所有学生
+      parameters:
+      - description: '班级名称(可选), 只显示网络工程B的学生: /authrequired/teacher/class/students/21网络工程B'
         in: path
-        name: action
+        name: classname
         type: string
       - description: 登录返回的Token
         in: header
@@ -979,14 +1486,85 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.CommonResponse-model_GetUserResponse'
+            $ref: '#/definitions/model.CommonResponse-model_GetClassBelongsResponse'
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/model.CommonResponse-any'
-      summary: 获取教师相关信息
+      summary: 列出班级所有学生
       tags:
-      - example
+      - classTeacher
+  /authrequired/teacher/class/students/join:
+    post:
+      consumes:
+      - application/json
+      description: 添加学生到指定班级
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - collectionFormat: csv
+        description: 学生用户ID
+        in: query
+        items:
+          type: integer
+        name: studentid
+        required: true
+        type: array
+      - description: 班级名称
+        in: query
+        name: classname
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 添加学生到指定班级
+      tags:
+      - classTeacher
+  /authrequired/teacher/class/students/leave:
+    delete:
+      consumes:
+      - application/json
+      description: 从指定班级移除学生
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - collectionFormat: csv
+        description: 学生用户ID
+        in: query
+        items:
+          type: integer
+        name: studentid
+        required: true
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 从指定班级移除学生
+      tags:
+      - classTeacher
   /authrequired/teacher/password:
     patch:
       consumes:
@@ -1020,7 +1598,7 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 修改教师密码
       tags:
-      - example
+      - teacher
   /authrequired/teacher/student/new:
     post:
       consumes:
@@ -1081,7 +1659,7 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 添加/注册一个学生
       tags:
-      - example
+      - teacher
   /isvalid:
     get:
       consumes:
@@ -1099,14 +1677,14 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.CommonResponse-any'
+            $ref: '#/definitions/model.CommonResponse-model_GetUserResponse'
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 是否登录
       tags:
-      - example
+      - auth
   /login:
     post:
       consumes:
@@ -1143,7 +1721,7 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 登录
       tags:
-      - example
+      - auth
   /refresh:
     post:
       consumes:
@@ -1167,7 +1745,7 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 刷新登录令牌
       tags:
-      - example
+      - auth
   /register:
     post:
       consumes:
@@ -1223,5 +1801,5 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 添加/注册一个学生
       tags:
-      - example
+      - student
 swagger: "2.0"

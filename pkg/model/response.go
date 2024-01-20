@@ -33,3 +33,23 @@ type GetUserResponse struct {
 	Class        string `json:"class,omitempty"`
 	Sex          string `json:"sex,omitempty"`
 }
+
+type ClassWithStudent struct {
+	ClassName string             `json:"classname"`
+	Studetns  []*GetUserResponse `json:"students"`
+}
+
+type GetClassBelongsResponse struct {
+	TeacherID int64               `json:"teacherid"`
+	Classes   []*ClassWithStudent `json:"classes"`
+}
+
+type AddClassResponse struct {
+	ClassID int64 `json:"classid"`
+}
+
+type GetClassResponse struct {
+	TeacherID int64  `json:"teacherid" gorm:"column:teacherid"`
+	ClassID   int64  `json:"classid" gorm:"column:classid"`
+	ClassName string `json:"classname" gorm:"column:classname"`
+}

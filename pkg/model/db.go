@@ -16,10 +16,20 @@ type User struct {
 	RealName         string             `gorm:"column:realName"`
 	UserSchoollD     string             `gorm:"column:userSchoollD"`
 	SchoolCode       string             `gorm:"column:schoolCode"`
-	Class            string             `gorm:"column:class"`
+	Class            int64              `gorm:"column:class"`
 	Role             string             `gorm:"column:role"`
 	Sex              string             `gorm:"column:sex"`
 	Password         string             `gorm:"column:password"`
 	Security         UserSecurity       `gorm:"serializer:json;column:security"`
 	SecurityQuestion []SecurityQuestion `gorm:"serializer:json;column:securityQuestion"`
+}
+
+type Class struct {
+	TeacherID int64 `gorm:"column:teacherid" json:"teacherid"`
+	ClassID   int64 `gorm:"column:classid" json:"classid"`
+}
+
+type ClassMap struct {
+	ClassID int64  `gorm:"column:classid"`
+	Name    string `gorm:"column:classname"`
 }
