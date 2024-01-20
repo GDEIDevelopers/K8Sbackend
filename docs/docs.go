@@ -1759,6 +1759,42 @@ const docTemplate = `{
             }
         },
         "/authrequired/teacher/class": {
+            "get": {
+                "description": "列出所有已加入的班级",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "classTeacher"
+                ],
+                "summary": "列出所有已加入的班级",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-array_model_Class"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            },
             "patch": {
                 "description": "学生修改班级",
                 "consumes": [

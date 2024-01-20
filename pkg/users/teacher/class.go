@@ -9,6 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var _ = &model.CommonResponse[any]{}
+
 // 教师加入班级 godoc
 // @Summary 教师加入班级
 // @Schemes
@@ -226,7 +228,7 @@ func (t *Teacher) RemoveStudents(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Success 200 {object} model.CommonResponse[[]*model.Class]
+// @Success 200 {object} model.CommonResponse[[]model.Class]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/teacher/class [get]
 func (t *Teacher) ListJoinedClass(c *gin.Context) {

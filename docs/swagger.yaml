@@ -1355,6 +1355,30 @@ paths:
       tags:
       - teacher
   /authrequired/teacher/class:
+    get:
+      consumes:
+      - application/json
+      description: 列出所有已加入的班级
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-array_model_Class'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 列出所有已加入的班级
+      tags:
+      - classTeacher
     patch:
       consumes:
       - application/json
