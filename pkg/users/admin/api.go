@@ -16,7 +16,7 @@ import (
 // @Summary 获取所有教师信息
 // @Schemes
 // @Description 获取所有教师信息
-// @Tags example
+// @Tags admin
 // @Accept json
 // @Produce json
 // @Param   action    path     string  false  "查询过滤器，如果没有默认查询所以信息"
@@ -51,7 +51,7 @@ func (t *Admin) GetTeachers(c *gin.Context) {
 // @Summary 获取指定教师信息
 // @Schemes
 // @Description 获取指定教师信息
-// @Tags example
+// @Tags admin
 // @Accept json
 // @Produce json
 // @Param   action    path     string  false  "查询过滤器，如果没有默认查询所以信息"
@@ -92,7 +92,7 @@ func (t *Admin) GetTeacher(c *gin.Context) {
 // @Summary 获取所有学生信息
 // @Schemes
 // @Description 获取所有学生信息
-// @Tags example
+// @Tags admin
 // @Accept json
 // @Produce json
 // @Param   action    path     string  false  "查询过滤器，如果没有默认查询所以信息"
@@ -117,6 +117,10 @@ func (t *Admin) GetStudents(c *gin.Context) {
 	for _, tea := range students {
 		var student model.GetUserResponse
 		apputils.IgnoreStructCopy(&student, &tea, c.Param("action"))
+
+		if classname, ok := t.Class.GetClassNameByID(tea.Class); ok {
+			student.Class = classname
+		}
 		studentRes = append(studentRes, student)
 	}
 
@@ -127,7 +131,7 @@ func (t *Admin) GetStudents(c *gin.Context) {
 // @Summary 获取指定学生信息
 // @Schemes
 // @Description 获取指定学生信息
-// @Tags example
+// @Tags admin
 // @Accept json
 // @Produce json
 // @Param   action    path     string  false  "查询过滤器，如果没有默认查询所以信息"
@@ -160,7 +164,9 @@ func (t *Admin) GetStudent(c *gin.Context) {
 	}
 	var res model.GetUserResponse
 	apputils.IgnoreStructCopy(&res, &user, c.Param("action"))
-
+	if classname, ok := t.Class.GetClassNameByID(user.Class); ok {
+		res.Class = classname
+	}
 	apputils.OK[model.GetUserResponse](c, res)
 }
 
@@ -168,7 +174,7 @@ func (t *Admin) GetStudent(c *gin.Context) {
 // @Summary 修改指定学生信息
 // @Schemes
 // @Description 修改指定学生信息
-// @Tags example
+// @Tags admin
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
@@ -206,21 +212,30 @@ func (t *Admin) ModifyStudent(c *gin.Context) {
 	}
 	apputils.IgnoreStructCopy(&user, &req, "")
 
+	if req.Class != "" {
+		classid, ok := t.Class.GetClassIDByName(req.Class)
+		if !ok {
+			apputils.Throw(c, errhandle.ClassNotFound)
+			return
+		}
+		user.Class = classid
+	}
+
 	tx.Save(&user)
 	apputils.OK[any](c, nil)
 }
 
-// 修改指定教师学生信息 godoc
-// @Summary 修改指定教师学生信息
+// 修改指定教师信息 godoc
+// @Summary 修改指定教师信息
 // @Schemes
-// @Description 修改指定教师学生信息
-// @Tags example
+// @Description 修改指定教师信息
+// @Tags admin
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   queryemail     query     string  false  "需要查询的学生邮箱" Format(email)
-// @Param   id     query     string  false  "需要查询学生ID"
-// @Param   name     query     string  false  "需要查询学生用户名"
+// @Param   queryemail     query     string  false  "需要查询的邮箱" Format(email)
+// @Param   id     query     string  false  "需要查询ID"
+// @Param   name     query     string  false  "需要查询用户名"
 // @Param   email     query    string  false  "修改邮箱"  Format(email)
 // @Param   realName     query    string  false  "修改真实姓名"
 // @Param   userSchoollD     query    string  false  "修改学号"
@@ -260,7 +275,7 @@ func (t *Admin) ModifyTeacher(c *gin.Context) {
 // @Summary 修改指定管理员信息
 // @Schemes
 // @Description 修改指定管理员信息
-// @Tags example
+// @Tags admin
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
@@ -306,7 +321,7 @@ func (t *Admin) ModifyAdmin(c *gin.Context) {
 // @Summary 修改指定教师密码
 // @Schemes
 // @Description 修改指定教师密码
-// @Tags example
+// @Tags admin
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
@@ -355,7 +370,7 @@ func (t *Admin) ModifyTeacherPassword(c *gin.Context) {
 // @Summary 修改指定学生密码
 // @Schemes
 // @Description 修改指定学生密码
-// @Tags example
+// @Tags admin
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
@@ -404,7 +419,7 @@ func (t *Admin) ModifyStudentPassword(c *gin.Context) {
 // @Summary 修改指定管理员密码
 // @Schemes
 // @Description 修改指定管理员密码
-// @Tags example
+// @Tags admin
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
@@ -452,7 +467,7 @@ func (t *Admin) ModifyAdminPassword(c *gin.Context) {
 // @Summary 删除指定教师
 // @Schemes
 // @Description 删除指定教师
-// @Tags example
+// @Tags admin
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
@@ -489,7 +504,7 @@ func (t *Admin) DeleteTeacher(c *gin.Context) {
 // @Summary 删除指定学生
 // @Schemes
 // @Description 删除指定学生
-// @Tags example
+// @Tags admin
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
@@ -526,7 +541,7 @@ func (t *Admin) DeleteStudent(c *gin.Context) {
 // @Summary 删除指定管理员
 // @Schemes
 // @Description 删除指定管理员
-// @Tags example
+// @Tags admin
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
@@ -563,7 +578,7 @@ func (t *Admin) DeleteAdmin(c *gin.Context) {
 // @Summary 注册学生
 // @Schemes
 // @Description 注册学生
-// @Tags example
+// @Tags admin
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
@@ -607,6 +622,12 @@ func (t *Admin) RegisterStudent(c *gin.Context) {
 		return
 	}
 
+	classid, ok := t.Class.GetClassIDByName(req.Class)
+	if !ok {
+		apputils.Throw(c, errhandle.ClassNotFound)
+		return
+	}
+
 	hashed, _ := bcrypt.GenerateFromPassword(
 		[]byte(req.Password),
 		bcrypt.DefaultCost,
@@ -620,7 +641,7 @@ func (t *Admin) RegisterStudent(c *gin.Context) {
 		Name:         req.Name,
 		RealName:     req.RealName,
 		Sex:          req.Sex,
-		Class:        req.Class,
+		Class:        classid,
 		Password:     string(hashed),
 		Email:        req.Email,
 	})
@@ -637,7 +658,7 @@ func (t *Admin) RegisterStudent(c *gin.Context) {
 // @Summary 注册教师
 // @Schemes
 // @Description 注册教师
-// @Tags example
+// @Tags admin
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
@@ -683,7 +704,7 @@ func (t *Admin) RegisterTeacher(c *gin.Context) {
 		Name:         req.Name,
 		RealName:     req.RealName,
 		Sex:          req.Sex,
-		Class:        req.Class,
+		Class:        0,
 		Password:     string(hashed),
 		Email:        req.Email,
 	})
@@ -700,7 +721,7 @@ func (t *Admin) RegisterTeacher(c *gin.Context) {
 // @Summary 注册管理员
 // @Schemes
 // @Description 注册管理员
-// @Tags example
+// @Tags admin
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
@@ -746,7 +767,7 @@ func (t *Admin) RegisterAdmin(c *gin.Context) {
 		Name:         req.Name,
 		RealName:     req.RealName,
 		Sex:          req.Sex,
-		Class:        req.Class,
+		Class:        0,
 		Password:     string(hashed),
 		Email:        req.Email,
 	})

@@ -3,6 +3,7 @@ package app
 import (
 	"net/http"
 
+	"github.com/GDEIDevelopers/K8Sbackend/app/routes"
 	docs "github.com/GDEIDevelopers/K8Sbackend/docs"
 	"github.com/GDEIDevelopers/K8Sbackend/pkg/errhandle"
 	"github.com/gin-gonic/gin"
@@ -10,60 +11,44 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+func (s *Server) initCMDRoutes(g *gin.Engine) {
+	for _, r := range s.routes {
+		if route, ok := r.(routes.CMDRoutes); ok {
+			route.InitCMDRoute(g)
+		}
+	}
+}
+
+func (s *Server) initAuthRequiedRoutes(g *gin.RouterGroup) {
+	for _, r := range s.routes {
+		r.InitRoute(g)
+	}
+}
+
+func (s *Server) initGlobalRoutes(g *gin.RouterGroup) {
+	for _, r := range s.routes {
+		if route, ok := r.(routes.GlobalRoutes); ok {
+			route.InitGlobalRoute(g)
+		}
+	}
+}
+
 func (s *Server) dispatchRoute() {
 	docs.SwaggerInfo.BasePath = "/api"
 	e := gin.Default()
 	e.Use(s.UseCORS())
-
-	cmd := gin.Default()
-	cmd.POST("/admin/new", s.admin.RegisterAdmin)
-	cmd.POST("/teacher/new", s.admin.RegisterTeacher)
-	cmd.POST("/student/new", s.admin.RegisterStudent)
-
 	e.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
-	a := e.Group("/api")
-	a.GET("/isvalid", s.IsValidSession)
-	a.POST("/login", s.UserLogin)
-	a.POST("/refresh", s.UserLoginRefresh)
-	a.POST("/register", s.student.RegisterStudent)
+	cmd := gin.Default()
+	s.initCMDRoutes(cmd)
 
-	requiredAuth := a.Group("/authrequired")
+	api := e.Group("/api")
+	s.initGlobalRoutes(api)
+
+	requiredAuth := api.Group("/authrequired")
 	requiredAuth.Use(s.UseTokenVerify())
+	s.initAuthRequiedRoutes(requiredAuth)
 
-	// teacher part
-	teacher := requiredAuth.Group("/teacher")
-	teacher.POST("/student/new", s.teacher.RegisterStudent)
-	teacher.GET("/:action", s.teacher.Get)
-	teacher.PATCH("/password", s.teacher.Modify)
-	teacher.PATCH("/", s.teacher.Modify)
-
-	// student part
-	student := requiredAuth.Group("/student")
-	student.GET("/:action", s.student.Get)
-	student.PATCH("/:action", s.student.Modify)
-	// admin part
-
-	admin := requiredAuth.Group("/admin")
-	admin.POST("/teacher/new", s.admin.RegisterTeacher)
-	admin.POST("/student/new", s.admin.RegisterStudent)
-	admin.POST("/admin/new", s.admin.RegisterAdmin)
-
-	admin.GET("/teachers/:action", s.admin.GetTeachers)
-	admin.GET("/teacher/:action", s.admin.GetTeacher)
-	admin.GET("/students/:action", s.admin.GetStudents)
-	admin.GET("/student/:action", s.admin.GetStudent)
-
-	admin.PATCH("/teacher/password", s.admin.ModifyTeacherPassword)
-	admin.PATCH("/student/password", s.admin.ModifyStudentPassword)
-	admin.PATCH("/admin/password", s.admin.ModifyAdminPassword)
-	admin.PATCH("/teacher", s.admin.ModifyTeacher)
-	admin.PATCH("/student", s.admin.ModifyStudent)
-	admin.PATCH("/admin", s.admin.ModifyAdmin)
-
-	admin.DELETE("/teacher", s.admin.DeleteTeacher)
-	admin.DELETE("/student", s.admin.DeleteStudent)
-	admin.DELETE("/admin", s.admin.DeleteAdmin)
 	s.setupHTTPServer(e, cmd)
 }
 

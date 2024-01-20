@@ -19,4 +19,7 @@ const (
 	RealNameFormatError
 	SchoolError
 	PasswordTooShort
+	ClassNotFound
+	TeacherNotFound
+	TeacherNotJoinClass
 )

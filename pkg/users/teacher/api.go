@@ -12,47 +12,11 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// 获取教师信息 godoc
-// @Summary 获取教师相关信息
-// @Schemes
-// @Description 获取教师相关信息
-// @Tags example
-// @Accept json
-// @Produce json
-// @Param   action    path     string  false  "查询过滤器，如果没有默认查询所以信息"
-// @Param   token     header    string  true   "登录返回的Token"
-// @Success 200 {object} model.CommonResponse[model.GetUserResponse]
-// @Failure 400  {object} model.CommonResponse[any]
-// @Router /authrequired/teacher/{action} [get]
-func (t *Teacher) Get(c *gin.Context) {
-	userinfo, ok := c.Get("info")
-	if !ok {
-		apputils.Throw(c, errhandle.InnerError)
-		return
-	}
-	info := userinfo.(*model.UserInfo)
-
-	var teacher model.User
-	err := t.DB.Table("users").
-		Where("id = ?", info.UserID).
-		First(&teacher).Error
-
-	if err != nil {
-		apputils.ThrowError(c, err)
-		return
-	}
-	var getResponse model.GetUserResponse
-
-	apputils.IgnoreStructCopy(&getResponse, &teacher, c.Param("action"))
-
-	apputils.OK[model.GetUserResponse](c, getResponse)
-}
-
 // 修改教师信息 godoc
 // @Summary 修改教师相关信息
 // @Schemes
 // @Description 修改教师相关信息
-// @Tags example
+// @Tags teacher
 // @Accept json
 // @Produce json
 // @Param   action    path     string  false  "查询过滤器，如果没有默认查询所以信息"
@@ -107,7 +71,7 @@ func (t *Teacher) Modify(c *gin.Context) {
 // @Summary 修改教师密码
 // @Schemes
 // @Description 修改教师密码
-// @Tags example
+// @Tags teacher
 // @Accept json
 // @Produce json
 // @Param   action    path     string  false  "查询过滤器，如果没有默认查询所以信息"  Format(email)
@@ -158,7 +122,7 @@ func (t *Teacher) ModifyPassword(c *gin.Context) {
 // @Summary 添加/注册一个学生
 // @Schemes
 // @Description 添加/注册一个学生
-// @Tags example
+// @Tags teacher
 // @Accept json
 // @Produce json
 // @Param   token     query    string  true   "登录返回的Token"
@@ -173,6 +137,13 @@ func (t *Teacher) ModifyPassword(c *gin.Context) {
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/teacher/student/new [post]
 func (t *Teacher) RegisterStudent(c *gin.Context) {
+	userinfo, ok := c.Get("info")
+	if !ok {
+		apputils.Throw(c, errhandle.InnerError)
+		return
+	}
+	info := userinfo.(*model.UserInfo)
+
 	b, err := c.GetRawData()
 	if err != nil {
 		apputils.ThrowError(c, err)
@@ -202,6 +173,28 @@ func (t *Teacher) RegisterStudent(c *gin.Context) {
 		return
 	}
 
+	classid, ok := t.Class.GetClassIDByName(req.Class)
+	if !ok {
+		apputils.Throw(c, errhandle.ClassNotFound)
+		return
+	}
+	myclasses, err := t.Class.GetTeacherClass(info.UserID)
+	if err != nil {
+		apputils.Throw(c, errhandle.TeacherNotJoinClass)
+		return
+	}
+	foundClass := false
+	for _, myclass := range myclasses {
+		if myclass == classid {
+			foundClass = true
+			break
+		}
+	}
+	if !foundClass {
+		apputils.Throw(c, errhandle.PermissionDenied)
+		return
+	}
+
 	hashed, _ := bcrypt.GenerateFromPassword(
 		[]byte(req.Password),
 		bcrypt.DefaultCost,
@@ -215,7 +208,7 @@ func (t *Teacher) RegisterStudent(c *gin.Context) {
 		Name:         req.Name,
 		RealName:     req.RealName,
 		Sex:          req.Sex,
-		Class:        req.Class,
+		Class:        classid,
 		Password:     string(hashed),
 		Email:        req.Email,
 	})
