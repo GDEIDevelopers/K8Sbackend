@@ -90,11 +90,11 @@ func (t *Admin) RemoveClass(c *gin.Context) {
 	apputils.OK[any](c, nil)
 }
 
-// 管理员所有班级 godoc
-// @Summary 管理员所有班级
+// 获取所有班级 godoc
+// @Summary 获取所有班级
 // @Schemes
-// @Description 管理员所有班级
-// @Tags classAdmin
+// @Description 获取所有班级
+// @Tags auth
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"

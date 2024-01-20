@@ -199,18 +199,9 @@ paths:
         name: token
         required: true
         type: string
-      - description: 需要查询的邮箱
-        format: email
-        in: query
-        name: queryemail
-        type: string
       - description: 需要查询ID
         in: query
         name: id
-        type: string
-      - description: 需要查询用户名
-        in: query
-        name: name
         type: string
       produces:
       - application/json
@@ -236,16 +227,11 @@ paths:
         name: token
         required: true
         type: string
-      - description: 需要查询的学生邮箱
-        format: email
-        in: query
-        name: queryemail
-        type: string
       - description: 需要查询学生ID
         in: query
         name: id
         type: string
-      - description: 需要查询学生用户名
+      - description: 需要修改的学生用户名
         in: query
         name: name
         type: string
@@ -345,18 +331,13 @@ paths:
         name: token
         required: true
         type: string
-      - description: 需要查询的学生邮箱
-        format: email
-        in: query
-        name: queryemail
-        type: string
-      - description: 需要查询学生ID
+      - description: 需要查询管理员ID
         in: query
         name: id
         type: string
-      - description: 需要查询学生用户名
+      - description: 新密码
         in: query
-        name: name
+        name: password
         type: string
       produces:
       - application/json
@@ -506,18 +487,9 @@ paths:
         name: token
         required: true
         type: string
-      - description: 需要查询的邮箱
-        format: email
-        in: query
-        name: queryemail
-        type: string
       - description: 需要查询ID
         in: query
         name: id
-        type: string
-      - description: 需要查询用户名
-        in: query
-        name: name
         type: string
       produces:
       - application/json
@@ -543,16 +515,11 @@ paths:
         name: token
         required: true
         type: string
-      - description: 需要查询的学生邮箱
-        format: email
-        in: query
-        name: queryemail
-        type: string
       - description: 需要查询学生ID
         in: query
         name: id
         type: string
-      - description: 需要查询学生用户名
+      - description: 需要修改学生用户名
         in: query
         name: name
         type: string
@@ -813,18 +780,9 @@ paths:
         name: token
         required: true
         type: string
-      - description: 需要查询的学生邮箱
-        format: email
-        in: query
-        name: queryemail
-        type: string
       - description: 需要查询学生ID
         in: query
         name: id
-        type: string
-      - description: 需要查询学生用户名
-        in: query
-        name: name
         type: string
       - description: 新密码
         in: query
@@ -884,18 +842,9 @@ paths:
         name: token
         required: true
         type: string
-      - description: 需要删除的邮箱
-        format: email
-        in: query
-        name: queryemail
-        type: string
       - description: 需要删除ID
         in: query
         name: id
-        type: string
-      - description: 需要删除用户名
-        in: query
-        name: name
         type: string
       produces:
       - application/json
@@ -921,16 +870,11 @@ paths:
         name: token
         required: true
         type: string
-      - description: 需要查询的邮箱
-        format: email
-        in: query
-        name: queryemail
-        type: string
       - description: 需要查询ID
         in: query
         name: id
         type: string
-      - description: 需要查询用户名
+      - description: 需要修改用户名
         in: query
         name: name
         type: string
@@ -1141,18 +1085,9 @@ paths:
         name: token
         required: true
         type: string
-      - description: 需要查询的学生邮箱
-        format: email
-        in: query
-        name: queryemail
-        type: string
       - description: 需要查询学生ID
         in: query
         name: id
-        type: string
-      - description: 需要查询学生用户名
-        in: query
-        name: name
         type: string
       - description: 新密码
         in: query
@@ -1235,7 +1170,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: 管理员所有班级
+      description: 获取所有班级
       parameters:
       - description: 登录返回的Token
         in: header
@@ -1253,9 +1188,9 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/model.CommonResponse-any'
-      summary: 管理员所有班级
+      summary: 获取所有班级
       tags:
-      - classAdmin
+      - auth
   /authrequired/student/{action}:
     patch:
       consumes:
@@ -1339,7 +1274,7 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 学生加入班级
       tags:
-      - classTeacher
+      - classStudent
   /authrequired/student/class/leave:
     delete:
       consumes:
@@ -1364,7 +1299,7 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 学生离开班级
       tags:
-      - classTeacher
+      - classStudent
   /authrequired/teacher:
     patch:
       consumes:
@@ -1447,7 +1382,7 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 学生修改班级
       tags:
-      - classTeacher
+      - classStudent
   /authrequired/teacher/class/join:
     post:
       consumes:

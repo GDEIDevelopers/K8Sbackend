@@ -38,21 +38,8 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "format": "email",
-                        "description": "需要查询的邮箱",
-                        "name": "queryemail",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "description": "需要查询ID",
                         "name": "id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "需要查询用户名",
-                        "name": "name",
                         "in": "query"
                     }
                 ],
@@ -93,20 +80,13 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "format": "email",
-                        "description": "需要查询的学生邮箱",
-                        "name": "queryemail",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "description": "需要查询学生ID",
                         "name": "id",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "需要查询学生用户名",
+                        "description": "需要修改的学生用户名",
                         "name": "name",
                         "in": "query"
                     },
@@ -254,21 +234,14 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "format": "email",
-                        "description": "需要查询的学生邮箱",
-                        "name": "queryemail",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "需要查询学生ID",
+                        "description": "需要查询管理员ID",
                         "name": "id",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "需要查询学生用户名",
-                        "name": "name",
+                        "description": "新密码",
+                        "name": "password",
                         "in": "query"
                     }
                 ],
@@ -496,21 +469,8 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "format": "email",
-                        "description": "需要查询的邮箱",
-                        "name": "queryemail",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "description": "需要查询ID",
                         "name": "id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "需要查询用户名",
-                        "name": "name",
                         "in": "query"
                     }
                 ],
@@ -551,20 +511,13 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "format": "email",
-                        "description": "需要查询的学生邮箱",
-                        "name": "queryemail",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "description": "需要查询学生ID",
                         "name": "id",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "需要查询学生用户名",
+                        "description": "需要修改学生用户名",
                         "name": "name",
                         "in": "query"
                     },
@@ -887,21 +840,8 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "format": "email",
-                        "description": "需要查询的学生邮箱",
-                        "name": "queryemail",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "description": "需要查询学生ID",
                         "name": "id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "需要查询学生用户名",
-                        "name": "name",
                         "in": "query"
                     },
                     {
@@ -1057,21 +997,8 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "format": "email",
-                        "description": "需要删除的邮箱",
-                        "name": "queryemail",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "description": "需要删除ID",
                         "name": "id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "需要删除用户名",
-                        "name": "name",
                         "in": "query"
                     }
                 ],
@@ -1112,20 +1039,13 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "format": "email",
-                        "description": "需要查询的邮箱",
-                        "name": "queryemail",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "description": "需要查询ID",
                         "name": "id",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "需要查询用户名",
+                        "description": "需要修改用户名",
                         "name": "name",
                         "in": "query"
                     },
@@ -1376,21 +1296,8 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "format": "email",
-                        "description": "需要查询的学生邮箱",
-                        "name": "queryemail",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
                         "description": "需要查询学生ID",
                         "name": "id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "需要查询学生用户名",
-                        "name": "name",
                         "in": "query"
                     },
                     {
@@ -1570,7 +1477,7 @@ const docTemplate = `{
         },
         "/authrequired/classes": {
             "get": {
-                "description": "管理员所有班级",
+                "description": "获取所有班级",
                 "consumes": [
                     "application/json"
                 ],
@@ -1578,9 +1485,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "classAdmin"
+                    "auth"
                 ],
-                "summary": "管理员所有班级",
+                "summary": "获取所有班级",
                 "parameters": [
                     {
                         "type": "string",
@@ -1616,7 +1523,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "classTeacher"
+                    "classStudent"
                 ],
                 "summary": "学生加入班级",
                 "parameters": [
@@ -1660,7 +1567,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "classTeacher"
+                    "classStudent"
                 ],
                 "summary": "学生离开班级",
                 "parameters": [
@@ -1861,7 +1768,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "classTeacher"
+                    "classStudent"
                 ],
                 "summary": "学生修改班级",
                 "parameters": [

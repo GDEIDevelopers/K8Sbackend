@@ -29,7 +29,7 @@ func (a *Teacher) InitRoute(g *gin.RouterGroup) {
 	teacher.PATCH("/", a.Modify)
 
 	// class part
-	teacher.GET("/class/students", a.ListStudents)
+	teacher.GET("/class/students/:classname", a.ListStudents)
 	teacher.POST("/class/join", a.Join)
 	teacher.POST("/class/students/join", a.AddStudents)
 

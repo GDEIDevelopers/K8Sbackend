@@ -13,7 +13,7 @@ import (
 // @Summary 学生加入班级
 // @Schemes
 // @Description 学生加入班级
-// @Tags classTeacher
+// @Tags classStudent
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
@@ -55,7 +55,7 @@ func (t *Student) Join(c *gin.Context) {
 // @Summary 学生离开班级
 // @Schemes
 // @Description 学生离开班级
-// @Tags classTeacher
+// @Tags classStudent
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
@@ -96,7 +96,7 @@ func (t *Student) Leave(c *gin.Context) {
 // @Summary 学生修改班级
 // @Schemes
 // @Description 学生修改班级
-// @Tags classTeacher
+// @Tags classStudent
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"

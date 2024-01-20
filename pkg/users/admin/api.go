@@ -178,9 +178,8 @@ func (t *Admin) GetStudent(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   queryemail     query     string  false  "需要查询的学生邮箱" Format(email)
 // @Param   id     query     string  false  "需要查询学生ID"
-// @Param   name     query     string  false  "需要查询学生用户名"
+// @Param   name     query     string  false  "需要修改学生用户名"
 // @Param   email     query    string  false  "修改邮箱"  Format(email)
 // @Param   realName     query    string  false  "修改真实姓名"
 // @Param   userSchoollD     query    string  false  "修改学号"
@@ -199,13 +198,10 @@ func (t *Admin) ModifyStudent(c *gin.Context) {
 	var req model.AdminModifyRequest
 	json.Unmarshal(b, &req)
 
-	tx := apputils.BuildQuerySQL(t.DB.Table("users"), &req.QueryRequest, "student")
-	if tx == nil {
-		apputils.Throw(c, errhandle.ParamsError)
-		return
-	}
 	var user model.User
-	err = tx.First(&user).Error
+	err = t.DB.Table("users").
+		Where("id = ? AND role = ?", req.UserID, "student").
+		First(&user).Error
 	if err != nil {
 		apputils.Throw(c, errhandle.UserNonExists)
 		return
@@ -221,7 +217,9 @@ func (t *Admin) ModifyStudent(c *gin.Context) {
 		user.Class = classid
 	}
 
-	tx.Save(&user)
+	t.DB.Table("users").
+		Where("id = ? AND role = ?", req.UserID, "student").
+		Save(&user)
 	apputils.OK[any](c, nil)
 }
 
@@ -233,9 +231,8 @@ func (t *Admin) ModifyStudent(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   queryemail     query     string  false  "需要查询的邮箱" Format(email)
 // @Param   id     query     string  false  "需要查询ID"
-// @Param   name     query     string  false  "需要查询用户名"
+// @Param   name     query     string  false  "需要修改用户名"
 // @Param   email     query    string  false  "修改邮箱"  Format(email)
 // @Param   realName     query    string  false  "修改真实姓名"
 // @Param   userSchoollD     query    string  false  "修改学号"
@@ -254,20 +251,19 @@ func (t *Admin) ModifyTeacher(c *gin.Context) {
 	var req model.AdminModifyRequest
 	json.Unmarshal(b, &req)
 
-	tx := apputils.BuildQuerySQL(t.DB.Table("users"), &req.QueryRequest, "teacher")
-	if tx == nil {
-		apputils.Throw(c, errhandle.ParamsError)
-		return
-	}
 	var user model.User
-	err = tx.First(&user).Error
+	err = t.DB.Table("users").
+		Where("id = ? AND role = ?", req.UserID, "teacher").
+		First(&user).Error
 	if err != nil {
 		apputils.Throw(c, errhandle.UserNonExists)
 		return
 	}
 	apputils.IgnoreStructCopy(&user, &req, "")
 
-	tx.Save(&user)
+	t.DB.Table("users").
+		Where("id = ? AND role = ?", req.UserID, "teacher").
+		Save(&user)
 	apputils.OK[any](c, nil)
 }
 
@@ -279,9 +275,8 @@ func (t *Admin) ModifyTeacher(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   queryemail     query     string  false  "需要查询的学生邮箱" Format(email)
 // @Param   id     query     string  false  "需要查询学生ID"
-// @Param   name     query     string  false  "需要查询学生用户名"
+// @Param   name     query     string  false  "需要修改的学生用户名"
 // @Param   email     query    string  false  "修改邮箱"  Format(email)
 // @Param   realName     query    string  false  "修改真实姓名"
 // @Param   userSchoollD     query    string  false  "修改学号"
@@ -300,20 +295,19 @@ func (t *Admin) ModifyAdmin(c *gin.Context) {
 	var req model.AdminModifyRequest
 	json.Unmarshal(b, &req)
 
-	tx := apputils.BuildQuerySQL(t.DB.Table("users"), &req.QueryRequest, "admin")
-	if tx == nil {
-		apputils.Throw(c, errhandle.ParamsError)
-		return
-	}
 	var user model.User
-	err = tx.First(&user).Error
+	err = t.DB.Table("users").
+		Where("id = ? AND role = ?", req.UserID, "admin").
+		First(&user).Error
 	if err != nil {
 		apputils.Throw(c, errhandle.UserNonExists)
 		return
 	}
 	apputils.IgnoreStructCopy(&user, &req, "")
 
-	tx.Save(&user)
+	t.DB.Table("users").
+		Where("id = ? AND role = ?", req.UserID, "admin").
+		Save(&user)
 	apputils.OK[any](c, nil)
 }
 
@@ -325,9 +319,7 @@ func (t *Admin) ModifyAdmin(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   queryemail     query     string  false  "需要查询的学生邮箱" Format(email)
 // @Param   id     query     string  false  "需要查询学生ID"
-// @Param   name     query     string  false  "需要查询学生用户名"
 // @Param   password     query     string  false  "新密码"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
@@ -341,11 +333,6 @@ func (t *Admin) ModifyTeacherPassword(c *gin.Context) {
 	var req model.AdminModifyPasswordRequest
 	json.Unmarshal(b, &req)
 
-	tx := apputils.BuildQuerySQL(t.DB.Table("users"), &req.QueryRequest, "teacher")
-	if tx == nil {
-		apputils.Throw(c, errhandle.ParamsError)
-		return
-	}
 	if req.Password == "" {
 		apputils.Throw(c, errhandle.ParamsError)
 		return
@@ -358,7 +345,9 @@ func (t *Admin) ModifyTeacherPassword(c *gin.Context) {
 		apputils.ThrowError(c, err)
 		return
 	}
-	err = tx.Update("password", string(hashed)).Error
+	err = t.DB.Table("users").
+		Where("id = ? AND role = ?", req.UserID, "teacher").
+		Update("password", string(hashed)).Error
 	if err != nil {
 		apputils.Throw(c, errhandle.UserNonExists)
 		return
@@ -374,9 +363,7 @@ func (t *Admin) ModifyTeacherPassword(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   queryemail     query     string  false  "需要查询的学生邮箱" Format(email)
 // @Param   id     query     string  false  "需要查询学生ID"
-// @Param   name     query     string  false  "需要查询学生用户名"
 // @Param   password     query     string  false  "新密码"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
@@ -390,11 +377,6 @@ func (t *Admin) ModifyStudentPassword(c *gin.Context) {
 	var req model.AdminModifyPasswordRequest
 	json.Unmarshal(b, &req)
 
-	tx := apputils.BuildQuerySQL(t.DB.Table("users"), &req.QueryRequest, "student")
-	if tx == nil {
-		apputils.Throw(c, errhandle.ParamsError)
-		return
-	}
 	if req.Password == "" {
 		apputils.Throw(c, errhandle.ParamsError)
 		return
@@ -407,7 +389,9 @@ func (t *Admin) ModifyStudentPassword(c *gin.Context) {
 		apputils.ThrowError(c, err)
 		return
 	}
-	err = tx.Update("password", string(hashed)).Error
+	err = t.DB.Table("users").
+		Where("id = ? AND role = ?", req.UserID, "student").
+		Update("password", string(hashed)).Error
 	if err != nil {
 		apputils.Throw(c, errhandle.UserNonExists)
 		return
@@ -423,9 +407,8 @@ func (t *Admin) ModifyStudentPassword(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   queryemail     query     string  false  "需要查询的学生邮箱" Format(email)
-// @Param   id     query     string  false  "需要查询学生ID"
-// @Param   name     query     string  false  "需要查询学生用户名"
+// @Param   id     query     string  false  "需要查询管理员ID"
+// @Param   password     query     string  false  "新密码"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/admin/admin/password [patch]
@@ -438,11 +421,6 @@ func (t *Admin) ModifyAdminPassword(c *gin.Context) {
 	var req model.AdminModifyPasswordRequest
 	json.Unmarshal(b, &req)
 
-	tx := apputils.BuildQuerySQL(t.DB.Table("users"), &req.QueryRequest, "admin")
-	if tx == nil {
-		apputils.Throw(c, errhandle.ParamsError)
-		return
-	}
 	if req.Password == "" {
 		apputils.Throw(c, errhandle.ParamsError)
 		return
@@ -455,7 +433,9 @@ func (t *Admin) ModifyAdminPassword(c *gin.Context) {
 		apputils.ThrowError(c, err)
 		return
 	}
-	err = tx.Update("password", string(hashed)).Error
+	err = t.DB.Table("users").
+		Where("id = ? AND role = ?", req.UserID, "student").
+		Update("password", string(hashed)).Error
 	if err != nil {
 		apputils.Throw(c, errhandle.UserNonExists)
 		return
@@ -471,9 +451,7 @@ func (t *Admin) ModifyAdminPassword(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   queryemail     query     string  false  "需要删除的邮箱" Format(email)
 // @Param   id     query     string  false  "需要删除ID"
-// @Param   name     query     string  false  "需要删除用户名"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/admin/teacher [delete]
@@ -483,16 +461,13 @@ func (t *Admin) DeleteTeacher(c *gin.Context) {
 		apputils.ThrowError(c, err)
 		return
 	}
-	var req model.QueryRequest
+	var req model.UserIDOnlyRequest
 	json.Unmarshal(b, &req)
 
-	tx := apputils.BuildQuerySQL(t.DB.Table("users"), &req, "teacher")
-	if tx == nil {
-		apputils.Throw(c, errhandle.ParamsError)
-		return
-	}
 	var user model.User
-	err = tx.Delete(&user).Error
+	err = t.DB.Table("users").
+		Where("id = ? AND role = ?", req.UserID, "teacher").
+		Delete(&user).Error
 	if err != nil {
 		apputils.Throw(c, errhandle.UserNonExists)
 		return
@@ -508,9 +483,7 @@ func (t *Admin) DeleteTeacher(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   queryemail     query     string  false  "需要查询的邮箱" Format(email)
 // @Param   id     query     string  false  "需要查询ID"
-// @Param   name     query     string  false  "需要查询用户名"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/admin/student [delete]
@@ -520,16 +493,13 @@ func (t *Admin) DeleteStudent(c *gin.Context) {
 		apputils.ThrowError(c, err)
 		return
 	}
-	var req model.QueryRequest
+	var req model.UserIDOnlyRequest
 	json.Unmarshal(b, &req)
 
-	tx := apputils.BuildQuerySQL(t.DB.Table("users"), &req, "student")
-	if tx == nil {
-		apputils.Throw(c, errhandle.ParamsError)
-		return
-	}
 	var user model.User
-	err = tx.Delete(&user).Error
+	err = t.DB.Table("users").
+		Where("id = ? AND role = ?", req.UserID, "student").
+		Delete(&user).Error
 	if err != nil {
 		apputils.Throw(c, errhandle.UserNonExists)
 		return
@@ -545,9 +515,7 @@ func (t *Admin) DeleteStudent(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   queryemail     query     string  false  "需要查询的邮箱" Format(email)
 // @Param   id     query     string  false  "需要查询ID"
-// @Param   name     query     string  false  "需要查询用户名"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/admin/admin [delete]
@@ -560,13 +528,10 @@ func (t *Admin) DeleteAdmin(c *gin.Context) {
 	var req model.QueryRequest
 	json.Unmarshal(b, &req)
 
-	tx := apputils.BuildQuerySQL(t.DB.Table("users"), &req, "admin")
-	if tx == nil {
-		apputils.Throw(c, errhandle.ParamsError)
-		return
-	}
 	var user model.User
-	err = tx.Delete(&user).Error
+	err = t.DB.Table("users").
+		Where("id = ? AND role = ?", req.UserID, "admin").
+		Delete(&user).Error
 	if err != nil {
 		apputils.Throw(c, errhandle.UserNonExists)
 		return

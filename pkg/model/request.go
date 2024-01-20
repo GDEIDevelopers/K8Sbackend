@@ -34,13 +34,17 @@ type ModifyUserPasswordRequest struct {
 	Password string `json:"password"`
 }
 
+type UserIDOnlyRequest struct {
+	UserID int `json:"id"`
+}
+
 type AdminModifyPasswordRequest struct {
-	QueryRequest
+	UserIDOnlyRequest
 	Password string `json:"password"`
 }
 
 type AdminModifyRequest struct {
-	QueryRequest
+	UserIDOnlyRequest
 	Email        string `json:"email,omitempty"`
 	RealName     string `json:"realName,omitempty"`
 	UserSchoollD string `json:"userSchoollD,omitempty"`
