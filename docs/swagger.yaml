@@ -620,11 +620,6 @@ paths:
         name: studentid
         required: true
         type: string
-      - description: 新班级名称
-        in: query
-        name: classname
-        required: true
-        type: string
       produces:
       - application/json
       responses:

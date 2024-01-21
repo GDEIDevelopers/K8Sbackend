@@ -602,13 +602,6 @@ const docTemplate = `{
                         "name": "studentid",
                         "in": "query",
                         "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "新班级名称",
-                        "name": "classname",
-                        "in": "query",
-                        "required": true
                     }
                 ],
                 "responses": {
