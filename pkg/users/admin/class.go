@@ -123,8 +123,8 @@ func (t *Admin) ListClasses(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   teacherid     query    string  false   "教师用户ID(可选)"
-// @Param   classid     query    string  false   "班级ID(可选)"
+// @Param   teacherid     query    int  false   "教师用户ID(可选)"
+// @Param   classid     query    int  false   "班级ID(可选)"
 // @Success 200 {object} model.CommonResponse[[]model.Class]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/admin/class/teachers [post]
@@ -195,7 +195,7 @@ func (t *Admin) ListClassStudent(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   teacherid     query    string  true   "教师用户ID"
+// @Param   teacherid     query    int  true   "教师用户ID"
 // @Success 200 {object} model.CommonResponse[model.GetClassBelongsResponse]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/admin/teacher/students [post]
@@ -207,6 +207,10 @@ func (t *Admin) ListTeacherStudent(c *gin.Context) {
 	}
 	var req model.GetTeacherStudentRequest
 	json.Unmarshal(b, &req)
+	if req.TeacherID == 0 {
+		apputils.Throw(c, errhandle.ParamsError)
+		return
+	}
 
 	res := t.Class.BelongsTo(req.TeacherID)
 	if res == nil {
@@ -225,7 +229,7 @@ func (t *Admin) ListTeacherStudent(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   teacherid     query     string  true  "教师ID"
+// @Param   teacherid     query     int  true  "教师ID"
 // @Param   classname     query     string  true  "班级名称"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
@@ -238,6 +242,10 @@ func (t *Admin) AddTeacherToClass(c *gin.Context) {
 	}
 	var req model.TeacherClassRequest
 	json.Unmarshal(b, &req)
+	if req.TeacherID == 0 {
+		apputils.Throw(c, errhandle.ParamsError)
+		return
+	}
 
 	err = t.Class.TeacherJoin(req.TeacherID, req.ClassName)
 	if err != nil {
@@ -255,7 +263,7 @@ func (t *Admin) AddTeacherToClass(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   teacherid     query     string  true  "教师ID"
+// @Param   teacherid     query     int  true  "教师ID"
 // @Param   classname     query     string  false  "班级名称(可选)"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
@@ -268,6 +276,10 @@ func (t *Admin) RemoveTeacherFromClass(c *gin.Context) {
 	}
 	var req model.TeacherClassRequest
 	json.Unmarshal(b, &req)
+	if req.TeacherID == 0 {
+		apputils.Throw(c, errhandle.ParamsError)
+		return
+	}
 
 	err = t.Class.TeacherLeave(req.TeacherID, req.ClassName)
 	if err != nil {
@@ -285,7 +297,7 @@ func (t *Admin) RemoveTeacherFromClass(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   studentid     query     string  true  "学生用户ID"
+// @Param   studentid     query     int  true  "学生用户ID"
 // @Param   classname     query     string  true  "新班级名称"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
@@ -298,6 +310,10 @@ func (t *Admin) AddStudentToClass(c *gin.Context) {
 	}
 	var req model.StudentClassRequest
 	json.Unmarshal(b, &req)
+	if req.StudentID == 0 {
+		apputils.Throw(c, errhandle.ParamsError)
+		return
+	}
 
 	err = t.Class.StudentJoin(req.StudentID, req.ClassName)
 	if err != nil {
@@ -315,8 +331,7 @@ func (t *Admin) AddStudentToClass(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   studentid     query     string  true  "学生用户ID"
-// @Param   classname     query     string  true  "新班级名称"
+// @Param   studentid     query     int  true  "学生用户ID"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/admin/student/class [delete]
@@ -328,7 +343,10 @@ func (t *Admin) RemoveStudentFromClass(c *gin.Context) {
 	}
 	var req model.StudentLeaveClassRequest
 	json.Unmarshal(b, &req)
-
+	if req.StudentID == 0 {
+		apputils.Throw(c, errhandle.ParamsError)
+		return
+	}
 	err = t.Class.StudentLeave(req.StudentID)
 	if err != nil {
 		apputils.Throw(c, errhandle.TeacherNotFound)
@@ -345,7 +363,7 @@ func (t *Admin) RemoveStudentFromClass(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   classname     query     string  true  "学生用户ID"
+// @Param   studentid     query     int  true  "学生用户ID"
 // @Param   classname     query     string  true  "新班级名称"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]
@@ -358,6 +376,10 @@ func (t *Admin) ModifyStudentClass(c *gin.Context) {
 	}
 	var req model.StudentClassRequest
 	json.Unmarshal(b, &req)
+	if req.StudentID == 0 || req.ClassName == "" {
+		apputils.Throw(c, errhandle.ParamsError)
+		return
+	}
 	classid, ok := t.Class.GetClassIDByName(req.ClassName)
 	if !ok {
 		apputils.Throw(c, errhandle.ClassNotFound)

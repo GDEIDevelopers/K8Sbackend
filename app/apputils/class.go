@@ -139,9 +139,9 @@ func (c *Class) StudentJoin(studentid int64, name string, filter ...int64) (err 
 	sql := c.DB.Table("users")
 
 	if len(filter) > 0 {
-		sql = sql.Where("id = ? AND class IN ?", studentid, filter)
+		sql = sql.Where("id = ? AND role = ? AND class IN ?", studentid, "student", filter)
 	} else {
-		sql = sql.Where("id = ?", studentid)
+		sql = sql.Where("id = ?  AND role = ?", studentid, "student")
 	}
 
 	err = sql.Update("class", classid).Error
@@ -152,9 +152,9 @@ func (c *Class) StudentLeave(studentid int64, filter ...int64) (err error) {
 	sql := c.DB.Table("users")
 
 	if len(filter) > 0 {
-		sql = sql.Where("id = ? AND class IN ?", studentid, filter)
+		sql = sql.Where("id = ? AND role = ? AND class IN ?", studentid, "student", filter)
 	} else {
-		sql = sql.Where("id = ?", studentid)
+		sql = sql.Where("id = ?  AND role = ?", studentid, "student")
 	}
 
 	err = sql.Update("class", 0).Error
@@ -167,7 +167,6 @@ func (c *Class) TeacherJoin(Teacherid int64, name string) (err error) {
 		return ErrClassNotExists
 	}
 	err = c.DB.Table("class").
-		Where("teacherid = ?", Teacherid).
 		Create(&model.Class{
 			TeacherID: Teacherid,
 			ClassID:   classid,
