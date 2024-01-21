@@ -344,7 +344,7 @@ func (t *Admin) RemoveStudentFromClass(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Param   classname     query     string  true  "学生用户ID"
+// @Param   studentid     query     string  true  "学生用户ID"
 // @Param   classname     query     string  true  "新班级名称"
 // @Success 200 {object} model.CommonResponse[any]
 // @Failure 400  {object} model.CommonResponse[any]

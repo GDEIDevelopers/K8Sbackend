@@ -646,7 +646,7 @@ paths:
         type: string
       - description: 学生用户ID
         in: query
-        name: classname
+        name: studentid
         required: true
         type: string
       - description: 新班级名称

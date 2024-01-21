@@ -642,7 +642,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "学生用户ID",
-                        "name": "classname",
+                        "name": "studentid",
                         "in": "query",
                         "required": true
                     },
