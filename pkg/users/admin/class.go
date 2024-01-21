@@ -2,7 +2,6 @@ package admin
 
 import (
 	"encoding/json"
-	"log"
 
 	"github.com/GDEIDevelopers/K8Sbackend/app/apputils"
 	"github.com/GDEIDevelopers/K8Sbackend/pkg/errhandle"
@@ -208,6 +207,10 @@ func (t *Admin) ListTeacherStudent(c *gin.Context) {
 	}
 	var req model.GetTeacherStudentRequest
 	json.Unmarshal(b, &req)
+	if req.TeacherID == 0 {
+		apputils.Throw(c, errhandle.ParamsError)
+		return
+	}
 
 	res := t.Class.BelongsTo(req.TeacherID)
 	if res == nil {
@@ -239,6 +242,10 @@ func (t *Admin) AddTeacherToClass(c *gin.Context) {
 	}
 	var req model.TeacherClassRequest
 	json.Unmarshal(b, &req)
+	if req.TeacherID == 0 {
+		apputils.Throw(c, errhandle.ParamsError)
+		return
+	}
 
 	err = t.Class.TeacherJoin(req.TeacherID, req.ClassName)
 	if err != nil {
@@ -269,6 +276,10 @@ func (t *Admin) RemoveTeacherFromClass(c *gin.Context) {
 	}
 	var req model.TeacherClassRequest
 	json.Unmarshal(b, &req)
+	if req.TeacherID == 0 {
+		apputils.Throw(c, errhandle.ParamsError)
+		return
+	}
 
 	err = t.Class.TeacherLeave(req.TeacherID, req.ClassName)
 	if err != nil {
@@ -299,6 +310,10 @@ func (t *Admin) AddStudentToClass(c *gin.Context) {
 	}
 	var req model.StudentClassRequest
 	json.Unmarshal(b, &req)
+	if req.StudentID == 0 {
+		apputils.Throw(c, errhandle.ParamsError)
+		return
+	}
 
 	err = t.Class.StudentJoin(req.StudentID, req.ClassName)
 	if err != nil {
@@ -328,7 +343,10 @@ func (t *Admin) RemoveStudentFromClass(c *gin.Context) {
 	}
 	var req model.StudentLeaveClassRequest
 	json.Unmarshal(b, &req)
-	log.Println(req)
+	if req.StudentID == 0 {
+		apputils.Throw(c, errhandle.ParamsError)
+		return
+	}
 	err = t.Class.StudentLeave(req.StudentID)
 	if err != nil {
 		apputils.Throw(c, errhandle.TeacherNotFound)
