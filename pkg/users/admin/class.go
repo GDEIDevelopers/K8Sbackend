@@ -376,6 +376,10 @@ func (t *Admin) ModifyStudentClass(c *gin.Context) {
 	}
 	var req model.StudentClassRequest
 	json.Unmarshal(b, &req)
+	if req.StudentID == 0 || req.ClassName == "" {
+		apputils.Throw(c, errhandle.ParamsError)
+		return
+	}
 	classid, ok := t.Class.GetClassIDByName(req.ClassName)
 	if !ok {
 		apputils.Throw(c, errhandle.ClassNotFound)
