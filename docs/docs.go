@@ -418,13 +418,13 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
+                        "type": "integer",
                         "description": "教师用户ID(可选)",
                         "name": "teacherid",
                         "in": "query"
                     },
                     {
-                        "type": "string",
+                        "type": "integer",
                         "description": "班级ID(可选)",
                         "name": "classid",
                         "in": "query"
@@ -597,7 +597,7 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
+                        "type": "integer",
                         "description": "学生用户ID",
                         "name": "studentid",
                         "in": "query",
@@ -640,7 +640,7 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
+                        "type": "integer",
                         "description": "学生用户ID",
                         "name": "studentid",
                         "in": "query",
@@ -692,7 +692,7 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
+                        "type": "integer",
                         "description": "学生用户ID",
                         "name": "studentid",
                         "in": "query",
@@ -1118,7 +1118,7 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
+                        "type": "integer",
                         "description": "教师ID",
                         "name": "teacherid",
                         "in": "query",
@@ -1169,7 +1169,7 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
+                        "type": "integer",
                         "description": "教师ID",
                         "name": "teacherid",
                         "in": "query",
@@ -1338,7 +1338,7 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
+                        "type": "integer",
                         "description": "教师用户ID",
                         "name": "teacherid",
                         "in": "query",
