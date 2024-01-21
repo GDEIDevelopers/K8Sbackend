@@ -2,6 +2,7 @@ package admin
 
 import (
 	"encoding/json"
+	"log"
 
 	"github.com/GDEIDevelopers/K8Sbackend/app/apputils"
 	"github.com/GDEIDevelopers/K8Sbackend/pkg/errhandle"
@@ -327,7 +328,7 @@ func (t *Admin) RemoveStudentFromClass(c *gin.Context) {
 	}
 	var req model.StudentLeaveClassRequest
 	json.Unmarshal(b, &req)
-
+	log.Println(req)
 	err = t.Class.StudentLeave(req.StudentID)
 	if err != nil {
 		apputils.Throw(c, errhandle.TeacherNotFound)
