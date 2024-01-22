@@ -69,8 +69,8 @@ func (c *Class) BelongsTo(teacherid int64, classname ...string) *model.GetClassB
 	for _, name := range classname {
 		if query == nil {
 			query = make(map[string]struct{}, len(classname))
-			query[name] = struct{}{}
 		}
+		query[name] = struct{}{}
 	}
 
 	filterName := func(name string) bool {
