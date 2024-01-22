@@ -61,7 +61,7 @@ func (t *Admin) GetTeachers(c *gin.Context) {
 // @Param   name     query     string  false  "需要查询教师用户名"
 // @Success 200 {object} model.CommonResponse[model.GetUserResponse]
 // @Failure 400  {object} model.CommonResponse[any]
-// @Router /authrequired/admin/teacher/{action} [get]
+// @Router /authrequired/admin/teacher/{action} [post]
 func (t *Admin) GetTeacher(c *gin.Context) {
 	b, err := c.GetRawData()
 	if err != nil {
@@ -141,7 +141,7 @@ func (t *Admin) GetStudents(c *gin.Context) {
 // @Param   name     query     string  false  "需要查询学生用户名"
 // @Success 200 {object} model.CommonResponse[model.GetUserResponse]
 // @Failure 400  {object} model.CommonResponse[any]
-// @Router /authrequired/admin/student/{action} [get]
+// @Router /authrequired/admin/student/{action} [post]
 func (t *Admin) GetStudent(c *gin.Context) {
 	b, err := c.GetRawData()
 	if err != nil {

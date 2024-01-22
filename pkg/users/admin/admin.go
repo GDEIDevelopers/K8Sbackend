@@ -29,11 +29,15 @@ func (a *Admin) InitRoute(g *gin.RouterGroup) {
 	admin.POST("/teacher/new", a.RegisterTeacher)
 	admin.POST("/student/new", a.RegisterStudent)
 	admin.POST("/admin/new", a.RegisterAdmin)
+	admin.POST("/teacher", a.GetTeacher)
+	admin.POST("/student", a.GetStudent)
+	admin.POST("/teacher/:action", a.GetTeacher)
+	admin.POST("/student/:action", a.GetStudent)
 
+	admin.GET("/teachers", a.GetTeachers)
+	admin.GET("/students", a.GetStudents)
 	admin.GET("/teachers/:action", a.GetTeachers)
-	admin.GET("/teacher/:action", a.GetTeacher)
 	admin.GET("/students/:action", a.GetStudents)
-	admin.GET("/student/:action", a.GetStudent)
 
 	admin.PATCH("/teacher/password", a.ModifyTeacherPassword)
 	admin.PATCH("/student/password", a.ModifyStudentPassword)
