@@ -33,6 +33,9 @@ func (c *Class) GetClassIDByName(name string) (int64, bool) {
 }
 
 func (c *Class) GetClassNameByID(id int64) (string, bool) {
+	if id == 0 {
+		return "", false
+	}
 	var class model.ClassMap
 	err := c.DB.Table("classMap").
 		Where("classid = ?", id).
@@ -43,7 +46,7 @@ func (c *Class) GetClassNameByID(id int64) (string, bool) {
 	return class.Name, true
 }
 
-func (c *Class) GetStudents(id int64) (ret []*model.GetUserResponse) {
+func (c *Class) GetStudents(id int64, classname string) (ret []*model.GetUserResponse) {
 	var users []*model.User
 	err := c.DB.Table("users").
 		Where("class = ?", id).
@@ -54,6 +57,7 @@ func (c *Class) GetStudents(id int64) (ret []*model.GetUserResponse) {
 	for _, user := range users {
 		var res model.GetUserResponse
 		IgnoreStructCopy(&res, user, "")
+		res.Class = classname
 		ret = append(ret, &res)
 	}
 	return
@@ -61,10 +65,18 @@ func (c *Class) GetStudents(id int64) (ret []*model.GetUserResponse) {
 
 func (c *Class) BelongsTo(teacherid int64, classname ...string) *model.GetClassBelongsResponse {
 	var class []*model.Class
+	var query map[string]struct{}
+	for _, name := range classname {
+		if query == nil {
+			query = make(map[string]struct{}, len(classname))
+		}
+		query[name] = struct{}{}
+	}
 
 	filterName := func(name string) bool {
-		if len(classname) > 0 && classname[0] != "" {
-			return name == classname[0]
+		if query != nil {
+			_, ok := query[name]
+			return ok
 		}
 		return true
 	}
@@ -80,7 +92,7 @@ func (c *Class) BelongsTo(teacherid int64, classname ...string) *model.GetClassB
 		if name, ok := c.GetClassNameByID(classes.ClassID); ok && filterName(name) {
 			current := &model.ClassWithStudent{
 				ClassName: name,
-				Studetns:  c.GetStudents(classes.ClassID),
+				Studetns:  c.GetStudents(classes.ClassID, name),
 			}
 			ret.Classes = append(ret.Classes, current)
 		}

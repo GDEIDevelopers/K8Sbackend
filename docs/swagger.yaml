@@ -68,6 +68,17 @@ definitions:
       status:
         $ref: '#/definitions/errhandle.ErrCode'
     type: object
+  model.CommonResponse-array_GetClassResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.GetClassResponse'
+        type: array
+      reason:
+        type: string
+      status:
+        $ref: '#/definitions/errhandle.ErrCode'
+    type: object
   model.CommonResponse-array_model_Class:
     properties:
       data:
@@ -1366,7 +1377,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.CommonResponse-array_model_Class'
+            $ref: '#/definitions/model.CommonResponse-array_GetClassResponse'
         "400":
           description: Bad Request
           schema:

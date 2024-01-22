@@ -2,6 +2,7 @@ package teacher
 
 import (
 	"encoding/json"
+	"strings"
 
 	"github.com/GDEIDevelopers/K8Sbackend/app/apputils"
 	"github.com/GDEIDevelopers/K8Sbackend/pkg/errhandle"
@@ -118,7 +119,7 @@ func (t *Teacher) ListStudents(c *gin.Context) {
 	apputils.OK(c,
 		t.Class.BelongsTo(
 			info.UserID,
-			c.Param("classname"),
+			strings.Split(c.Param("classname"), ",")...,
 		),
 	)
 }
@@ -228,7 +229,7 @@ func (t *Teacher) RemoveStudents(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
-// @Success 200 {object} model.CommonResponse[[]model.Class]
+// @Success 200 {object} model.CommonResponse[[]GetClassResponse]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/teacher/class [get]
 func (t *Teacher) ListJoinedClass(c *gin.Context) {
@@ -238,10 +239,10 @@ func (t *Teacher) ListJoinedClass(c *gin.Context) {
 		return
 	}
 	info := userinfo.(*model.UserInfo)
-	var ret []*model.Class
+	var ret []*model.GetClassResponse
 	err := t.DB.Table("class").
-		Where("teacherid = ?", info.UserID).
-		Find(&ret).Error
+		Joins("LEFT JOIN classMap ON classMap.classid = class.classid AND class.teacherid = ?", info.UserID).
+		Scan(&ret).Error
 
 	if err != nil {
 		apputils.Throw(c, errhandle.TeacherNotJoinClass)

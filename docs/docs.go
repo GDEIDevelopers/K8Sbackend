@@ -1777,7 +1777,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.CommonResponse-array_model_Class"
+                            "$ref": "#/definitions/model.CommonResponse-array_GetClassResponse"
                         }
                     },
                     "400": {
@@ -2501,6 +2501,23 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "data": {},
+                "reason": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/errhandle.ErrCode"
+                }
+            }
+        },
+        "model.CommonResponse-array_GetClassResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.GetClassResponse"
+                    }
+                },
                 "reason": {
                     "type": "string"
                 },

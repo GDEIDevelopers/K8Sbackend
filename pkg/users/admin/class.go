@@ -178,7 +178,7 @@ func (t *Admin) ListClassStudent(c *gin.Context) {
 		apputils.Throw(c, errhandle.ClassError)
 		return
 	}
-	res := t.Class.GetStudents(classid)
+	res := t.Class.GetStudents(classid, req.ClassName)
 	if res == nil {
 		apputils.Throw(c, errhandle.ClassError)
 		return
