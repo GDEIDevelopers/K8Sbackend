@@ -2,6 +2,7 @@ package teacher
 
 import (
 	"encoding/json"
+	"strings"
 
 	"github.com/GDEIDevelopers/K8Sbackend/app/apputils"
 	"github.com/GDEIDevelopers/K8Sbackend/pkg/errhandle"
@@ -118,7 +119,7 @@ func (t *Teacher) ListStudents(c *gin.Context) {
 	apputils.OK(c,
 		t.Class.BelongsTo(
 			info.UserID,
-			c.Param("classname"),
+			strings.Split(c.Param("classname"), ",")...,
 		),
 	)
 }

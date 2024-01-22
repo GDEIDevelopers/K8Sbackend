@@ -65,10 +65,18 @@ func (c *Class) GetStudents(id int64, classname string) (ret []*model.GetUserRes
 
 func (c *Class) BelongsTo(teacherid int64, classname ...string) *model.GetClassBelongsResponse {
 	var class []*model.Class
+	var query map[string]struct{}
+	for _, name := range classname {
+		if query == nil {
+			query = make(map[string]struct{}, len(classname))
+			query[name] = struct{}{}
+		}
+	}
 
 	filterName := func(name string) bool {
-		if len(classname) > 0 && classname[0] != "" {
-			return name == classname[0]
+		if query != nil {
+			_, ok := query[name]
+			return ok
 		}
 		return true
 	}
