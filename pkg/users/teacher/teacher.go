@@ -25,7 +25,7 @@ func (a *Teacher) Close() error {
 func (a *Teacher) InitRoute(g *gin.RouterGroup) {
 	teacher := g.Group("/teacher")
 	teacher.POST("/student/new", a.RegisterStudent)
-	teacher.PATCH("/password", a.Modify)
+	teacher.PATCH("/password", a.ModifyPassword)
 	teacher.PATCH("/", a.Modify)
 
 	// class part
