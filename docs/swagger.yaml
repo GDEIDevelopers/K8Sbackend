@@ -574,7 +574,7 @@ paths:
       tags:
       - admin
   /authrequired/admin/student/{action}:
-    get:
+    post:
       consumes:
       - application/json
       description: 获取指定学生信息
@@ -924,7 +924,7 @@ paths:
       tags:
       - admin
   /authrequired/admin/teacher/{action}:
-    get:
+    post:
       consumes:
       - application/json
       description: 获取指定教师信息

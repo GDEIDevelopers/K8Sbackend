@@ -861,7 +861,7 @@ const docTemplate = `{
             }
         },
         "/authrequired/admin/student/{action}": {
-            "get": {
+            "post": {
                 "description": "获取指定学生信息",
                 "consumes": [
                     "application/json"
@@ -1362,7 +1362,7 @@ const docTemplate = `{
             }
         },
         "/authrequired/admin/teacher/{action}": {
-            "get": {
+            "post": {
                 "description": "获取指定教师信息",
                 "consumes": [
                     "application/json"
