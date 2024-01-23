@@ -62,7 +62,7 @@ func BuildQuerySQL(tx *gorm.DB, query *model.QueryRequest, role ...string) *gorm
 		return nil
 	}
 
-	whereStatement := strings.Join(where, " OR ")
+	whereStatement := strings.Join(where, " AND ")
 
 	if len(role) > 0 {
 		whereStatement += " AND role = ?"
