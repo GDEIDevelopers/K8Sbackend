@@ -1666,7 +1666,7 @@ paths:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 获取指定学生信息
       tags:
-      - admin
+      - teacher
   /authrequired/teacher/student/new:
     post:
       consumes:

@@ -2153,7 +2153,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "admin"
+                    "teacher"
                 ],
                 "summary": "获取指定学生信息",
                 "parameters": [

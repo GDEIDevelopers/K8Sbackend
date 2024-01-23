@@ -225,7 +225,7 @@ func (t *Teacher) RegisterStudent(c *gin.Context) {
 // @Summary 获取指定学生信息
 // @Schemes
 // @Description 获取指定学生信息
-// @Tags admin
+// @Tags teacher
 // @Accept json
 // @Produce json
 // @Param   token     header    string  true   "登录返回的Token"
