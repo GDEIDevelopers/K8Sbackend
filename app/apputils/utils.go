@@ -49,6 +49,14 @@ func BuildQuerySQL(tx *gorm.DB, query *model.QueryRequest, role ...string) *gorm
 		where = append(where, "name = ?")
 		params = append(params, query.Name)
 	}
+	if query.QueryUserSchoollD != "" {
+		where = append(where, "userSchoollD = ?")
+		params = append(params, query.QueryUserSchoollD)
+	}
+	if query.QueryRealName != "" {
+		where = append(where, "realName = ?")
+		params = append(params, query.QueryRealName)
+	}
 
 	if len(where) == 0 {
 		return nil

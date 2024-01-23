@@ -905,6 +905,18 @@ const docTemplate = `{
                         "description": "需要查询学生用户名",
                         "name": "name",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生真实姓名",
+                        "name": "queryRealname",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生学号",
+                        "name": "queryUserSchoollD",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1405,6 +1417,18 @@ const docTemplate = `{
                         "type": "string",
                         "description": "需要查询教师用户名",
                         "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询教师真实姓名",
+                        "name": "queryRealname",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询教师学号",
+                        "name": "queryUserSchoollD",
                         "in": "query"
                     }
                 ],
@@ -2108,6 +2132,75 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/authrequired/teacher/student": {
+            "post": {
+                "description": "获取指定学生信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "获取指定学生信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "登录返回的Token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "format": "email",
+                        "description": "需要查询的学生邮箱",
+                        "name": "queryemail",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生用户名",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生真实姓名",
+                        "name": "queryRealname",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "需要查询学生学号",
+                        "name": "queryUserSchoollD",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CommonResponse-model_GetUserResponse"
                         }
                     },
                     "400": {

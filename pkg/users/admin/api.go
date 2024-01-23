@@ -59,6 +59,8 @@ func (t *Admin) GetTeachers(c *gin.Context) {
 // @Param   queryemail     query     string  false  "需要查询的教师邮箱" Format(email)
 // @Param   id     query     string  false  "需要查询教师ID"
 // @Param   name     query     string  false  "需要查询教师用户名"
+// @Param   queryRealname     query     string  false  "需要查询教师真实姓名"
+// @Param   queryUserSchoollD     query     string  false  "需要查询教师学号"
 // @Success 200 {object} model.CommonResponse[model.GetUserResponse]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/admin/teacher/{action} [post]
@@ -139,6 +141,8 @@ func (t *Admin) GetStudents(c *gin.Context) {
 // @Param   queryemail     query     string  false  "需要查询的学生邮箱" Format(email)
 // @Param   id     query     string  false  "需要查询学生ID"
 // @Param   name     query     string  false  "需要查询学生用户名"
+// @Param   queryRealname     query     string  false  "需要查询学生真实姓名"
+// @Param   queryUserSchoollD     query     string  false  "需要查询学生学号"
 // @Success 200 {object} model.CommonResponse[model.GetUserResponse]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/admin/student/{action} [post]

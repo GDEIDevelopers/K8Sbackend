@@ -220,3 +220,47 @@ func (t *Teacher) RegisterStudent(c *gin.Context) {
 
 	apputils.OK[any](c, nil)
 }
+
+// 获得指定学生信息 godoc
+// @Summary 获取指定学生信息
+// @Schemes
+// @Description 获取指定学生信息
+// @Tags admin
+// @Accept json
+// @Produce json
+// @Param   token     header    string  true   "登录返回的Token"
+// @Param   queryemail     query     string  false  "需要查询的学生邮箱" Format(email)
+// @Param   id     query     string  false  "需要查询学生ID"
+// @Param   name     query     string  false  "需要查询学生用户名"
+// @Param   queryRealname     query     string  false  "需要查询学生真实姓名"
+// @Param   queryUserSchoollD     query     string  false  "需要查询学生学号"
+// @Success 200 {object} model.CommonResponse[model.GetUserResponse]
+// @Failure 400  {object} model.CommonResponse[any]
+// @Router /authrequired/teacher/student [post]
+func (t *Teacher) GetStudent(c *gin.Context) {
+	b, err := c.GetRawData()
+	if err != nil {
+		apputils.ThrowError(c, err)
+		return
+	}
+	var req model.QueryRequest
+	json.Unmarshal(b, &req)
+
+	tx := apputils.BuildQuerySQL(t.DB.Table("users"), &req, "student")
+	if tx == nil {
+		apputils.Throw(c, errhandle.ParamsError)
+		return
+	}
+	var user model.User
+	err = tx.First(&user).Error
+	if err != nil {
+		apputils.Throw(c, errhandle.UserNonExists)
+		return
+	}
+	var res model.GetUserResponse
+	apputils.IgnoreStructCopy(&res, &user, "")
+	if classname, ok := t.Class.GetClassNameByID(user.Class); ok {
+		res.Class = classname
+	}
+	apputils.OK[model.GetUserResponse](c, res)
+}

@@ -1,9 +1,11 @@
 package model
 
 type QueryRequest struct {
-	UserID     int    `json:"id"`
-	Name       string `json:"name"`
-	QueryEmail string `json:"queryemail"`
+	UserID            int    `json:"id"`
+	Name              string `json:"name"`
+	QueryEmail        string `json:"queryemail"`
+	QueryRealName     string `json:"queryRealname"`
+	QueryUserSchoollD string `json:"queryUserSchoollD"`
 }
 
 type RegisterUserRequest struct {
