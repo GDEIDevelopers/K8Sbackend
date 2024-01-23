@@ -61,7 +61,7 @@ func (t *Admin) GetTeachers(c *gin.Context) {
 // @Param   name     query     string  false  "需要查询教师用户名"
 // @Param   queryRealname     query     string  false  "需要查询教师真实姓名"
 // @Param   queryUserSchoollD     query     string  false  "需要查询教师学号"
-// @Success 200 {object} model.CommonResponse[model.GetUserResponse]
+// @Success 200 {object} model.CommonResponse[[]model.GetUserResponse]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/admin/teacher/{action} [post]
 func (t *Admin) GetTeacher(c *gin.Context) {
@@ -78,16 +78,25 @@ func (t *Admin) GetTeacher(c *gin.Context) {
 		apputils.Throw(c, errhandle.ParamsError)
 		return
 	}
-	var user model.User
-	err = tx.First(&user).Error
+	var user []*model.User
+	err = tx.Find(&user).Error
 	if err != nil {
 		apputils.Throw(c, errhandle.UserNonExists)
 		return
 	}
-	var res model.GetUserResponse
-	apputils.IgnoreStructCopy(&res, &user, c.Param("action"))
+	var studentRes []*model.GetUserResponse
 
-	apputils.OK[model.GetUserResponse](c, res)
+	for _, tea := range user {
+		var student model.GetUserResponse
+		apputils.IgnoreStructCopy(&student, &tea, "")
+
+		if classname, ok := t.Class.GetClassNameByID(tea.Class); ok {
+			student.Class = classname
+		}
+		studentRes = append(studentRes, &student)
+	}
+
+	apputils.OK(c, studentRes)
 }
 
 // 获取所有学生信息 godoc
@@ -143,7 +152,7 @@ func (t *Admin) GetStudents(c *gin.Context) {
 // @Param   name     query     string  false  "需要查询学生用户名"
 // @Param   queryRealname     query     string  false  "需要查询学生真实姓名"
 // @Param   queryUserSchoollD     query     string  false  "需要查询学生学号"
-// @Success 200 {object} model.CommonResponse[model.GetUserResponse]
+// @Success 200 {object} model.CommonResponse[[]model.GetUserResponse]
 // @Failure 400  {object} model.CommonResponse[any]
 // @Router /authrequired/admin/student/{action} [post]
 func (t *Admin) GetStudent(c *gin.Context) {
@@ -160,18 +169,25 @@ func (t *Admin) GetStudent(c *gin.Context) {
 		apputils.Throw(c, errhandle.ParamsError)
 		return
 	}
-	var user model.User
-	err = tx.First(&user).Error
+	var user []*model.User
+	err = tx.Find(&user).Error
 	if err != nil {
 		apputils.Throw(c, errhandle.UserNonExists)
 		return
 	}
-	var res model.GetUserResponse
-	apputils.IgnoreStructCopy(&res, &user, c.Param("action"))
-	if classname, ok := t.Class.GetClassNameByID(user.Class); ok {
-		res.Class = classname
+	var studentRes []*model.GetUserResponse
+
+	for _, tea := range user {
+		var student model.GetUserResponse
+		apputils.IgnoreStructCopy(&student, &tea, "")
+
+		if classname, ok := t.Class.GetClassNameByID(tea.Class); ok {
+			student.Class = classname
+		}
+		studentRes = append(studentRes, &student)
 	}
-	apputils.OK[model.GetUserResponse](c, res)
+
+	apputils.OK(c, studentRes)
 }
 
 // 修改指定学生信息 godoc

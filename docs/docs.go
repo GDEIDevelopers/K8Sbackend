@@ -923,7 +923,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.CommonResponse-model_GetUserResponse"
+                            "$ref": "#/definitions/model.CommonResponse-array_model_GetUserResponse"
                         }
                     },
                     "400": {
@@ -1436,7 +1436,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.CommonResponse-model_GetUserResponse"
+                            "$ref": "#/definitions/model.CommonResponse-array_model_GetUserResponse"
                         }
                     },
                     "400": {
@@ -2200,7 +2200,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.CommonResponse-model_GetUserResponse"
+                            "$ref": "#/definitions/model.CommonResponse-array_model_GetUserResponse"
                         }
                     },
                     "400": {

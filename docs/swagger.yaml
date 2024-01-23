@@ -615,7 +615,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.CommonResponse-model_GetUserResponse'
+            $ref: '#/definitions/model.CommonResponse-array_model_GetUserResponse'
         "400":
           description: Bad Request
           schema:
@@ -973,7 +973,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.CommonResponse-model_GetUserResponse'
+            $ref: '#/definitions/model.CommonResponse-array_model_GetUserResponse'
         "400":
           description: Bad Request
           schema:
@@ -1659,7 +1659,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.CommonResponse-model_GetUserResponse'
+            $ref: '#/definitions/model.CommonResponse-array_model_GetUserResponse'
         "400":
           description: Bad Request
           schema:
