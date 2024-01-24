@@ -157,13 +157,29 @@ func (t *Teacher) AddStudents(c *gin.Context) {
 		apputils.Throw(c, errhandle.ParamsError)
 		return
 	}
+	classid, ok := t.Class.GetClassIDByName(req.ClassName)
+	if !ok {
+		apputils.Throw(c, errhandle.ClassNotFound)
+		return
+	}
 	classes, err := t.Class.GetTeacherClass(info.UserID)
 	if err != nil {
 		apputils.Throw(c, errhandle.TeacherNotJoinClass)
 		return
 	}
+	foundClass := false
+	for _, myclass := range classes {
+		if myclass == classid {
+			foundClass = true
+			break
+		}
+	}
+	if !foundClass {
+		apputils.Throw(c, errhandle.PermissionDenied)
+		return
+	}
 	for _, studentid := range req.StudentIDs {
-		if err := t.Class.StudentJoin(studentid, req.ClassName, classes...); err != nil {
+		if err := t.Class.StudentJoin(studentid, req.ClassName); err != nil {
 			apputils.ThrowError(c, err)
 			return
 		}
