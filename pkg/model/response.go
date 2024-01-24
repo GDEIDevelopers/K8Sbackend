@@ -49,7 +49,8 @@ type AddClassResponse struct {
 }
 
 type GetClassResponse struct {
-	TeacherID int64  `json:"teacherid" gorm:"column:teacherid"`
-	ClassID   int64  `json:"classid" gorm:"column:classid"`
-	ClassName string `json:"classname" gorm:"column:classname"`
+	TeacherID   int64  `json:"teacherid" gorm:"column:teacherid"`
+	ClassID     int64  `json:"classid" gorm:"column:classid"`
+	ClassName   string `json:"classname" gorm:"column:classname"`
+	TeacherName string `json:"teachername" gorm:"column:realName"`
 }
