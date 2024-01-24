@@ -257,7 +257,7 @@ func (t *Teacher) ListJoinedClass(c *gin.Context) {
 	info := userinfo.(*model.UserInfo)
 	var ret []*model.GetClassResponse
 	err := t.DB.Table("class").
-		Joins("LEFT JOIN classMap ON classMap.classid = class.classid AND class.teacherid = ?", info.UserID).
+		Joins("INNER JOIN classMap ON classMap.classid = class.classid AND class.teacherid = ?", info.UserID).
 		Scan(&ret).Error
 
 	if err != nil {
