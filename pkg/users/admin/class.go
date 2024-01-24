@@ -107,7 +107,7 @@ func (t *Admin) ListClasses(c *gin.Context) {
 	err := t.DB.Table("classMap").
 		Select("class.teacherid", "classMap.classid", "classMap.classname", "users.realName").
 		Joins("LEFT JOIN class ON classMap.classid = class.classid").
-		Joins("INNER JOIN users ON class.teacherid = users.id").
+		Joins("LEFT JOIN users ON class.teacherid = users.id").
 		Scan(&res).Error
 	if err != nil {
 		apputils.ThrowError(c, err)
