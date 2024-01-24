@@ -574,7 +574,7 @@ paths:
       tags:
       - admin
   /authrequired/admin/student/{action}:
-    get:
+    post:
       consumes:
       - application/json
       description: 获取指定学生信息
@@ -601,13 +601,21 @@ paths:
         in: query
         name: name
         type: string
+      - description: 需要查询学生真实姓名
+        in: query
+        name: queryRealname
+        type: string
+      - description: 需要查询学生学号
+        in: query
+        name: queryUserSchoollD
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.CommonResponse-model_GetUserResponse'
+            $ref: '#/definitions/model.CommonResponse-array_model_GetUserResponse'
         "400":
           description: Bad Request
           schema:
@@ -924,7 +932,7 @@ paths:
       tags:
       - admin
   /authrequired/admin/teacher/{action}:
-    get:
+    post:
       consumes:
       - application/json
       description: 获取指定教师信息
@@ -951,13 +959,21 @@ paths:
         in: query
         name: name
         type: string
+      - description: 需要查询教师真实姓名
+        in: query
+        name: queryRealname
+        type: string
+      - description: 需要查询教师学号
+        in: query
+        name: queryUserSchoollD
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.CommonResponse-model_GetUserResponse'
+            $ref: '#/definitions/model.CommonResponse-array_model_GetUserResponse'
         "400":
           description: Bad Request
           schema:
@@ -1603,6 +1619,52 @@ paths:
           schema:
             $ref: '#/definitions/model.CommonResponse-any'
       summary: 修改教师密码
+      tags:
+      - teacher
+  /authrequired/teacher/student:
+    post:
+      consumes:
+      - application/json
+      description: 获取指定学生信息
+      parameters:
+      - description: 登录返回的Token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 需要查询的学生邮箱
+        format: email
+        in: query
+        name: queryemail
+        type: string
+      - description: 需要查询学生ID
+        in: query
+        name: id
+        type: string
+      - description: 需要查询学生用户名
+        in: query
+        name: name
+        type: string
+      - description: 需要查询学生真实姓名
+        in: query
+        name: queryRealname
+        type: string
+      - description: 需要查询学生学号
+        in: query
+        name: queryUserSchoollD
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CommonResponse-array_model_GetUserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.CommonResponse-any'
+      summary: 获取指定学生信息
       tags:
       - teacher
   /authrequired/teacher/student/new:
