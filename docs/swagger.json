@@ -2740,6 +2740,9 @@
                 },
                 "teacherid": {
                     "type": "integer"
+                },
+                "teachername": {
+                    "type": "string"
                 }
             }
         },
