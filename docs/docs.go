@@ -2751,6 +2751,9 @@ const docTemplate = `{
                 },
                 "teacherid": {
                     "type": "integer"
+                },
+                "teachername": {
+                    "type": "string"
                 }
             }
         },
